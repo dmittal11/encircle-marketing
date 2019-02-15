@@ -27,7 +27,6 @@ use Cake\Event\Event;
  */
 class AppController extends Controller
 {
-
     /**
      * Initialization hook method.
      *
@@ -37,6 +36,27 @@ class AppController extends Controller
      *
      * @return void
      */
+
+     public $components = array(
+            'Flash',
+            'Auth' => array(
+                'loginRedirect' => array(
+                    'controller' => 'userHolidays',
+                    'action' => 'index'
+                ),
+                'logoutRedirect' => array(
+                    'controller' => 'users',
+                    'action' => 'login',
+                    'home'
+                ),
+                'authenticate' => array(
+                    'Form' => array(
+                        'passwordHasher' => 'DefaultPasswordHasher'
+                    )
+                )
+            )
+        );
+
     public function initialize()
     {
         parent::initialize();
@@ -45,7 +65,7 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
-
+        $this->loadComponent('Auth');
         /*
          * Enable the following component for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html

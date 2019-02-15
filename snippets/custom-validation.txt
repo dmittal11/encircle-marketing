@@ -1,0 +1,98 @@
+class User extends AppModel {
+
+    public $validate = array(
+        'promotion_code' => array(
+            'rule' => array('limitDuplicates', 25),
+            'message' => 'This code has been used too many times.'
+        )
+    );
+
+    public function limitDuplicates($check, $limit) {
+        // $check will have value: array('promotion_code' => 'some-value')
+        // $limit will have value: 25
+        $existingPromoCount = $this->find('count', array(
+            'conditions' => $check,
+            'recursive' => -1
+        ));
+        return $existingPromoCount < $limit;
+    }
+}
+
+
+// Add Fcuntion for users Holidays
+
+public function add()
+{
+    $userHoliday = $this->UserHolidays->newEntity();
+    if ($this->request->is('post')) {
+
+    $data = $this->request->getData();
+
+      $string_data1 = implode("-", $data["Start_date"]);
+
+      $string_data2 = implode("-", $data["End_date"]);
+
+      $amended_string1 = substr($string_data1, 0, 10);
+      $amended_string2 = substr($string_data2, 0, 10);
+
+
+
+      $date2=date_create($string_data2);
+      $date1=date_create($string_data1);
+      $diff=date_diff($date1,$date2);
+      $days_print = $diff->format("%R%a days");
+
+      print_r($days_print);
+
+      die();
+
+        $userHoliday = $this->UserHolidays->patchEntity($userHoliday, $this->request->getData());
+        if ($this->UserHolidays->save($userHoliday)) {
+            $this->Flash->success(__('The user holiday has been saved.'));
+
+            return $this->redirect(['action' => 'index']);
+        }
+        $this->Flash->error(__('The user holiday could not be saved. Please, try again.'));
+    }
+    $this->set(compact('userHoliday'));
+}
+
+public function login()
+{
+  if($this->request->is('post')) {
+    $user = $this->Auth->identify();
+    if($user){
+      $this->Auth->setUser($user);
+      return $this->redirect($this->Auth->redirectUrl());
+    }
+    $this->Flash->error(__('Invalid email or password, try again'));
+  }
+}
+
+public function logout()
+{
+  return $this->redirect($this->Auth->logout());
+}
+
+
+public function initialize()
+{
+    parent::initialize();
+
+    $this->loadComponent('RequestHandler', [
+        'enableBeforeRedirect' => false,
+    ]);
+    $this->loadComponent('Flash');
+    $this->loadComponent('Auth', [
+      'authenticate' => [
+            'Form' => ['fields' => ['username' => 'username']]
+      ]
+    ]);
+
+    /*
+     * Enable the following component for recommended CakePHP security settings.
+     * see https://book.cakephp.org/3.0/en/controllers/components/security.html
+     */
+    //$this->loadComponent('Security');
+}
+}
