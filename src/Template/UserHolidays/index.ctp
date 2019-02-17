@@ -19,7 +19,7 @@
                 <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('end_date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('days_available') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('days_taken') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -30,7 +30,7 @@
                 <td><?= $this->Number->format($userHoliday->user_id) ?></td>
                 <td><?= h($userHoliday->start_date) ?></td>
                 <td><?= h($userHoliday->end_date) ?></td>
-                <td><?= $this->Number->format($userHoliday->days_available) ?></td>
+                <td><?= $this->Number->format($userHoliday->days_taken) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $userHoliday->User_id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $userHoliday->User_id]) ?>

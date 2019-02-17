@@ -35,7 +35,7 @@ class UserSickdaysTable extends Table
 
         $this->setTable('user_sickdays');
         $this->setDisplayField('User_id');
-        $this->setPrimaryKey('User_id');
+        //$this->setPrimaryKey('id');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
@@ -62,10 +62,10 @@ class UserSickdaysTable extends Table
             ->allowEmptyString('duration', false);
 
         $validator
-            ->scalar('evidence')
-            ->maxLength('evidence', 10000)
-            ->requirePresence('evidence', 'create')
-            ->allowEmptyString('evidence', false);
+            ->scalar('file')
+            ->maxLength('file', 10000)
+            ->requirePresence('file', 'create')
+            ->allowEmptyString('file', false);
 
         return $validator;
     }

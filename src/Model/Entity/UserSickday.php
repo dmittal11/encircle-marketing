@@ -28,7 +28,6 @@ class UserSickday extends Entity
     protected $_accessible = [
         'user_id' => true,
         'duration' => true,
-        'evidence' => true,
         'login' => true
     ];
 }

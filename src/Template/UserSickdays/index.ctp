@@ -28,7 +28,7 @@
                 <td><?= $this->Number->format($userSickday->id) ?></td>
                 <td><?= $this->Number->format($userSickday->user_id) ?></td>
                 <td><?= h($userSickday->duration) ?></td>
-                <td><?= h($userSickday->evidence) ?></td>
+                <td><?= h($userSickday->file) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $userSickday->User_id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $userSickday->User_id]) ?>

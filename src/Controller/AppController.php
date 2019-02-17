@@ -41,7 +41,7 @@ class AppController extends Controller
             'Flash',
             'Auth' => array(
                 'loginRedirect' => array(
-                    'controller' => 'userHolidays',
+                    'controller' => 'userSickdays',
                     'action' => 'index'
                 ),
                 'logoutRedirect' => array(

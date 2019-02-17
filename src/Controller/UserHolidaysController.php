@@ -65,21 +65,48 @@ class UserHolidaysController extends AppController
 
             // Days available greater than 0
             // Days difference lower than days available.
-            // throw error if either fails.
-            $daysToTake = 5;
-
-            $date_difference = $this->calculateDateDifference($userHoliday->start_date, $userHoliday->end_date);
-
-           dd($date_difference);
-
+            // throw error if either fails
 
             $this->loadModel('Users');
             $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
+            //dd($user->available_days);
+
+
+            $days_taken = $this->calculateDateDifference($userHoliday->start_date, $userHoliday->end_date);
+            $days_available = $this->daysAvailable($user->available_days, $days_taken);
+
+          //  dd($days_available);
+
+
+
+
+            // Cakephp: add variables to the object...
+
+
+
+          if($days_taken == false){
+
+              $this->Flash->error(__('The end date is lower than the start date or the start date is invalid please correct this!'));
+          }
+
+          else{
+
+
+            $days_taken_variable = "days_taken";
+            $userHoliday->$days_taken_variable = $days_taken;
+
+          //  dd($userHoliday);
+
+            // Cakephp: Save the object to the database...
+
+
 
             if ($this->UserHolidays->save($userHoliday)) {
                 $this->Flash->success(__('The user holiday has been saved.'));
 
-                $user->available_days = $daysToTake;
+                $days_available_variable = "available_days";
+
+                $user->$days_available_variable = $days_available;
 
                 $this->Users->save($user);
 
@@ -87,9 +114,11 @@ class UserHolidaysController extends AppController
             }
             $this->Flash->error(__('The user holiday could not be saved. Please, try again.'));
         }
+      }
         $logins = $this->UserHolidays->users->find('list', ['limit' => 200]);
         $this->set(compact('userHoliday', 'logins'));
-    }
+
+  }
 
     /**
      * Edit method
@@ -139,35 +168,40 @@ class UserHolidaysController extends AppController
     public function calculateDateDifference($date1, $date2)
     {
 
-      //$difference = $date2->diff($date1);
-      //$difference->d;
+      //$now = new DateTime();
+      //$now->setTimezone(new DateTimeZone('Europe/London'));
+      //$getTimeStamp = $now->getTimezone();
+      //$date1 = date('Y/m/d');
+      //$date = date();
 
-      //dd($date2);
+      //dd($getTimeStamp);
 
-      if($date2 > $date1){
+      $current_date = strtotime(date('Y-m-d'));
 
-        $difference = date_diff($date2, $date1);
-        $difference->intval(format("%R%a days"));
+      $result1 = strtotime($date1);
 
-        //dd($difference);
+      //dd($result, $result1);
 
-        if($difference > 0){
+    //  $difference = $date1->diff($date)->format("&d");
 
-          return $difference;
+      //dd($date1, $date);
 
 
-          } else {
+        if($date2 > $date1 && $result1 >= $current_date){
+              $difference = $date2->diff($date1)->format("%d");
+        return $difference;
+      }
+            else {
 
             return false;
           }
-
-
-      }
-
-
-
-
-
 }
 
+    public function daysAvailable($days_available, $days_taken){
+
+            $result = $days_available - $days_taken;
+
+            return $result;
+
+    }
 }

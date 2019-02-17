@@ -11,14 +11,15 @@
     </ul>
 </nav>
 <div class="userSickdays form large-9 medium-8 columns content">
-    <?= $this->Form->create($userSickday) ?>
+    <?= $this->Form->create($userSickday, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend><?= __('Add User Sickday') ?></legend>
         <?php
-            echo $this->Form->control('id');
-            echo $this->Form->control('user_id');
+            //echo $this->Form->control('id');
+            //echo $this->Form->control('user_id');
             echo $this->Form->control('duration');
-            echo $this->Form->control('evidence');
+          //  echo $this->Form->control('evidence');
+            echo $this->Form->file('file', ['class' => 'form-control']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

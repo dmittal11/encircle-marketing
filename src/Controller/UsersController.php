@@ -28,7 +28,7 @@ class UsersController extends AppController
 
            $this->Auth->setUser($user);
 
-           return $this->redirect(['controller' => 'userHolidays', 'action' => 'index']);
+           return $this->redirect(['controller' => 'userSickdays', 'action' => 'index']);
        } else {
            $this->Flash->error(__('Username or password is incorrect'));
        }
