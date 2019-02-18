@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * UserSickdays Model
+ * Usersickdays Model
  *
- * @property |\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  *
- * @method \App\Model\Entity\UserSickday get($primaryKey, $options = [])
- * @method \App\Model\Entity\UserSickday newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\UserSickday[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\UserSickday|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\UserSickday|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\UserSickday patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\UserSickday[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\UserSickday findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Usersickday get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Usersickday newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Usersickday[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Usersickday|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Usersickday|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Usersickday patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Usersickday[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Usersickday findOrCreate($search, callable $callback = null, $options = [])
  */
-class UserSickdaysTable extends Table
+class UsersickdaysTable extends Table
 {
 
     /**
@@ -35,7 +35,7 @@ class UserSickdaysTable extends Table
 
         $this->setTable('user_sickdays');
         $this->setDisplayField('User_id');
-        //$this->setPrimaryKey('id');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
@@ -56,6 +56,16 @@ class UserSickdaysTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
+            ->date('start_date')
+            ->requirePresence('start_date', 'create')
+            ->allowEmptyDate('start_date', false);
+
+        $validator
+            ->date('end_date')
+            ->requirePresence('end_date', 'create')
+            ->allowEmptyDate('end_date', false);
+
+        $validator
             ->scalar('duration')
             ->maxLength('duration', 10000)
             ->requirePresence('duration', 'create')
@@ -65,7 +75,7 @@ class UserSickdaysTable extends Table
             ->scalar('file')
             ->maxLength('file', 10000)
             ->requirePresence('file', 'create')
-            ->allowEmptyString('file', false);
+            ->allowEmptyFile('file', false);
 
         return $validator;
     }

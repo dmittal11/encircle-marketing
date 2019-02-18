@@ -4,16 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * UserSickday Entity
+ * Usersickday Entity
  *
  * @property int $id
  * @property int $user_id
+ * @property \Cake\I18n\FrozenDate $start_date
+ * @property \Cake\I18n\FrozenDate $end_date
  * @property string $duration
- * @property string $evidence
+ * @property string $file
  *
- * @property \App\Model\Entity\Login $login
+ * @property \App\Model\Entity\User $user
  */
-class UserSickday extends Entity
+class Usersickday extends Entity
 {
 
     /**
@@ -27,7 +29,10 @@ class UserSickday extends Entity
      */
     protected $_accessible = [
         'user_id' => true,
+        'start_date' => true,
+        'end_date' => true,
         'duration' => true,
-        'login' => true
+        'file' => true,
+        'user' => true
     ];
 }

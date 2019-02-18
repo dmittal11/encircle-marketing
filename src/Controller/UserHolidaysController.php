@@ -76,7 +76,7 @@ class UserHolidaysController extends AppController
 
               $userHoliday->days_taken = $days_taken;
 
-              $days_available = $this->daysAvailable($user->available_days, $days_taken);
+              $days_available = $this->Subtractdaysfromdaystaken($user->available_days, $days_taken);
 
             if($days_available < 0){
                 $this->Flash->error(__('Not enough days available'));
@@ -155,7 +155,7 @@ class UserHolidaysController extends AppController
         return false;
     }
 
-    public function daysAvailable($days_available, $days_taken){
+    public function Subtractdaysfromdaystaken($days_available, $days_taken){
         return $days_available - $days_taken;
     }
 

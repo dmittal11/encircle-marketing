@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\UserSickdaysTable;
+use App\Model\Table\UsersickdaysTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\UserSickdaysTable Test Case
+ * App\Model\Table\UsersickdaysTable Test Case
  */
-class UserSickdaysTableTest extends TestCase
+class UsersickdaysTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\UserSickdaysTable
+     * @var \App\Model\Table\UsersickdaysTable
      */
-    public $UserSickdays;
+    public $Usersickdays;
 
     /**
      * Fixtures
@@ -24,8 +24,8 @@ class UserSickdaysTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.UserSickdays',
-        'app.Logins'
+        'app.Usersickdays',
+        'app.Users'
     ];
 
     /**
@@ -36,8 +36,8 @@ class UserSickdaysTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('UserSickdays') ? [] : ['className' => UserSickdaysTable::class];
-        $this->UserSickdays = TableRegistry::getTableLocator()->get('UserSickdays', $config);
+        $config = TableRegistry::getTableLocator()->exists('Usersickdays') ? [] : ['className' => UsersickdaysTable::class];
+        $this->Usersickdays = TableRegistry::getTableLocator()->get('Usersickdays', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class UserSickdaysTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->UserSickdays);
+        unset($this->Usersickdays);
 
         parent::tearDown();
     }

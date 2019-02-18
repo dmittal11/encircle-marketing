@@ -1,25 +1,25 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\UserSickday $userSickday
+ * @var \App\Model\Entity\Usersickday $usersickday
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List User Sickdays'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Usersickdays'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="userSickdays form large-9 medium-8 columns content">
-    <?= $this->Form->create($userSickday, ['enctype' => 'multipart/form-data']) ?>
+<div class="usersickdays form large-9 medium-8 columns content">
+    <?= $this->Form->create($usersickday) ?>
     <fieldset>
-        <legend><?= __('Add User Sickday') ?></legend>
+        <legend><?= __('Add Usersickday') ?></legend>
         <?php
-            //echo $this->Form->control('id');
-            //echo $this->Form->control('user_id');
-            echo $this->Form->control('duration');
-          //  echo $this->Form->control('evidence');
-            echo $this->Form->file('file', ['class' => 'form-control']);
+            echo $this->Form->control('start_date', ['type' => 'date']);
+            echo $this->Form->control('end_date', ['type' => 'date']);
+            echo $this->Form->file('file');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
