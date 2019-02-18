@@ -56,32 +56,24 @@ class UserSickdaysController extends AppController
         $userSickday = $this->UserSickdays->newEntity();
         if ($this->request->is('post')) {
 
-
-
             $userSickday = $this->UserSickdays->patchEntity($userSickday, $this->request->getData());
             $userSickday->user_id = $this->Auth->user('id');
 
-            //dd($userSickday);
+            $userSickday->file = $this->upload();
 
-            $file_upload_Status = $this->upload();
+            if($userSickday->file){
 
-
-
-            if($file_upload_Status != false){
-
-            $userSickday->file = $file_upload_Status;
-          //  dd($userSickday);
-            if ($this->UserSickdays->save($userSickday)) {
-                $this->Flash->success(__('The user sickday has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
+              if ($this->UserSickdays->save($userSickday)) {
+                  $this->Flash->success(__('The user sickday has been saved.'));
+                  return $this->redirect(['action' => 'index']);
+              }
 
             $this->Flash->error(__('The user sickday could not be saved. Please, try again.'));
         }
         else {
           $this->Flash->error(__('Invalid file name'));
         }
+
         $logins = $this->UserSickdays->users->find('list', ['limit' => 200]);
         $this->set(compact('userSickday', 'logins'));
     }
@@ -134,24 +126,17 @@ class UserSickdaysController extends AppController
 
     public function upload(){
 
-      $myname = $this->request->getData()['file']['name'];
-      $mytmp = $this->request->getData()['file']['tmp_name'];
-      //$myname = $this->request->data['Document']['submittedfile'];
-      //$mytmp = $this->request->data['Document']['submittedfile']['tmp_name'];
+      $myname = $this->request->getData('file.name');
+      $mytmp = $this->request->getData('file.tmp_name');
+
       $myext = substr(strrchr($myname, "."), 1);
       $mypath = "upload\\".Security::hash($myname).".".$myext;
-      //$file = $this->Files->newEntity();
-      //$file->name = $myname;
-      //$file->path = $mypath;
-    //  $files->created_at = date('Y-m-d H:i:s');
-    //dd($mytmp, WWW_ROOT.$mypath);
 
       if(move_uploaded_file($mytmp, WWW_ROOT.$mypath)){
       //  $this->Files->save($file);
         return $mypath;
       }
-      else {
-        return false;
-      }
+
+      return false;
     }
 }
