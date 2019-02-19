@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\Usersickday $usersickday
  */
 ?>
+
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -13,15 +14,24 @@
     </ul>
 </nav>
 <div class="usersickdays form large-9 medium-8 columns content">
-    <?= $this->Form->create($usersickday) ?>
+    <?= $this->Form->create($usersickday, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend><?= __('Add Usersickday') ?></legend>
         <?php
-            echo $this->Form->control('start_date', ['type' => 'date']);
-            echo $this->Form->control('end_date', ['type' => 'date']);
+            echo $this->Form->control('start_date', ['label' => 'Start Date','class' => 'datepicker', 'type' => 'text']);
+            echo $this->Form->control('end_date', ['label' => 'End Date','class' => 'datepicker', 'type' => 'text']);
+            //echo $this->Form->control('start_date');
+            //echo $this->Form->control('end_date');
             echo $this->Form->file('file');
         ?>
+
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
+
+<script>
+ $(function(){
+   $(".datepicker").datepicker();
+ });
+</script>

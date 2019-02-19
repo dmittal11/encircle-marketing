@@ -68,6 +68,9 @@ class UserHolidaysController extends AppController
             $this->loadModel('Users');
             $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
 
+            $userHoliday->start_date = $this->convertAttributeToDateType($userHoliday->start_date);
+            $userHoliday->end_date = $this->convertAttributeToDateType($userHoliday->end_date);
+
             $days_taken = $this->calculateDateDifference($userHoliday->start_date, $userHoliday->end_date);
 
           if(!$days_taken){
@@ -157,6 +160,10 @@ class UserHolidaysController extends AppController
 
     public function Subtractdaysfromdaystaken($days_available, $days_taken){
         return $days_available - $days_taken;
+    }
+
+    public function convertAttributeToDateType($date){
+      return new Date($date);
     }
 
 }

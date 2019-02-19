@@ -54,15 +54,15 @@ class UserHolidaysTable extends Table
             ->integer('id')
             ->allowEmptyString('id', 'create');
 
-        $validator
-            ->date('start_date')
-            ->requirePresence('start_date', 'create')
-            ->allowEmptyDate('start_date', false);
-
-        $validator
-            ->date('end_date')
-            ->requirePresence('end_date', 'create')
-            ->allowEmptyDate('end_date', false);
+        // $validator
+        //     ->date('start_date')
+        //     ->requirePresence('start_date', 'create')
+        //     ->allowEmptyDate('start_date', false);
+        //
+        // $validator
+        //     ->date('end_date')
+        //     ->requirePresence('end_date', 'create')
+        //     ->allowEmptyDate('end_date', false);
 
             $validator
                 ->integer('user_id')

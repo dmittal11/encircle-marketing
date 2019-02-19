@@ -55,6 +55,9 @@ class UsersickdaysTable extends Table
             ->integer('id')
             ->allowEmptyString('id', 'create');
 
+
+        /*
+
         $validator
             ->date('start_date')
             ->requirePresence('start_date', 'create')
@@ -64,6 +67,7 @@ class UsersickdaysTable extends Table
             ->date('end_date')
             ->requirePresence('end_date', 'create')
             ->allowEmptyDate('end_date', false);
+            */
 
         $validator
             ->scalar('duration')
@@ -72,8 +76,6 @@ class UsersickdaysTable extends Table
             ->allowEmptyString('duration', false);
 
         $validator
-            ->scalar('file')
-            ->maxLength('file', 10000)
             ->requirePresence('file', 'create')
             ->allowEmptyFile('file', false);
 

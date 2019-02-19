@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Utility\Security;
+use Cake\I18n\Date;
 
 /**
  * Usersickdays Controller
@@ -24,7 +25,7 @@ class UsersickdaysController extends AppController
         $this->paginate = [
             'contain' => ['Users']
         ];
-        $usersickdays = $this->paginate($this->Usersickdays);
+        $usersickdays = $this->paginate($this->UserSickdays);
 
         $this->set(compact('usersickdays'));
     }
@@ -52,19 +53,15 @@ class UsersickdaysController extends AppController
      */
     public function add()
     {
-
         $usersickday = $this->UserSickdays->newEntity();
           //$this->loadModel('Users');
         if ($this->request->is('post')) {
 
-            $usersickday = $this->UserSickdays->patchEntity($usersickday, $this->request->getData());
-            $usersickday->user_id = $this->Auth->user('id');
+          $usersickday = $this->UserSickdays->patchEntity($usersickday, $this->request->getData());
+          $usersickday->user_id = $this->Auth->user('id');
 
-
-
-            //dd($usersickday);
-
-          //  $this->loadModel('Users');
+          $usersickday->start_date = $this->convertAttributeToDateType($usersickday->start_date);
+          $usersickday->end_date = $this->convertAttributeToDateType($usersickday->end_date);
 
           $usersickday->duration = $this->calculateDateDifference($usersickday->start_date, $usersickday->end_date);
 
@@ -73,6 +70,8 @@ class UsersickdaysController extends AppController
           $usersickday->file = $this->upload();
 
           if($usersickday->file){
+
+
 
             if ($this->UserSickdays->save($usersickday)) {
                 $this->Flash->success(__('The usersickday has been saved.'));
@@ -85,7 +84,6 @@ class UsersickdaysController extends AppController
       else {
         $this->Flash->error(__('The dates are invalid, please try again!'));
       }
-        //  dd([$usersickday,$usersickday->start_date, $usersickday->end_date]);
     }
 
 
@@ -140,7 +138,6 @@ class UsersickdaysController extends AppController
     }
 
     public function calculateDateDifference($start_date, $end_date) {
-
       if($end_date > $start_date && !$start_date->isPast()){
         return $end_date->diffInDays($start_date);
       }
@@ -155,18 +152,14 @@ class UsersickdaysController extends AppController
 
       $myext = substr(strrchr($myname, "."), 1);
       $mypath = "upload\\".Security::hash($myname).".".$myext;
-
       if(move_uploaded_file($mytmp, WWW_ROOT.$mypath)){
-      //  $this->Files->save($file);
         return $mypath;
       }
 
       return false;
     }
 
-    public function checkforleapyear($start_date, $end_date){
-
-      $start_date->isLeapYear();
-
+    public function convertAttributeToDateType($date){
+      return new Date($date);
     }
 }

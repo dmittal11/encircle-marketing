@@ -15,8 +15,8 @@
     <fieldset>
         <legend><?= __('Add User Holiday') ?></legend>
         <?php
-            echo $this->Form->control('start_date');
-            echo $this->Form->control('end_date');
+            echo $this->Form->control('start_date', ['label' => 'Start Date', 'class' => 'datepicker', 'type' => 'text']);
+            echo $this->Form->control('end_date', ['label' => 'End Date', 'class' => 'datepicker', 'type' => 'text']);
         ?>
     </fieldset>
 
@@ -25,3 +25,9 @@
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
+
+<script>
+$(function(){
+  $(".datepicker").datepicker();
+});
+</script>
