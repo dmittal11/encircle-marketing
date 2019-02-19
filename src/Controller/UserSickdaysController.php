@@ -106,12 +106,33 @@ class UsersickdaysController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $usersickday = $this->Usersickdays->patchEntity($usersickday, $this->request->getData());
-            if ($this->Usersickdays->save($usersickday)) {
-                $this->Flash->success(__('The usersickday has been saved.'));
+            $usersickday->user_id = $this->Auth->user('id');
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The usersickday could not be saved. Please, try again.'));
+            $usersickday->start_date = $this->convertAttributeToDateType($usersickday->start_date);
+            $usersickday->end_date = $this->convertAttributeToDateType($usersickday->end_date);
+
+            $usersickday->duration = $this->calculateDateDifference($usersickday->start_date, $usersickday->end_date);
+
+            if($usersickday->duration){
+
+            $usersickday->file = $this->upload();
+
+            if($usersickday->file){
+
+
+
+              if ($this->UserSickdays->save($usersickday)) {
+                  $this->Flash->success(__('The usersickday has been saved.'));
+
+                  return $this->redirect(['action' => 'index']);
+              }
+              $this->Flash->error(__('The usersickday could not be saved. Please, try again.'));
+          }
+        }
+        else {
+          $this->Flash->error(__('The dates are invalid, please try again!'));
+        }
+
         }
         $users = $this->Usersickdays->Users->find('list', ['limit' => 200]);
         $this->set(compact('usersickday', 'users'));

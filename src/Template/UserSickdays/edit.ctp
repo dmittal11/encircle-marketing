@@ -19,17 +19,22 @@
     </ul>
 </nav>
 <div class="usersickdays form large-9 medium-8 columns content">
-    <?= $this->Form->create($usersickday) ?>
+    <?= $this->Form->create($usersickday, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend><?= __('Edit Usersickday') ?></legend>
         <?php
-            echo $this->Form->control('user_id', ['options' => $users]);
-            echo $this->Form->control('start_date');
-            echo $this->Form->control('end_date');
-            echo $this->Form->control('duration');
-            echo $this->Form->control('file');
+            //echo $this->Form->control('user_id', ['options' => $users]);
+            echo $this->Form->control('start_date', ['label' => 'Start Date','class' => 'datepicker', 'type' => 'text']);
+            echo $this->Form->control('end_date', ['label' => 'End Date','class' => 'datepicker', 'type' => 'text']);
+            //echo $this->Form->control('duration');
+            echo $this->Form->file('file');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
+<script>
+ $(function(){
+   $(".datepicker").datepicker();
+ });
+</script>

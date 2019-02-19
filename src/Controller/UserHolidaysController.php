@@ -113,19 +113,58 @@ class UserHolidaysController extends AppController
      */
     public function edit($id = null)
     {
+      //dd($user);
         $userHoliday = $this->UserHolidays->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $userHoliday = $this->UserHolidays->patchEntity($userHoliday, $this->request->getData());
-            if ($this->UserHolidays->save($userHoliday)) {
-                $this->Flash->success(__('The user holiday has been saved.'));
+                $userHoliday = $this->UserHolidays->patchEntity($userHoliday, $this->request->getData());
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The user holiday could not be saved. Please, try again.'));
+                $this->loadModel('Users');
+
+                $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
+
+            //dd([$userHoliday->days_taken, $user->available_days]);
+
+                $user->available_days = $this->addDaysToAvailableDays($userHoliday->days_taken,$user->available_days);
+
+          //  dd($user->available_days);
+
+              //  $this->Users->save($user);
+
+
+                $userHoliday->start_date = $this->convertAttributeToDateType($userHoliday->start_date);
+                $userHoliday->end_date = $this->convertAttributeToDateType($userHoliday->end_date);
+                $days_taken = $this->calculateDateDifference($userHoliday->start_date, $userHoliday->end_date);
+
+                    if(!$days_taken){
+                        $this->Flash->error(__('The end date is lower than the start date or the start date is invalid please correct this!'));
+                   } else {
+
+                        $userHoliday->days_taken = $days_taken;
+
+                        $days_available = $this->Subtractdaysfromdaystaken($user->available_days, $days_taken);
+
+                          if($days_available < 0){
+                              $this->Flash->error(__('Not enough days available'));
+
+                              } else {
+
+                                $this->UserHolidays->save($userHoliday);
+
+                                $user->available_days = $days_available;
+
+                                $this->Users->save($user);
+
+                                $this->Flash->success(__('The user holiday has been saved.'));
+
+                                return $this->redirect(['action' => 'index']);
+                              }
+                              $this->Flash->error(__('The user holiday could not be saved. Please, try again.'));
         }
-        $logins = $this->UserHolidays->Logins->find('list', ['limit' => 200]);
+
+      }
+        $logins = $this->UserHolidays->users->find('list', ['limit' => 200]);
         $this->set(compact('userHoliday', 'logins'));
     }
 
@@ -164,6 +203,10 @@ class UserHolidaysController extends AppController
 
     public function convertAttributeToDateType($date){
       return new Date($date);
+    }
+
+    public function addDaysToAvailableDays($days_taken, $available_days){
+      return $available_days + $days_taken;
     }
 
 }

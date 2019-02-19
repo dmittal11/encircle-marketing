@@ -35,6 +35,7 @@ class UserHolidaysTable extends Table
 
         $this->setTable('user_holidays');
         $this->setDisplayField('User_id');
+        //$this->setPrimaryKey('id');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
