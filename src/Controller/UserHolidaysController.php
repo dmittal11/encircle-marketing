@@ -177,9 +177,20 @@ class UserHolidaysController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->request->allowMethod(['get', 'delete']);
         $userHoliday = $this->UserHolidays->get($id);
-        if ($this->UserHolidays->delete($userHoliday)) {
+
+        $this->loadModel('Users');
+
+        $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
+
+
+        $user->available_days = $this->addDaysToAvailableDays($userHoliday->days_taken,$user->available_days);
+
+
+
+
+        if ($this->UserHolidays->delete($userHoliday) && $this->Users->save($user)) {
             $this->Flash->success(__('The user holiday has been deleted.'));
         } else {
             $this->Flash->error(__('The user holiday could not be deleted. Please, try again.'));

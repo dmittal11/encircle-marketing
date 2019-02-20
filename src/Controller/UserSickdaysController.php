@@ -28,6 +28,7 @@ class UsersickdaysController extends AppController
         $usersickdays = $this->paginate($this->UserSickdays);
 
         $this->set(compact('usersickdays'));
+
     }
 
     /**
@@ -64,7 +65,6 @@ class UsersickdaysController extends AppController
           $usersickday->end_date = $this->convertAttributeToDateType($usersickday->end_date);
 
           $usersickday->duration = $this->calculateDateDifference($usersickday->start_date, $usersickday->end_date);
-
           if($usersickday->duration){
 
           $usersickday->file = $this->upload();
@@ -101,11 +101,11 @@ class UsersickdaysController extends AppController
      */
     public function edit($id = null)
     {
-        $usersickday = $this->Usersickdays->get($id, [
+        $usersickday = $this->UserSickdays->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $usersickday = $this->Usersickdays->patchEntity($usersickday, $this->request->getData());
+            $usersickday = $this->UserSickdays->patchEntity($usersickday, $this->request->getData());
             $usersickday->user_id = $this->Auth->user('id');
 
             $usersickday->start_date = $this->convertAttributeToDateType($usersickday->start_date);
@@ -126,6 +126,7 @@ class UsersickdaysController extends AppController
 
                   return $this->redirect(['action' => 'index']);
               }
+
               $this->Flash->error(__('The usersickday could not be saved. Please, try again.'));
           }
         }
@@ -134,7 +135,7 @@ class UsersickdaysController extends AppController
         }
 
         }
-        $users = $this->Usersickdays->Users->find('list', ['limit' => 200]);
+        $users = $this->UserSickdays->Users->find('list', ['limit' => 200]);
         $this->set(compact('usersickday', 'users'));
     }
 
@@ -147,9 +148,9 @@ class UsersickdaysController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $usersickday = $this->Usersickdays->get($id);
-        if ($this->Usersickdays->delete($usersickday)) {
+        $this->request->allowMethod(['post','get', 'delete']);
+        $usersickday = $this->UserSickdays->get($id);
+        if ($this->UserSickdays->delete($usersickday)) {
             $this->Flash->success(__('The usersickday has been deleted.'));
         } else {
             $this->Flash->error(__('The usersickday could not be deleted. Please, try again.'));
