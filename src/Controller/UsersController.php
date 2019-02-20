@@ -70,9 +70,18 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $users = $this->paginate($this->Users);
 
-        $this->set(compact('users'));
+      $id = $this->Auth->user('id');
+
+
+      $user = $this->Users->get($id, [
+          'contain' => []
+      ]);
+
+        //$users = $this->paginate($this->Users);
+
+        //$this->set(compact('users'));
+        $this->set('user', $user);
     }
 
     /**
@@ -98,7 +107,6 @@ class UsersController extends AppController
      */
     public function add()
     {
-      dd($this->request);
 
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {

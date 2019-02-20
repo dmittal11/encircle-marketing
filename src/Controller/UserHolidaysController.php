@@ -43,7 +43,11 @@ class UserHolidaysController extends AppController
             'contain' => ['users']
         ]);
 
+        $this->loadModel('Users');
+        $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
+
         $this->set('userHoliday', $userHoliday);
+        $this->set('user', $user);
     }
 
     /**
@@ -102,6 +106,7 @@ class UserHolidaysController extends AppController
 
         $logins = $this->UserHolidays->users->find('list', ['limit' => 200]);
         $this->set(compact('userHoliday', 'logins'));
+
   }
 
     /**
@@ -177,7 +182,7 @@ class UserHolidaysController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['get', 'delete']);
+        $this->request->allowMethod(['get','post','delete']);
         $userHoliday = $this->UserHolidays->get($id);
 
         $this->loadModel('Users');

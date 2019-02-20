@@ -26,6 +26,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -45,6 +46,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </ul>
         <div class="top-bar-section">
             <ul class="right">
+                <li><?= $this->Html->link('<i class="fa fa-fw fa-home fa-lg"></i>', ['controller' => 'users', 'action' => 'index'], ['rel' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => 'Edit', 'class' => 'btn btn-small', 'escape' => false]) ?></li>
                 <li><?= $this->Html->link('Logout', ['controller' => 'users', 'action' => 'logout']) ?></li>
                 <li><?= $this->Html->link('Register', ['controller' => 'users', 'action' => 'register']) ?></li>
             </ul>

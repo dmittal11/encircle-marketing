@@ -40,7 +40,7 @@ class UsersickdaysController extends AppController
      */
     public function view($id = null)
     {
-        $usersickday = $this->Usersickdays->get($id, [
+        $usersickday = $this->UserSickdays->get($id, [
             'contain' => ['Users']
         ]);
 

@@ -96,3 +96,9 @@ public function initialize()
     //$this->loadComponent('Security');
 }
 }
+
+
+
+<?= $this->Html->image("home.png", [
+    "alt" => "Home",
+    'url' => ['controller' => 'users', 'action' => 'index']]);?></li>

@@ -13,6 +13,7 @@
         <li><?= $this->Html->link(__('New User Holiday'), ['action' => 'add']) ?> </li>
     </ul>
 </nav>
+
 <div class="userHolidays view large-9 medium-8 columns content">
     <h3><?= h($userHoliday->User_id) ?></h3>
     <table class="vertical-table">
@@ -26,7 +27,7 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Days Available') ?></th>
-            <td><?= $this->Number->format($userHoliday->days_available) ?></td>
+            <td><?= $this->Number->format($user->available_days) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Start Date') ?></th>

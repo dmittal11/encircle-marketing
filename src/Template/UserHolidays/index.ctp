@@ -32,9 +32,9 @@
                 <td><?= h($userHoliday->end_date) ?></td>
                 <td><?= $this->Number->format($userHoliday->days_taken) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $userHoliday->User_id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $userHoliday->User_id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $userHoliday->User_id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHoliday->User_id)]) ?>
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $userHoliday->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $userHoliday->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $userHoliday->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHoliday->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
