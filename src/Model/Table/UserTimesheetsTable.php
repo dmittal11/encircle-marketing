@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * UserTimesheets Model
  *
- * @property |\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  *
  * @method \App\Model\Entity\UserTimesheet get($primaryKey, $options = [])
  * @method \App\Model\Entity\UserTimesheet newEntity($data = null, array $options = [])
@@ -35,7 +35,7 @@ class UserTimesheetsTable extends Table
 
         $this->setTable('user_timesheets');
         $this->setDisplayField('User_id');
-        $this->setPrimaryKey('User_id');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
@@ -56,10 +56,24 @@ class UserTimesheetsTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->scalar('time')
-            ->maxLength('time', 10000)
-            ->requirePresence('time', 'create')
-            ->allowEmptyString('time', false);
+            ->date('start_date')
+            ->requirePresence('start_date', 'create')
+            ->allowEmptyDate('start_date', false);
+
+        $validator
+            ->time('start_time')
+            ->requirePresence('start_time', 'create')
+            ->allowEmptyTime('start_time', false);
+
+        $validator
+            ->time('end_time')
+            ->requirePresence('end_time', 'create')
+            ->allowEmptyTime('end_time', false);
+
+        $validator
+            ->integer('duration')
+            ->requirePresence('duration', 'create')
+            ->allowEmptyString('duration', false);
 
         return $validator;
     }

@@ -8,9 +8,12 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $user_id
- * @property string $time
+ * @property \Cake\I18n\FrozenDate $start_date
+ * @property \Cake\I18n\FrozenTime $start_time
+ * @property \Cake\I18n\FrozenTime $end_time
+ * @property int $duration
  *
- * @property \App\Model\Entity\Login $login
+ * @property \App\Model\Entity\User $user
  */
 class UserTimesheet extends Entity
 {
@@ -26,7 +29,10 @@ class UserTimesheet extends Entity
      */
     protected $_accessible = [
         'user_id' => true,
-        'time' => true,
-        'login' => true
+        'start_date' => true,
+        'start_time' => true,
+        'end_time' => true,
+        'duration' => true,
+        'user' => true
     ];
 }

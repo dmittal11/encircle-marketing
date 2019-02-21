@@ -19,7 +19,7 @@ class UserTimesheetsControllerTest extends TestCase
      */
     public $fixtures = [
         'app.UserTimesheets',
-        'app.Logins'
+        'app.Users'
     ];
 
     /**
@@ -68,6 +68,46 @@ class UserTimesheetsControllerTest extends TestCase
      * @return void
      */
     public function testDelete()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test convertAttributeToDateType method
+     *
+     * @return void
+     */
+    public function testConvertAttributeToDateType()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test convertDataEnteredToTime method
+     *
+     * @return void
+     */
+    public function testConvertDataEnteredToTime()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test calculateTimeDifference method
+     *
+     * @return void
+     */
+    public function testCalculateTimeDifference()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test convertTimeToMinutes method
+     *
+     * @return void
+     */
+    public function testConvertTimeToMinutes()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

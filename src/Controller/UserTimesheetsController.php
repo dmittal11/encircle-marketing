@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\I18n\Date;
+use DateTime;
 
 /**
  * UserTimesheets Controller
@@ -21,7 +23,7 @@ class UserTimesheetsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Logins']
+            'contain' => ['Users']
         ];
         $userTimesheets = $this->paginate($this->UserTimesheets);
 
@@ -38,7 +40,7 @@ class UserTimesheetsController extends AppController
     public function view($id = null)
     {
         $userTimesheet = $this->UserTimesheets->get($id, [
-            'contain' => ['Logins']
+            'contain' => ['Users']
         ]);
 
         $this->set('userTimesheet', $userTimesheet);
@@ -51,9 +53,32 @@ class UserTimesheetsController extends AppController
      */
     public function add()
     {
+
+
+
+
         $userTimesheet = $this->UserTimesheets->newEntity();
         if ($this->request->is('post')) {
             $userTimesheet = $this->UserTimesheets->patchEntity($userTimesheet, $this->request->getData());
+
+            $start_time = $this->convertTimeToMinutes($userTimesheet->start_time);
+            $end_time = $this->convertTimeToMinutes($userTimesheet->end_time);
+            $time_diff = $this->calculateTimeDifference($start_time, $end_time);
+
+            if($time_diff == false){
+              $this->Flash->error(__('The user timesheet could not be saved. Please try again.'));
+            }
+             else{
+
+            $userTimesheet->start_date = $this->convertAttributeToDateType($userTimesheet->start_date);
+            $userTimesheet->duration = $time_diff;
+
+            $userTimesheet->user_id = $this->Auth->user('id');
+
+           //dd($userTimesheet);
+
+          //dd("Here");
+
             if ($this->UserTimesheets->save($userTimesheet)) {
                 $this->Flash->success(__('The user timesheet has been saved.'));
 
@@ -61,8 +86,9 @@ class UserTimesheetsController extends AppController
             }
             $this->Flash->error(__('The user timesheet could not be saved. Please, try again.'));
         }
-        $logins = $this->UserTimesheets->Logins->find('list', ['limit' => 200]);
-        $this->set(compact('userTimesheet', 'logins'));
+      }
+        $users = $this->UserTimesheets->Users->find('list', ['limit' => 200]);
+        $this->set(compact('userTimesheet', 'users'));
     }
 
     /**
@@ -79,6 +105,21 @@ class UserTimesheetsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $userTimesheet = $this->UserTimesheets->patchEntity($userTimesheet, $this->request->getData());
+
+            $start_time = $this->convertTimeToMinutes($userTimesheet->start_time);
+            $end_time = $this->convertTimeToMinutes($userTimesheet->end_time);
+            $time_diff = $this->calculateTimeDifference($start_time, $end_time);
+
+            if($time_diff == false){
+              $this->Flash->error(__('The user timesheet could not be saved. Please try again.'));
+            }
+             else{
+
+            $userTimesheet->start_date = $this->convertAttributeToDateType($userTimesheet->start_date);
+            $userTimesheet->duration = $time_diff;
+
+            $userTimesheet->user_id = $this->Auth->user('id');
+
             if ($this->UserTimesheets->save($userTimesheet)) {
                 $this->Flash->success(__('The user timesheet has been saved.'));
 
@@ -86,9 +127,12 @@ class UserTimesheetsController extends AppController
             }
             $this->Flash->error(__('The user timesheet could not be saved. Please, try again.'));
         }
-        $logins = $this->UserTimesheets->Logins->find('list', ['limit' => 200]);
-        $this->set(compact('userTimesheet', 'logins'));
-    }
+      }
+
+        $users = $this->UserTimesheets->Users->find('list', ['limit' => 200]);
+        $this->set(compact('userTimesheet', 'users'));
+
+  }
 
     /**
      * Delete method
@@ -109,4 +153,39 @@ class UserTimesheetsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function convertAttributeToDateType($date){
+      return new Date($date);
+    }
+
+
+
+    public function calculateTimeDifference($start_time, $end_time) {
+
+      if($end_time > $start_time){
+        return $end_time - $start_time;
+      }
+
+      return false;
+    }
+
+    public function convertTimeToMinutes($time){
+
+        $noon_time = new DateTime("12:00:00.0000000");
+
+        $hours = (int)$time->format('h');
+        $mins = (int)$time->format('i');
+
+
+        if($time >= $noon_time){
+
+          $hours = $hours + 12;
+
+        }
+
+        return (($hours * 60) + $mins);
+
+
+    }
+
 }
