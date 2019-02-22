@@ -102,3 +102,43 @@ public function initialize()
 <?= $this->Html->image("home.png", [
     "alt" => "Home",
     'url' => ['controller' => 'users', 'action' => 'index']]);?></li>
+
+
+    <script>
+
+    $(document).ready(function(){
+
+      $('#submit').on('click', function(event){
+
+        // get the form data
+        // there are many ways to get this data using jQuery (you can use the class or id also)
+
+        var formData = {
+          'start_date' : $('input[name=start_date]'),
+          'end_date' : $('input[name=end_date]')
+        };
+
+        console.log(formData);
+
+        // Process the form
+
+        $.ajax({
+            type : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url : "http://localhost/encircle-marketing/users/seach",
+            data : formData,
+            dataType : 'json',
+                    encode : true
+
+        })
+        //
+        //     // Using the done promise callback
+        //     .done(function(data) {
+        //       //$('#content').html(data);
+        //       console.log(data);
+        //       // here we will handle errors and validation messages
+        //     });
+        //     // stop the form from submitting the normal way and refreshing the page
+        //     event.preventDefault();
+      //});
+    //});
+    </script>

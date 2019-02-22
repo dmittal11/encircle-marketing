@@ -47,8 +47,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <div class="top-bar-section">
             <ul class="right">
                 <li><?= $this->Html->link('<i class="fa fa-fw fa-home fa-lg"></i>', ['controller' => 'users', 'action' => 'index'], ['rel' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => 'Edit', 'class' => 'btn btn-small', 'escape' => false]) ?></li>
-                <li><?= $this->Html->link('Logout', ['controller' => 'users', 'action' => 'logout']) ?></li>
-                <li><?= $this->Html->link('Register', ['controller' => 'users', 'action' => 'register']) ?></li>
+                  <?php if ($isLoggedIn) : ?>
+                    <li><?= $this->Html->link('Logout', ['controller' => 'users', 'action' => 'logout']) ?></li>
+                <?php endif ?>
+
+                <?php if (!$isLoggedIn) : ?>
+                  <li><?= $this->Html->link('Register', ['controller' => 'users', 'action' => 'register']) ?></li>
+                <?php endif ?>
             </ul>
         </div>
     </nav>

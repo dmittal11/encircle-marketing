@@ -73,15 +73,38 @@ class UsersController extends AppController
 
       $id = $this->Auth->user('id');
 
-
       $user = $this->Users->get($id, [
           'contain' => []
       ]);
 
+      if ($this->request->is('post')) {
+          $user = $this->request->getData();
+
+        }
+
+        $this->loadModel('UserTimesheets');
+        //$user = $this->UserTimesheets->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
+        // $userTimesheet = $this->UserTimesheets
+        //   ->find('all', ['user_id' => $this->Auth->user('id')])
+        //   ->map(function($row){
+        //     $row->new_duration = ($row->duration / 60);
+        //     return $row;
+        //   });
+
         //$users = $this->paginate($this->Users);
 
         //$this->set(compact('users'));
+
+
+        $userTimesheet = $this->UserTimesheets->find('all',['user_id' => $this->Auth->user('id')]);
+
+        $collection = new Collection($userTimesheet);
+        $collection->map(function($row){
+          $row->new_duration 
+        });
+
         $this->set('user', $user);
+        $this->set('userTimesheets', $userTimesheet);
     }
 
     /**
@@ -163,5 +186,13 @@ class UsersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function search()
+    {
+      $this->request->allowMethod('ajax');
+      $data = $this->request->query('formData');
+      dd($data);
+
     }
 }
