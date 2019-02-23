@@ -46,17 +46,8 @@
 
 
 
-  <div class="users index form large-9 medium-8 columns content">
-      <fieldset>
-          <legend><?= __('Add User Holiday') ?></legend>
-          <?php
-              echo $this->Form->control('start_date', ['label' => 'Start Date', 'class' => 'datepicker', 'type' => 'text']);
-              echo $this->Form->control('end_date', ['label' => 'End Date', 'class' => 'datepicker', 'type' => 'text']);
-          ?>
-      </fieldset>
+  <div class="users index large-9 medium-8 columns content">
 
-      <?= $this->Form->button(__('Submit'), ['id' => 'submit']) ?>
-      <?= $this->Form->end() ?>
 
   <h3><?= __('Hours Worked') ?></h3>
   <table cellpadding="0" cellspacing="0">
@@ -74,13 +65,52 @@
               <td><?= h($userTimesheet->start_date) ?></td>
               <td><?= h($userTimesheet->start_time) ?></td>
               <td><?= h($userTimesheet->end_time) ?></td>
-              <td><?= $this->hello();?> Hours</td>
+              <td><?= h($userTimesheet->new_duration)?></td>
           </tr>
           <?php endforeach; ?>
       </tbody>
   </table>
-</div>
 
+  <h3><?= __('Total Hours Worked') ?></h3>
+  <table cellpadding="0" cellspacing="0">
+      <thead>
+          <tr>
+              <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('start_time') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('end_time') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('duration') ?></th>
+          </tr>
+      </thead>
+      <tbody>
+          <?php foreach ($userTimesheets as $userTimesheet): ?>
+          <tr>
+              <td><?= h($userTimesheet->start_date) ?></td>
+              <td><?= h($userTimesheet->start_time) ?></td>
+              <td><?= h($userTimesheet->end_time) ?></td>
+              <td><?= h($userTimesheet->new_duration)?></td>
+          </tr>
+          <?php endforeach; ?>
+      </tbody>
+  </table>
+
+<br>
+<br>
+<br>
+<?= $this->Form->create('User', ['action' => 'index']); ?>
+
+  <fieldset>
+
+      <legend><?= __('Add User Holiday') ?></legend>
+      <?php
+          echo $this->Form->control('start_date', ['label' => 'Start Date', 'class' => 'datepicker', 'type' => 'text']);
+          echo $this->Form->control('end_date', ['label' => 'End Date', 'class' => 'datepicker', 'type' => 'text']);
+      ?>
+  </fieldset>
+
+  <?= $this->Form->button(__('Submit')) ?>
+  <?= $this->Form->end() ?>
+
+</div>
   <div id="content"></div>
 
 
@@ -98,15 +128,6 @@
     </div>
 </div>
 -->
-
-<script>
-
-  public function hello(){
-
-    return "This Works";
-  }
-
-</script>
 <script>
 $(function(){
   $(".datepicker").datepicker();

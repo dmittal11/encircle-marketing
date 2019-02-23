@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\Collection\Collection;
+use Cake\I18n\Date;
 
 /**
  * Users Controller
@@ -71,7 +73,10 @@ class UsersController extends AppController
     public function index()
     {
 
+
+
       $id = $this->Auth->user('id');
+      $this->loadModel('UserTimesheets');
 
       $user = $this->Users->get($id, [
           'contain' => []
@@ -80,28 +85,51 @@ class UsersController extends AppController
       if ($this->request->is('post')) {
           $user = $this->request->getData();
 
+          $start_date = new date($user["start_date"]);
+          $end_date = new date($user["end_date"]);
+
+          //dd([$start_date, $end_date]);
+
+
+          $userTimesheet = $this->UserTimesheets->find('all',
+          ['conditions' => [
+            'and' => [
+            ['UserTimesheets.start_date BETWEEN ? and ?' => [
+              $start_date, $end_date],
+              'user_id' => $this->Auth->user('id')
+            ]
+          ]
+        ]
+      ]
+      );
+
+    //  dd($userTimesheet);
+
+
+
+            $userTimesheet = $this->convertToCollections($userTimesheet);
+
+        } else {
+
+
+            $userTimesheet = $this->UserTimesheets->find('all',
+            ['conditions' => [
+                'user_id' => $this->Auth->user('id')
+              ]
+            ]
+
+        );
+
+            //dd($userTimesheet);
+
+            $userTimesheet = $this->convertToCollections($userTimesheet);
+
+
         }
 
-        $this->loadModel('UserTimesheets');
-        //$user = $this->UserTimesheets->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
-        // $userTimesheet = $this->UserTimesheets
-        //   ->find('all', ['user_id' => $this->Auth->user('id')])
-        //   ->map(function($row){
-        //     $row->new_duration = ($row->duration / 60);
-        //     return $row;
-        //   });
 
         //$users = $this->paginate($this->Users);
-
         //$this->set(compact('users'));
-
-
-        $userTimesheet = $this->UserTimesheets->find('all',['user_id' => $this->Auth->user('id')]);
-
-        $collection = new Collection($userTimesheet);
-        $collection->map(function($row){
-          $row->new_duration 
-        });
 
         $this->set('user', $user);
         $this->set('userTimesheets', $userTimesheet);
@@ -195,4 +223,23 @@ class UsersController extends AppController
       dd($data);
 
     }
+
+    public function convertToCollections($data){
+
+      $collection = new Collection($data);
+      $data = $collection->each(function($row){
+
+          $row->new_duration = $this->convertTimeToString($row);
+          return $row;
+        });
+
+        return $data;
+
+    }
+
+    public function convertTimeToString($row){
+
+      return intdiv($row->duration, 60).' Hours '. ($row->duration % 60).' Minutes';
+    }
+
 }
