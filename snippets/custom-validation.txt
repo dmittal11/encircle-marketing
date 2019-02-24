@@ -142,3 +142,18 @@ public function initialize()
       //});
     //});
     </script>
+
+    $conditions = array(
+
+ 'conditions' => array(
+ 'and' => array(
+                 array('UserTimesheets.start_date >= ' => $start_date ,
+                       'UserTimesheets.start_date <= ' => $end_date
+                      ),
+      'user_id' => $this->Auth->user('id')
+
+     )));
+     $fields= array('fields' => array('id','user_id','start_date','start_time','end_time','duration'));
+
+
+$userTimesheet = $this->UserTimesheets->find('all',  array($conditions ,$fields));

@@ -70,26 +70,21 @@
           <?php endforeach; ?>
       </tbody>
   </table>
+  <br>
+  <br>
+  <br>
 
-  <h3><?= __('Total Hours Worked') ?></h3>
+  <h3><?= __('Total Time Worked') ?></h3>
   <table cellpadding="0" cellspacing="0">
       <thead>
           <tr>
-              <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
-              <th scope="col"><?= $this->Paginator->sort('start_time') ?></th>
-              <th scope="col"><?= $this->Paginator->sort('end_time') ?></th>
-              <th scope="col"><?= $this->Paginator->sort('duration') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('Total') ?></th>
           </tr>
       </thead>
       <tbody>
-          <?php foreach ($userTimesheets as $userTimesheet): ?>
           <tr>
-              <td><?= h($userTimesheet->start_date) ?></td>
-              <td><?= h($userTimesheet->start_time) ?></td>
-              <td><?= h($userTimesheet->end_time) ?></td>
-              <td><?= h($userTimesheet->new_duration)?></td>
+              <td><?= h($total) ?></td>
           </tr>
-          <?php endforeach; ?>
       </tbody>
   </table>
 
@@ -100,7 +95,7 @@
 
   <fieldset>
 
-      <legend><?= __('Add User Holiday') ?></legend>
+      <legend><?= __('Find Hours Worked') ?></legend>
       <?php
           echo $this->Form->control('start_date', ['label' => 'Start Date', 'class' => 'datepicker', 'type' => 'text']);
           echo $this->Form->control('end_date', ['label' => 'End Date', 'class' => 'datepicker', 'type' => 'text']);

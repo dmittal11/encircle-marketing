@@ -16,6 +16,13 @@ use Cake\I18n\Date;
 class UsersController extends AppController
 {
 
+    //$GLOBALS['total'] = 0;
+
+  // public function __construct(){
+  //   $this->total = 0;
+  // }
+
+
   public function initialize()
   {
       parent::initialize();
@@ -30,7 +37,7 @@ class UsersController extends AppController
 
            $this->Auth->setUser($user);
 
-           return $this->redirect(['controller' => 'userSickdays', 'action' => 'index']);
+           return $this->redirect(['controller' => 'Users', 'action' => 'index']);
        } else {
            $this->Flash->error(__('Username or password is incorrect'));
        }
@@ -81,33 +88,39 @@ class UsersController extends AppController
       $user = $this->Users->get($id, [
           'contain' => []
       ]);
-
+      //dd($user);
       if ($this->request->is('post')) {
-          $user = $this->request->getData();
+          $input = $this->request->getData();
+           $start_date = new date($input["start_date"]);
+          //
+           $end_date = new date($input["end_date"]);
+          //
+          // dd([$start_date, $end_date]);
 
-          $start_date = new date($user["start_date"]);
-          $end_date = new date($user["end_date"]);
+        /*  $conditions = array(
+   'user_id' => $this->Auth->user('id'),
+   'and' => array(
+   'UserTimesheets.start_date BETWEEN ? and ?' => array('2019-02-22', '2019-02-25')));
 
-          //dd([$start_date, $end_date]);
+$userTimesheet = $this->UserTimesheets->find('all',
+         array(
+               'conditions'=>$conditions));*/
 
+           $conditions = [
 
-          $userTimesheet = $this->UserTimesheets->find('all',
-          ['conditions' => [
-            'and' => [
-            ['UserTimesheets.start_date BETWEEN ? and ?' => [
-              $start_date, $end_date],
-              'user_id' => $this->Auth->user('id')
-            ]
-          ]
-        ]
-      ]
-      );
+        'conditions' => [
+        'and' => [
+                        ['start_date >= ' => $start_date ,
+                              'start_date <= ' => $end_date
+                            ],
+             'user_id' => $this->Auth->user('id')
 
-    //  dd($userTimesheet);
+           ]]];
 
+            $userTimesheet = $this->UserTimesheets->find('all', $conditions);
+            $userTimesheet = $this->convertToCollectionsAndFindTotalTime($userTimesheet);
+            $total = $this->convertTotalToString($userTimesheet[1]);
 
-
-            $userTimesheet = $this->convertToCollections($userTimesheet);
 
         } else {
 
@@ -120,19 +133,16 @@ class UsersController extends AppController
 
         );
 
-            //dd($userTimesheet);
+            $userTimesheet = $this->convertToCollectionsAndFindTotalTime($userTimesheet);
+            $total = $this->convertTotalToString($userTimesheet[1]);
 
-            $userTimesheet = $this->convertToCollections($userTimesheet);
 
 
         }
 
-
-        //$users = $this->paginate($this->Users);
-        //$this->set(compact('users'));
-
         $this->set('user', $user);
-        $this->set('userTimesheets', $userTimesheet);
+        $this->set('userTimesheets', $userTimesheet[0]);
+        $this->set('total', $total);
     }
 
     /**
@@ -216,30 +226,56 @@ class UsersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function search()
-    {
-      $this->request->allowMethod('ajax');
-      $data = $this->request->query('formData');
-      dd($data);
+    // public function search()
+    // {
+    //   $this->request->allowMethod('ajax');
+    //   $data = $this->request->query('formData');
+    //   //dd($data);
+    //
+    // }
 
-    }
+    public function convertToCollectionsAndFindTotalTime($data){
 
-    public function convertToCollections($data){
+      $total = 0;
 
       $collection = new Collection($data);
+      //dd($collection);
+
       $data = $collection->each(function($row){
 
           $row->new_duration = $this->convertTimeToString($row);
+          //$total = $total + $row->duration;
+
+
+
           return $row;
         });
+
+        $total = $collection->sumOf('duration');
+
+
+        $data = [$data, $total];
+
+        //dd($this->total);
 
         return $data;
 
     }
 
+    // public function calculateTotal($total){
+    //
+    //   $new_total = $total + $new_total;
+    //
+    //   return $new_total
+    // }
+
     public function convertTimeToString($row){
 
       return intdiv($row->duration, 60).' Hours '. ($row->duration % 60).' Minutes';
+    }
+
+    public function convertTotalToString($total){
+      return intdiv($total, 60). ' Hours '. ($total % 60).' Minutes';
     }
 
 }
