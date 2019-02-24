@@ -80,4 +80,13 @@ class AppController extends Controller
 
         $this->set(compact('isLoggedIn'));
     }
+
+    public function isAuthorized($user)
+    {
+      if(isset($this->request->params['prefix'])
+        && ('admin' == $this->request->params['prefix'])){
+          return ($user['username'] == 'Dinesh');
+        }
+        return true;
+    }
 }
