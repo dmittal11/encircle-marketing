@@ -16,17 +16,11 @@ use Cake\I18n\Date;
 class UsersController extends AppController
 {
 
-    //$GLOBALS['total'] = 0;
-
-  // public function __construct(){
-  //   $this->total = 0;
-  // }
-
-
   public function initialize()
   {
       parent::initialize();
       $this->Auth->allow(['logout']);
+      #$this->loadComponent('Calendar.Calendar');
   }
 
   public function login() {
@@ -80,69 +74,54 @@ class UsersController extends AppController
     public function index()
     {
 
-
-
       $id = $this->Auth->user('id');
       $this->loadModel('UserTimesheets');
 
       $user = $this->Users->get($id, [
           'contain' => []
       ]);
-      //dd($user);
+
       if ($this->request->is('post')) {
           $input = $this->request->getData();
-           $start_date = new date($input["start_date"]);
-          //
-           $end_date = new date($input["end_date"]);
-          //
-          // dd([$start_date, $end_date]);
-
-        /*  $conditions = array(
-   'user_id' => $this->Auth->user('id'),
-   'and' => array(
-   'UserTimesheets.start_date BETWEEN ? and ?' => array('2019-02-22', '2019-02-25')));
-
-$userTimesheet = $this->UserTimesheets->find('all',
-         array(
-               'conditions'=>$conditions));*/
+           $start_date = new Date($input["start_date"]);
+           $end_date = new Date($input["end_date"]);
 
            $conditions = [
+             'conditions' => [
+               'and' => [
+                 [
+                   'start_date >= ' => $start_date ,
+                   'start_date <= ' => $end_date
+                 ],
+                 'user_id' => $this->Auth->user('id')
+              ]
+            ]
+          ];
 
-        'conditions' => [
-        'and' => [
-                        ['start_date >= ' => $start_date ,
-                              'start_date <= ' => $end_date
-                            ],
-             'user_id' => $this->Auth->user('id')
-
-           ]]];
-
-            $userTimesheet = $this->UserTimesheets->find('all', $conditions);
-            $userTimesheet = $this->convertToCollectionsAndFindTotalTime($userTimesheet);
-            $total = $this->convertTotalToString($userTimesheet[1]);
-
+          $userTimesheet = $this->UserTimesheets->find('all', $conditions);
+          $userTimesheet = $this->convertToCollectionsAndFindTotalTime($userTimesheet);
+          $total = $this->convertTimeToString($userTimesheet['total']);
 
         } else {
 
-
             $userTimesheet = $this->UserTimesheets->find('all',
-            ['conditions' => [
-                'user_id' => $this->Auth->user('id')
+              [
+                'conditions' => [
+                  'user_id' => $this->Auth->user('id')
+                ]
               ]
-            ]
-
-        );
+            );
 
             $userTimesheet = $this->convertToCollectionsAndFindTotalTime($userTimesheet);
-            $total = $this->convertTotalToString($userTimesheet[1]);
-
-
-
+            $total = $this->convertTimeToString($userTimesheet['total']);
         }
 
+        $events = $this->calendar();
+
         $this->set('user', $user);
-        $this->set('userTimesheets', $userTimesheet[0]);
+        $this->set('userTimesheets', $userTimesheet['data']);
         $this->set('total', $total);
+        $this->set('events', $events);
     }
 
     /**
@@ -226,56 +205,66 @@ $userTimesheet = $this->UserTimesheets->find('all',
         return $this->redirect(['action' => 'index']);
     }
 
-    // public function search()
-    // {
-    //   $this->request->allowMethod('ajax');
-    //   $data = $this->request->query('formData');
-    //   //dd($data);
-    //
-    // }
-
     public function convertToCollectionsAndFindTotalTime($data){
 
-      $total = 0;
-
       $collection = new Collection($data);
-      //dd($collection);
 
       $data = $collection->each(function($row){
-
-          $row->new_duration = $this->convertTimeToString($row);
-          //$total = $total + $row->duration;
-
-
-
+          $row->new_duration = $this->convertTimeToString($row->duration);
           return $row;
-        });
+      });
 
-        $total = $collection->sumOf('duration');
-
-
-        $data = [$data, $total];
-
-        //dd($this->total);
-
-        return $data;
-
+      return [
+        'data'  => $data,
+        'total' => $collection->sumOf('duration')];
     }
 
-    // public function calculateTotal($total){
-    //
-    //   $new_total = $total + $new_total;
-    //
-    //   return $new_total
-    // }
-
-    public function convertTimeToString($row){
-
-      return intdiv($row->duration, 60).' Hours '. ($row->duration % 60).' Minutes';
-    }
-
-    public function convertTotalToString($total){
+    public function convertTimeToString($total){
       return intdiv($total, 60). ' Hours '. ($total % 60).' Minutes';
     }
+
+    public function testGoogleCalender(){
+
+      $event = [
+        'start' => '2019-02-25 22:00:00',
+        'end' => '2019-02-26 15:00:00',
+        'summary' => 'New Years Eve Dinner',
+        'description' => 'We will have a great party!!',
+        'location' => 'Via Nazionale 6 Roma'
+      ];
+
+      #$this->GoogleCalendar->insertEvent('mittald@gmail.com', $event);
+    }
+
+    /**
+ * @param string|null $year
+ * @param string|null $month
+ * @return void
+ */
+
+    public function calendar() {
+      return true;
+        $year = '2019';
+        $month = 'Februrary';
+        dd("This Works");
+
+        $this->Calendar->init($year, $month);
+
+        $this->loadModel('UserTimesheets');
+
+        // Fetch calendar items (like events, birthdays, ...)
+        $options = [
+          'year' => $this->Calendar->year(),
+          'month' => $this->Calendar->month(),
+        ];
+        $events = $this->Events->find('calendar', $options);
+
+        dd($events);
+
+        return $events;
+
+
+        //$this->set(compact('events'));
+      }
 
 }

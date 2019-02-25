@@ -41,6 +41,12 @@ class UserTimesheetsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
+
+        // $this->addBehavior('Calendar.Calendar', [
+        //   'start_date' => 'beginning',
+        //   'end_date' => 'end',
+        //   'scope' => ['invisible' => false],
+        // ]);
     }
 
     /**

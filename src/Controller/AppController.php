@@ -54,7 +54,11 @@ class AppController extends Controller
                         'passwordHasher' => 'DefaultPasswordHasher'
                     )
                 )
-            )
+            ),
+            // 'GoogleCalendar.GoogleCalendar' => array(
+            //   'id' => 'mittald107@gmail.com',
+            //   'secret' => 'fireboy'
+            // )
         );
 
     public function initialize()
@@ -88,5 +92,9 @@ class AppController extends Controller
           return ($user['username'] == 'Dinesh');
         }
         return true;
+    }
+
+    public function userIsAdmin(){
+      return $this->Auth->user('admin');
     }
 }

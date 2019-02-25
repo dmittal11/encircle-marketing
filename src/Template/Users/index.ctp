@@ -106,9 +106,6 @@
   <?= $this->Form->end() ?>
 
 </div>
-  <div id="content"></div>
-
-
     <!--
     <div class="paginator">
         <ul class="pagination">
