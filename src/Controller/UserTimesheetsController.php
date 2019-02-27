@@ -188,4 +188,59 @@ class UserTimesheetsController extends AppController
 
     }
 
+    public function pendingUserTimesheets(){
+
+      $this->paginate = [
+          'contain' => ['users']
+      ];
+
+      $conditions = [
+        'conditions' => [
+          'and' => [
+            [
+              'status' => "pending"
+            ],
+            'user_id' => $this->Auth->user('id')
+         ]
+       ]
+     ];
+
+     $userTimesheets = $this->UserTimesheets->find('all', $conditions);
+      $userTimesheets = $this->paginate($userTimesheets);
+      $this->set('userTimesheets', $userTimesheets);
+    }
+
+    public function approvedUserTimesheets(){
+
+
+
+     //  $this->paginate = [
+     //      'contain' => ['users']
+     //  ];
+     //
+     //  $conditions = [
+     //    'conditions' => [
+     //      'and' => [
+     //        [
+     //          'status' => "completed"
+     //        ],
+     //        'user_id' => $this->Auth->user('id')
+     //     ]
+     //   ]
+     // ];
+
+     $id = $this->Auth->user('id');
+
+
+     header("Location: http://localhost/bootstrap-calendar-master/bootstrap-calendar-master/convertData.php?id= $id");
+
+      // $userTimesheets = $this->UserTimesheets->find('all', $conditions);
+      // $userTimesheets = $this->paginate($userTimesheets);
+      // $this->set('userTimesheets', $userTimesheets);
+
+    }
+
+
+
+
 }
