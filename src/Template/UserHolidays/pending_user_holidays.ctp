@@ -7,9 +7,9 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
+        <li><?= $this->Html->link(__('List User Holidays'), ['action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New User Holiday'), ['action' => 'add']) ?></li>
         <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/approved-user-holidays"; ?>">Approved</a></li>
-         <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/pending-user-holidays"; ?>">Pending</a></li>
     </ul>
 </nav>
 <div class="userHolidays index large-9 medium-8 columns content">
@@ -19,7 +19,7 @@
   <br>
   <br>
 
-    <h3><?= __('User Holidays') ?></h3>
+    <h3><?= __('Pending Holidays') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>

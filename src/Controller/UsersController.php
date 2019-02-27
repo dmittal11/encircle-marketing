@@ -116,12 +116,11 @@ class UsersController extends AppController
             $total = $this->convertTimeToString($userTimesheet['total']);
         }
 
-        $events = $this->calendar();
 
         $this->set('user', $user);
         $this->set('userTimesheets', $userTimesheet['data']);
         $this->set('total', $total);
-        $this->set('events', $events);
+
     }
 
     /**
@@ -222,49 +221,5 @@ class UsersController extends AppController
     public function convertTimeToString($total){
       return intdiv($total, 60). ' Hours '. ($total % 60).' Minutes';
     }
-
-    public function testGoogleCalender(){
-
-      $event = [
-        'start' => '2019-02-25 22:00:00',
-        'end' => '2019-02-26 15:00:00',
-        'summary' => 'New Years Eve Dinner',
-        'description' => 'We will have a great party!!',
-        'location' => 'Via Nazionale 6 Roma'
-      ];
-
-      #$this->GoogleCalendar->insertEvent('mittald@gmail.com', $event);
-    }
-
-    /**
- * @param string|null $year
- * @param string|null $month
- * @return void
- */
-
-    public function calendar() {
-      return true;
-        $year = '2019';
-        $month = 'Februrary';
-        dd("This Works");
-
-        $this->Calendar->init($year, $month);
-
-        $this->loadModel('UserTimesheets');
-
-        // Fetch calendar items (like events, birthdays, ...)
-        $options = [
-          'year' => $this->Calendar->year(),
-          'month' => $this->Calendar->month(),
-        ];
-        $events = $this->Events->find('calendar', $options);
-
-        dd($events);
-
-        return $events;
-
-
-        //$this->set(compact('events'));
-      }
 
 }

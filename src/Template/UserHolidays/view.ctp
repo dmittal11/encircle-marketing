@@ -11,6 +11,8 @@
         <li><?= $this->Form->postLink(__('Delete User Holiday'), ['action' => 'delete', $userHoliday->User_id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHoliday->User_id)]) ?> </li>
         <li><?= $this->Html->link(__('List User Holidays'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New User Holiday'), ['action' => 'add']) ?> </li>
+        <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/approved-user-holidays"; ?>">Approved</a></li>
+        <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/pending-user-holidays"; ?>">Pending</a></li>
     </ul>
 </nav>
 

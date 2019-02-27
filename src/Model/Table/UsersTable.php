@@ -5,13 +5,12 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Auth\DefaultPasswordHasher;
 
 /**
  * Users Model
  *
  * @property \App\Model\Table\UserHolidaysTable|\Cake\ORM\Association\HasMany $UserHolidays
- * @property \App\Model\Table\UserSickdaysTable|\Cake\ORM\Association\HasMany $UserSickdays
+ * @property \App\Model\Table\UsersickdaysTable|\Cake\ORM\Association\HasMany $UserSickdays
  * @property \App\Model\Table\UserTimesheetsTable|\Cake\ORM\Association\HasMany $UserTimesheets
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
@@ -74,6 +73,16 @@ class UsersTable extends Table
             ->maxLength('password', 10000)
             ->requirePresence('password', 'create')
             ->allowEmptyString('password', false);
+
+        $validator
+            ->integer('available_days')
+            ->requirePresence('available_days', 'create')
+            ->allowEmptyString('available_days', false);
+
+        $validator
+            ->boolean('admin')
+            ->requirePresence('admin', 'create')
+            ->allowEmptyString('admin', false);
 
         return $validator;
     }

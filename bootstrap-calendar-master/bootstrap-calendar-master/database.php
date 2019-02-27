@@ -79,10 +79,16 @@ public function __construct(){
     $path = "C:/xampp/htdocs/bootstrap-calendar-master/bootstrap-calendar-master/events.json.php";
 
     if(unlink($path)){
-      file_put_contents($file, $data);
+      if(file_put_contents($file, $data)){
+        return true;
+      }
     }
 
+    return false;
+
   }
+
+  
   public function getData($query)
   {
     $result = $this->connection->prepare($query);

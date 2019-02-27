@@ -88,6 +88,27 @@
       </tbody>
   </table>
 
+  <br>
+  <br>
+  <br>
+<?php if($user->admin): ?>
+
+  <h3><?= __('Calendar') ?></h3>
+  <table cellpadding="0" cellspacing="0">
+      <thead>
+          <tr>
+              <th scope="col"><?= $this->Paginator->sort('Total') ?></th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td><a href="http://localhost/bootstrap-calendar-master/bootstrap-calendar-master/convertData.php?id=<?= $this->Number->format($user->id) ?>">View Calendar</a></td>
+          </tr>
+      </tbody>
+  </table>
+
+<?php endif ?>
+
 <br>
 <br>
 <br>
@@ -106,6 +127,8 @@
   <?= $this->Form->end() ?>
 
 </div>
+
+
     <!--
     <div class="paginator">
         <ul class="pagination">

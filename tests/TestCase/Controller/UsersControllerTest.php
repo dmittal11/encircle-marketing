@@ -25,6 +25,56 @@ class UsersControllerTest extends TestCase
     ];
 
     /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test login method
+     *
+     * @return void
+     */
+    public function testLogin()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test logout method
+     *
+     * @return void
+     */
+    public function testLogout()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test register method
+     *
+     * @return void
+     */
+    public function testRegister()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test beforeFilter method
+     *
+     * @return void
+     */
+    public function testBeforeFilter()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
      * Test index method
      *
      * @return void
@@ -70,6 +120,26 @@ class UsersControllerTest extends TestCase
      * @return void
      */
     public function testDelete()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test convertToCollectionsAndFindTotalTime method
+     *
+     * @return void
+     */
+    public function testConvertToCollectionsAndFindTotalTime()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test convertTimeToString method
+     *
+     * @return void
+     */
+    public function testConvertTimeToString()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

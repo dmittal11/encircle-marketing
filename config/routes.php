@@ -53,6 +53,9 @@ Router::scope('/', function (RouteBuilder $routes) {
         'httpOnly' => true
     ]));
 
+    $routes->connect('pending-user-holidays', ['controller' => 'UserHolidays', 'action' => 'pendingUserHolidays']);
+    $routes->connect('approved-user-holidays', ['controller' => 'UserHolidays', 'action' => 'ApprovedUserHolidays']);
+
     /**
      * Apply a middleware to the current route scope.
      * Requires middleware to be registered via `Application::routes()` with `registerMiddleware()`

@@ -25,9 +25,14 @@ class UserHolidaysController extends AppController
         $this->paginate = [
             'contain' => ['users']
         ];
+
+        $this->loadModel('Users');
+        $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
         $userHolidays = $this->paginate($this->UserHolidays);
 
-        $this->set(compact('userHolidays'));
+        //$this->set(compact('userHolidays'));
+        $this->set('userHolidays', $userHolidays);
+        $this->set('user', $user);
     }
 
     /**
@@ -223,6 +228,75 @@ class UserHolidaysController extends AppController
 
     public function addDaysToAvailableDays($days_taken, $available_days){
       return $available_days + $days_taken;
+    }
+
+
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id User Holiday id.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+
+    public function pendingUserHolidays(){
+
+      $this->paginate = [
+          'contain' => ['users']
+      ];
+
+      $this->loadModel('Users');
+      $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
+
+      $conditions = [
+        'conditions' => [
+          'and' => [
+            [
+              'status' => "pending"
+            ],
+            'user_id' => $this->Auth->user('id')
+         ]
+       ]
+     ];
+
+     $userHolidays = $this->UserHolidays->find('all', $conditions);
+
+     //dd($userHolidays);
+
+      $userHolidays = $this->paginate($userHolidays);
+
+      //$this->set(compact('userHolidays'));
+      $this->set('userHolidays', $userHolidays);
+      $this->set('user', $user);
+
+    }
+
+    public function approvedUserHolidays(){
+
+      $this->paginate = [
+          'contain' => ['users']
+      ];
+
+      $this->loadModel('Users');
+      $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
+
+      $conditions = [
+        'conditions' => [
+          'and' => [
+            [
+              'status' => "completed"
+            ],
+            'user_id' => $this->Auth->user('id')
+         ]
+       ]
+     ];
+
+     $userHolidays = $this->UserHolidays->find('all', $conditions);
+      $userHolidays = $this->paginate($userHolidays);
+      $this->set('userHolidays', $userHolidays);
+      $this->set('user', $user);
+
     }
 
 }
