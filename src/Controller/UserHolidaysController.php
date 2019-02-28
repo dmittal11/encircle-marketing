@@ -4,6 +4,8 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\I18n\Date;
 use Cake\ORM\TableRegistry;
+use Cake\Mailer\Email;
+
 
 /**
  * UserHolidays Controller
@@ -14,6 +16,8 @@ use Cake\ORM\TableRegistry;
  */
 class UserHolidaysController extends AppController
 {
+
+  public $components = array("Email");
 
     /**
      * Index method
@@ -298,5 +302,43 @@ class UserHolidaysController extends AppController
       $this->set('user', $user);
 
     }
+
+    public function changeStatusCompleted($id = null){
+
+        $userHoliday = $this->UserHolidays->get($id, [
+            'contain' => []
+        ]);
+
+            $userHoliday->status = "Approved";
+            if ($this->UserHolidays->save($userHoliday)) {
+                $this->Flash->success(__('The user timesheet has been saved.'));
+
+                  $this->sendEmail();
+
+
+
+             }
+
+                else {
+                    $this->Flash->error(__('The user timesheet can not be saved.'));
+                }
+
+                return $this->redirect(['action' => 'index']);
+          }
+
+        public function sendEmail()
+        {
+            $to = 'mittald@hotmail.co.uk';
+            $subject = 'Hello Dinesh from cakephp';
+            $message = 'Hello Dinesh From Cakephp';
+
+            try{
+              $mail = $this->Email->send_mail($to, $subject, $message);
+              print_r($mail);
+            } catch(Exception $e){
+              echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+            }
+            exit;
+        }
 
 }

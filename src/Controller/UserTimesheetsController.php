@@ -54,9 +54,6 @@ class UserTimesheetsController extends AppController
     public function add()
     {
 
-
-
-
         $userTimesheet = $this->UserTimesheets->newEntity();
         if ($this->request->is('post')) {
             $userTimesheet = $this->UserTimesheets->patchEntity($userTimesheet, $this->request->getData());
@@ -74,10 +71,6 @@ class UserTimesheetsController extends AppController
             $userTimesheet->duration = $time_diff;
 
             $userTimesheet->user_id = $this->Auth->user('id');
-
-           //dd($userTimesheet);
-
-          //dd("Here");
 
             if ($this->UserTimesheets->save($userTimesheet)) {
                 $this->Flash->success(__('The user timesheet has been saved.'));
@@ -190,6 +183,12 @@ class UserTimesheetsController extends AppController
 
     public function pendingUserTimesheets(){
 
+        if ($this->request->is(['patch', 'post', 'put'])) {
+
+            dd($this->request->getData());
+
+        }
+
       $this->paginate = [
           'contain' => ['users']
       ];
@@ -205,40 +204,37 @@ class UserTimesheetsController extends AppController
        ]
      ];
 
-     $userTimesheets = $this->UserTimesheets->find('all', $conditions);
+      $userTimesheets = $this->UserTimesheets->find('all', $conditions);
       $userTimesheets = $this->paginate($userTimesheets);
       $this->set('userTimesheets', $userTimesheets);
+      $this->set('userTimeSheets', true);
     }
 
     public function approvedUserTimesheets(){
-
-
-
-     //  $this->paginate = [
-     //      'contain' => ['users']
-     //  ];
-     //
-     //  $conditions = [
-     //    'conditions' => [
-     //      'and' => [
-     //        [
-     //          'status' => "completed"
-     //        ],
-     //        'user_id' => $this->Auth->user('id')
-     //     ]
-     //   ]
-     // ];
-
-     $id = $this->Auth->user('id');
-
-
-     header("Location: http://localhost/bootstrap-calendar-master/bootstrap-calendar-master/convertData.php?id= $id");
-
-      // $userTimesheets = $this->UserTimesheets->find('all', $conditions);
-      // $userTimesheets = $this->paginate($userTimesheets);
-      // $this->set('userTimesheets', $userTimesheets);
-
+     return $this->redirect("http://localhost/bootstrap-calendar-master/bootstrap-calendar-master/convertData.php?id=" . $this->Auth->user('id'));
     }
+
+    public function changeStatusCompleted($id = null){
+
+        $userTimesheet = $this->UserTimesheets->get($id, [
+            'contain' => []
+        ]);
+
+            $userTimesheet->status = "completed";
+            if ($this->UserTimesheets->save($userTimesheet)) {
+                $this->Flash->success(__('The user timesheet has been saved.'));
+
+      }
+
+      else {
+              $this->Flash->error(__('The user timesheet can not be saved.'));
+      }
+
+      return $this->redirect(['action' => 'index']);
+
+
+
+  }
 
 
 

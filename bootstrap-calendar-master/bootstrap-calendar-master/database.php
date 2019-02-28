@@ -45,7 +45,7 @@ public function __construct(){
   //  $id = $_GET['id'];
     //$id = 1;
 
-    $query= "SELECT * FROM user_timesheets WHERE `user_id` = $id";
+    $query= "SELECT * FROM user_timesheets WHERE `user_id` = $id AND `status` = 'completed'";
 
     $rows = $this->getData($query);
 
@@ -88,7 +88,7 @@ public function __construct(){
 
   }
 
-  
+
   public function getData($query)
   {
     $result = $this->connection->prepare($query);

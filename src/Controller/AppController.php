@@ -76,13 +76,14 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security')
 
-        $isLoggedIn = false;
+        //$isLoggedIn = false;
 
         if($this->Auth->user('id')){
            $isLoggedIn = true;
         }
 
         $this->set(compact('isLoggedIn'));
+        $this->set('admin', $this->userIsAdmin());
     }
 
     public function isAuthorized($user)
