@@ -257,7 +257,7 @@ class UserHolidaysController extends AppController
         'conditions' => [
           'and' => [
             [
-              'status' => "pending"
+              'status' => "Pending"
             ],
             'user_id' => $this->Auth->user('id')
          ]
@@ -289,14 +289,14 @@ class UserHolidaysController extends AppController
         'conditions' => [
           'and' => [
             [
-              'status' => "completed"
+              'status' => "Approved"
             ],
             'user_id' => $this->Auth->user('id')
          ]
        ]
      ];
 
-     $userHolidays = $this->UserHolidays->find('all', $conditions);
+      $userHolidays = $this->UserHolidays->find('all', $conditions);
       $userHolidays = $this->paginate($userHolidays);
       $this->set('userHolidays', $userHolidays);
       $this->set('user', $user);
@@ -313,7 +313,7 @@ class UserHolidaysController extends AppController
             if ($this->UserHolidays->save($userHoliday)) {
                 $this->Flash->success(__('The user timesheet has been saved.'));
 
-                  $this->sendEmail();
+                  $this->sendEmail($id);
 
 
 
@@ -326,19 +326,48 @@ class UserHolidaysController extends AppController
                 return $this->redirect(['action' => 'index']);
           }
 
-        public function sendEmail()
+        public function sendEmail($id)
         {
-            $to = 'mittald@hotmail.co.uk';
+
+          //SELECT user_id, email from user_holidays inner join users on user_holidays.user_id = users.id where user_holidays.id = 8
+
+           $user_id = $this->UserHolidays->find()
+              ->select([
+                'userEmail' => 'u.email',
+                'name'      => 'u.username',
+                'startDate' => 'UserHolidays.start_date',
+                'endDate' => 'UserHolidays.end_date',
+                // IF we don't use column aliases, result will be grouped by tables joined
+              ])
+              ->join([
+                'table' => 'users',
+                'alias' => 'u',
+                'type' => 'inner',
+                'conditions' => 'UserHolidays.user_id = u.id'
+              ])
+              ->where(
+                ['userHolidays.id' => $id],
+                ['userHolidays.id' => 'integer']
+              )
+              ->first();
+
             $subject = 'Hello Dinesh from cakephp';
             $message = 'Hello Dinesh From Cakephp';
 
+            dd($user_id);
+
+            $email = new Email('default');
+
             try{
-              $mail = $this->Email->send_mail($to, $subject, $message);
-              print_r($mail);
+              $email->to($user_id->userEmail)
+                ->subject($subject)
+                ->send($message);
+
+              //$mail = $this->Email->send_mail($to, $subject, $message);
+              //print_r($mail);
             } catch(Exception $e){
-              echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+              echo 'Message could not be sent. Email Error: ', $e->getMessage();
             }
-            exit;
         }
 
 }

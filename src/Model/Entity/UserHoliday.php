@@ -11,6 +11,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate $start_date
  * @property \Cake\I18n\FrozenDate $end_date
  * @property int $days_available
+ * @property string $status
  *
  * @property \App\Model\Entity\Login $login
  */
@@ -31,6 +32,7 @@ class UserHoliday extends Entity
         'start_date' => true,
         'end_date' => true,
         'days_available' => true,
-        'login' => true
+        'login' => true,
+        'status' => true
     ];
 }

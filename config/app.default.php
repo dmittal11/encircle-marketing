@@ -214,13 +214,15 @@ return [
 
     'EmailTransport' => [
         'default' => [
-            'className' => 'Smtp',
-            // The following keys are used in SMTP transports
-            'host' => 'ssl://smtp.gmail.com',
-            'port' => 465,
-            'timeout' => 30,
-            'username' => 'mittald107@gmail.com',
-            'password' => 'fireboy',
+          'className' => 'Smtp',
+          /*
+           * The following keys are used in SMTP transports:
+           */
+          'host' => 'smtp.office365.com',
+          'port' => 25,
+          'username' => 'dinesh@encircle-marketing.com',
+          'password' => 'Fireboy1993',
+          'tls' => true
         ],
     ],
 

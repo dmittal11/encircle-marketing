@@ -197,7 +197,7 @@ class UserTimesheetsController extends AppController
         'conditions' => [
           'and' => [
             [
-              'status' => "pending"
+              'status' => "Pending"
             ],
             'user_id' => $this->Auth->user('id')
          ]
@@ -220,7 +220,7 @@ class UserTimesheetsController extends AppController
             'contain' => []
         ]);
 
-            $userTimesheet->status = "completed";
+            $userTimesheet->status = "Approved";
             if ($this->UserTimesheets->save($userTimesheet)) {
                 $this->Flash->success(__('The user timesheet has been saved.'));
 

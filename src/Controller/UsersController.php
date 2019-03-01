@@ -49,6 +49,7 @@ class UsersController extends AppController
 
     $user = $this->Users->newEntity($this->request->getData());
 
+
     if($this->request->is('post')){
       if($this->Users->save($user)){
         $this->Flash->success('You are registered and can login');

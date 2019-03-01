@@ -10,6 +10,7 @@ use Cake\Auth\DefaultPasswordHasher;
  * @property int $id
  * @property string $username
  * @property string $password
+ * @property string $email
  * @property int $available_days
  * @property bool $admin
  *
@@ -30,6 +31,7 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
+        'email' => true,
         'username' => true,
         'password' => true,
         'available_days' => true,
