@@ -315,8 +315,6 @@ class UserHolidaysController extends AppController
 
                   $this->sendEmail($id);
 
-
-
              }
 
                 else {
@@ -337,6 +335,7 @@ class UserHolidaysController extends AppController
                 'name'      => 'u.username',
                 'startDate' => 'UserHolidays.start_date',
                 'endDate' => 'UserHolidays.end_date',
+                'status' => 'UserHolidays.status'
                 // IF we don't use column aliases, result will be grouped by tables joined
               ])
               ->join([
@@ -351,10 +350,10 @@ class UserHolidaysController extends AppController
               )
               ->first();
 
+            
+
             $subject = 'Hello Dinesh from cakephp';
             $message = 'Hello Dinesh From Cakephp';
-
-            dd($user_id);
 
             $email = new Email('default');
 

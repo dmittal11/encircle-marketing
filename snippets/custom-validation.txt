@@ -157,3 +157,44 @@ public function initialize()
 
 
 $userTimesheet = $this->UserTimesheets->find('all',  array($conditions ,$fields));
+
+Important Joins
+
+$user_id = $this->UserHolidays->find()
+   ->select([
+     'userEmail' => 'u.email',
+     'name'      => 'u.username',
+     'startDate' => 'UserHolidays.start_date',
+     'endDate' => 'UserHolidays.end_date',
+     // IF we don't use column aliases, result will be grouped by tables joined
+   ])
+   ->join([
+     'table' => 'users',
+     'alias' => 'u',
+     'type' => 'inner',
+     'conditions' => 'UserHolidays.user_id = u.id'
+   ])
+   ->where(
+     ['userHolidays.id' => $id],
+     ['userHolidays.id' => 'integer']
+   )
+   ->first();
+
+ $subject = 'Hello Dinesh from cakephp';
+ $message = 'Hello Dinesh From Cakephp';
+
+ dd($user_id);
+
+ $email = new Email('default');
+
+ try{
+   $email->to($user_id->userEmail)
+     ->subject($subject)
+     ->send($message);
+
+   //$mail = $this->Email->send_mail($to, $subject, $message);
+   //print_r($mail);
+ } catch(Exception $e){
+   echo 'Message could not be sent. Email Error: ', $e->getMessage();
+ }
+}
