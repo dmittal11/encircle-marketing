@@ -17,7 +17,7 @@ use Cake\Mailer\Email;
 class UserHolidaysController extends AppController
 {
 
-  public $components = array("Email");
+
 
     /**
      * Index method
@@ -303,6 +303,73 @@ class UserHolidaysController extends AppController
 
     }
 
+
+
+    public function displayRejectedUserHolidays(){
+
+
+            $this->paginate = [
+                'contain' => ['users']
+            ];
+
+            $this->loadModel('Users');
+            $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
+
+            $conditions = [
+              'conditions' => [
+                'and' => [
+                  [
+                    'status' => "Rejected"
+                  ],
+                  'user_id' => $this->Auth->user('id')
+               ]
+             ]
+           ];
+
+            $userHolidays = $this->UserHolidays->find('all', $conditions);
+            $userHolidays = $this->paginate($userHolidays);
+            $this->set('userHolidays', $userHolidays);
+            $this->set('user', $user);
+    }
+
+    public function RejectedUserHolidays($id = null){
+
+      $userHoliday = $this->UserHolidays->get($id, [
+          'contain' => []
+      ]);
+
+
+
+
+
+      $user_details = $this->UserHolidays->find()
+         ->select([
+           'id' => 'UserHolidays.id',
+           'userEmail' => 'u.email',
+           'name'      => 'u.username',
+           'startDate' => 'UserHolidays.start_date',
+           'endDate' => 'UserHolidays.end_date',
+           'status' => 'UserHolidays.status',
+           'notes' => 'UserHolidays.notes'
+           // IF we don't use column aliases, result will be grouped by tables joined
+         ])
+         ->join([
+           'table' => 'users',
+           'alias' => 'u',
+           'type' => 'inner',
+           'conditions' => 'UserHolidays.user_id = u.id'
+         ])
+         ->where(
+           ['userHolidays.id' => $id],
+           ['userHolidays.id' => 'integer']
+         )
+         ->first();
+
+      //$user_details = $this->paginate($user_details);
+      $this->set('user_details', $user_details);
+
+    }
+
     public function changeStatusCompleted($id = null){
 
         $userHoliday = $this->UserHolidays->get($id, [
@@ -324,6 +391,43 @@ class UserHolidaysController extends AppController
                 return $this->redirect(['action' => 'index']);
           }
 
+        public function changeStatusRejected($id = null){
+
+
+            if ($this->request->is(['patch', 'post', 'put'])) {
+
+              $userHoliday = $this->UserHolidays->get($id, [
+                  'contain' => []
+              ]);
+
+
+                  $getData =  $this->request->getData();
+
+                  $userHoliday->notes = $getData["notes"];
+
+                  $userHoliday->status = "Rejected";
+
+
+                if ($this->UserHolidays->save($userHoliday)) {
+                    $this->Flash->success(__('The user timesheet has been saved.'));
+
+                      $this->sendEmail($id);
+
+                 }
+
+                    else {
+                        $this->Flash->error(__('The user timesheet can not be saved.'));
+                    }
+
+                    return $this->redirect(['action' => 'index']);
+
+            }
+          }
+
+
+
+
+
         public function sendEmail($id)
         {
 
@@ -335,7 +439,8 @@ class UserHolidaysController extends AppController
                 'name'      => 'u.username',
                 'startDate' => 'UserHolidays.start_date',
                 'endDate' => 'UserHolidays.end_date',
-                'status' => 'UserHolidays.status'
+                'status' => 'UserHolidays.status',
+                'notes' => 'UserHolidays.notes'
                 // IF we don't use column aliases, result will be grouped by tables joined
               ])
               ->join([
@@ -350,15 +455,27 @@ class UserHolidaysController extends AppController
               )
               ->first();
 
-            
 
-            $subject = 'Hello Dinesh from cakephp';
-            $message = 'Hello Dinesh From Cakephp';
+          if($user_id->status == 'Approved'){
+
+            $subject = 'Your Holidays has been Approved';
+            $message = 'Dear '.$user_id->name.' your holidays has been approved.<br>Start Date: '.$user_id->startDate.'<br>End Date: '.$user_id->endDate.'<br>Enjoy your time of and looking forward to seeing you again.<br>Regards Admin.';
+
+          }
+          else {
+
+
+            $subject = 'We regret to inform you, your holidays can not take place';
+            $message = 'Dear '.$user_id->name.' your holidays can not take place.<br>Start Date: '.$user_id->startDate.'<br>End Date: '.$user_id->endDate.'<br>Reason:'.$user_id->notes.'<br>If you have any concerns or queries please do not hesitate to ask.<br>Regards Admin.';
+
+          }
+
 
             $email = new Email('default');
 
             try{
               $email->to($user_id->userEmail)
+                ->emailFormat('html')
                 ->subject($subject)
                 ->send($message);
 

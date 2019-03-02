@@ -238,7 +238,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'you@localhost',
+            'from' => 'dinesh@encircle-marketing.com',
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],

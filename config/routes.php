@@ -57,9 +57,15 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('approved-user-holidays', ['controller' => 'UserHolidays', 'action' => 'ApprovedUserHolidays']);
 
+    $routes->connect('rejected-user-holidays', ['controller' => 'UserHolidays', 'action' => 'RejectedUserHolidays']);
+
+    $routes->connect('display-rejected-user-holidays', ['controller' => 'UserHolidays', 'action' => 'displayRejectedUserHolidays']);
+
     $routes->connect('approved-user-timesheets', ['controller' => 'UserTimesheets', 'action' => 'approvedUserTimesheets']);
 
     $routes->connect('pending-user-timesheets', ['controller' => 'UserTimesheets', 'action' => 'pendingUserTimesheets']);
+
+    $routes->connect('rejected-user-timesheets', ['controller' => 'UserTimesheets', 'action' => 'rejectedUserTimesheets']);
 
     /**
      * Apply a middleware to the current route scope.

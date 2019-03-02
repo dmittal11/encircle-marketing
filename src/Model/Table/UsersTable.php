@@ -63,8 +63,7 @@ class UsersTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->scalar('email')
-            ->maxLength('email', 10000)
+            ->email('email')
             ->requirePresence('email', 'create')
             ->allowEmptyString('email', false);
 
@@ -80,6 +79,16 @@ class UsersTable extends Table
             ->requirePresence('password', 'create')
             ->allowEmptyString('password', false);
 
+        $validator
+            ->integer('available_days')
+            ->requirePresence('available_days', 'create')
+            ->allowEmptyString('available_days', false);
+
+        $validator
+            ->boolean('admin')
+            ->requirePresence('admin', 'create')
+            ->allowEmptyString('admin', false);
+
         return $validator;
     }
 
@@ -92,6 +101,7 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['email']));
         $rules->add($rules->isUnique(['username']));
 
         return $rules;

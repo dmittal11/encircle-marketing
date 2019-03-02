@@ -185,24 +185,47 @@ class UserTimesheetsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
 
-            dd($this->request->getData());
 
-        }
 
-      $this->paginate = [
-          'contain' => ['users']
-      ];
+            $this->paginate = [
+                'contain' => ['users']
+            ];
 
-      $conditions = [
-        'conditions' => [
-          'and' => [
-            [
-              'status' => "Pending"
-            ],
-            'user_id' => $this->Auth->user('id')
-         ]
-       ]
-     ];
+            $conditions = [
+              'conditions' => [
+                'and' => [
+                  [
+                    'status' => "Pending"
+                  ],
+                  'user_id' => $this->Auth->user('id')
+               ]
+             ]
+           ];
+         }
+
+      $userTimesheets = $this->UserTimesheets->find('all', $conditions);
+      $userTimesheets = $this->paginate($userTimesheets);
+      $this->set('userTimesheets', $userTimesheets);
+      $this->set('userTimeSheets', true);
+    }
+
+    public function rejectedUserTimesheets(){
+
+
+            $this->paginate = [
+                'contain' => ['users']
+            ];
+
+            $conditions = [
+              'conditions' => [
+                'and' => [
+                  [
+                    'status' => "Rejected"
+                  ],
+                  'user_id' => $this->Auth->user('id')
+               ]
+             ]
+           ];
 
       $userTimesheets = $this->UserTimesheets->find('all', $conditions);
       $userTimesheets = $this->paginate($userTimesheets);
@@ -214,7 +237,7 @@ class UserTimesheetsController extends AppController
      return $this->redirect("http://localhost/bootstrap-calendar-master/bootstrap-calendar-master/convertData.php?id=" . $this->Auth->user('id'));
     }
 
-    public function changeStatusCompleted($id = null){
+    public function changeStatusApproved($id = null){
 
         $userTimesheet = $this->UserTimesheets->get($id, [
             'contain' => []
@@ -235,6 +258,28 @@ class UserTimesheetsController extends AppController
 
 
   }
+
+  public function changeStatusRejected($id = null){
+
+      $userTimesheet = $this->UserTimesheets->get($id, [
+          'contain' => []
+      ]);
+
+          $userTimesheet->status = "Rejected";
+          if ($this->UserTimesheets->save($userTimesheet)) {
+              $this->Flash->success(__('The user timesheet has been saved.'));
+
+    }
+
+    else {
+            $this->Flash->error(__('The user timesheet can not be saved.'));
+    }
+
+    return $this->redirect(['action' => 'index']);
+
+
+
+}
 
 
 

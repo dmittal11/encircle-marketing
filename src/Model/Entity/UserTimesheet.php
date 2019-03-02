@@ -33,6 +33,7 @@ class UserTimesheet extends Entity
         'start_time' => true,
         'end_time' => true,
         'duration' => true,
-        'user' => true
+        'user' => true,
+        'stauts' => true
     ];
 }
