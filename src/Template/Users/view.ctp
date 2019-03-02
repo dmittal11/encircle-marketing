@@ -4,6 +4,26 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
+
+<?php if($admin == 0):  ?>
+
+  <nav class="large-3 medium-4 columns" id="actions-sidebar">
+      <ul class="side-nav">
+          <li class="heading"><?= __('Actions') ?></li>
+          <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
+          <li><?= $this->Html->link(__('List User Holidays'), ['controller' => 'UserHolidays', 'action' => 'index']) ?></li>
+          <li><?= $this->Html->link(__('New User Holiday'), ['controller' => 'UserHolidays', 'action' => 'add']) ?></li>
+          <li><?= $this->Html->link(__('List User Sickdays'), ['controller' => 'UserSickdays', 'action' => 'index']) ?></li>
+          <li><?= $this->Html->link(__('New User Sickday'), ['controller' => 'UserSickdays', 'action' => 'add']) ?></li>
+          <li><?= $this->Html->link(__('List User Timesheets'), ['controller' => 'UserTimesheets', 'action' => 'index']) ?></li>
+          <li><?= $this->Html->link(__('New User Timesheet'), ['controller' => 'UserTimesheets', 'action' => 'add']) ?></li>
+      </ul>
+  </nav>
+
+
+
+
+
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -19,6 +39,10 @@
         <li><?= $this->Html->link(__('New User Timesheet'), ['controller' => 'UserTimesheets', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
+
+
+
+
 <div class="users view large-9 medium-8 columns content">
     <h3><?= h($user->id) ?></h3>
     <table class="vertical-table">
@@ -66,7 +90,6 @@
             </tr>
             <?php endforeach; ?>
         </table>
-        <?php endif; ?>
     </div>
     <div class="related">
         <h4><?= __('Related User Sickdays') ?></h4>
@@ -121,3 +144,94 @@
         <?php endif; ?>
     </div>
 </div>
+
+<?php endif; ?>
+
+<!--  Admin Section -->
+
+<!-- Pending Holidays -->
+
+
+<?php if($admin == 1): ?>
+
+  <h3><?= __('Pending Holidays') ?></h3>
+     <table cellpadding="0" cellspacing="0">
+         <thead>
+             <tr>
+                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                 <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
+                 <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
+                 <th scope="col"><?= $this->Paginator->sort('end_date') ?></th>
+                 <th scope="col"><?= $this->Paginator->sort('days_taken') ?></th>
+                 <th scope="col"><?= $this->Paginator->sort('status') ?></th>
+                 <th scope="col" class="actions"><?= __('Actions') ?></th>
+             </tr>
+         </thead>
+         <tbody>
+             <?php foreach ($userHolidays as $userHoliday): ?>
+             <tr>
+                 <td><?= $this->Number->format($userHoliday->id) ?></td>
+                 <td><?= $this->Number->format($userHoliday->user_id) ?></td>
+                 <td><?= h($userHoliday->start_date) ?></td>
+                 <td><?= h($userHoliday->end_date) ?></td>
+                 <td><?= $this->Number->format($userHoliday->days_taken) ?></td>
+                 <td><?= h($userHoliday->status) ?></td>
+
+                 <td class="actions">
+                     <?= $this->Html->link(__('View'), ['action' => 'view', $userHoliday->id]) ?>
+                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $userHoliday->id]) ?>
+                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $userHoliday->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHoliday->id)]) ?>
+                     <?php if($admin): ?>
+                       <?= $this->Html->link(__('Approve'), ['action' => 'changeStatusCompleted', $userHoliday->id], ['confirm' => __('Are you sure you want to Approve # {0}?', $userHoliday->id)]) ?>
+                       <?= $this->Html->link(__('Reject'), ['action' => 'RejectedUserHolidays', $userHoliday->id], ['confirm' => __('Are you want to Reject # {0}?', $userHoliday->id)]) ?>
+                     <?php endif; ?>
+                 </td>
+             </tr>
+             <?php endforeach; ?>
+         </tbody>
+     </table>
+     <div class="paginator">
+         <ul class="pagination">
+             <?= $this->Paginator->first('<< ' . __('first')) ?>
+             <?= $this->Paginator->prev('< ' . __('previous')) ?>
+             <?= $this->Paginator->numbers() ?>
+             <?= $this->Paginator->next(__('next') . ' >') ?>
+             <?= $this->Paginator->last(__('last') . ' >>') ?>
+         </ul>
+         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+     </div>
+ </div>
+
+
+ <!-- Rejected Holidays -->
+
+
+
+
+
+
+<!-- Approved Holidays -->
+
+
+
+
+<!-- Pending Timesheets -->
+
+
+
+<!-- Rejected Timesheets -->
+
+
+
+
+<!-- Approved Timesheets ->
+
+
+<!-- Summary Of UserHolidays -->
+
+
+
+
+<!-- Summary Of UserTimesheets -->
+
+<?php endif; ?>
