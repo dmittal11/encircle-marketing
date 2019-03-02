@@ -82,6 +82,13 @@ class UsersController extends AppController
           'contain' => []
       ]);
 
+      if($user->admin == 1){
+
+        $user = $this->Users->find('all');
+      }
+
+
+
       if ($this->request->is('post')) {
           $input = $this->request->getData();
            $start_date = new Date($input["start_date"]);
@@ -118,7 +125,7 @@ class UsersController extends AppController
         }
 
 
-        $this->set('user', $user);
+        $this->set('users', $user);
         $this->set('userTimesheets', $userTimesheet['data']);
         $this->set('total', $total);
 

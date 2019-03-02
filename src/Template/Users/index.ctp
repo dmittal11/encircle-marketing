@@ -29,17 +29,49 @@
             </tr>
         </thead>
         <tbody>
+
+
+          <?php
+
+          if($admin == 1):
+          foreach ($users as $user):
+
+          ?>
+
+          <tr>
+            <td><?= $this->Number->format($user->id) ?></td>
+               <td><?= h($user->username) ?></td>
+               <td><?= h($user->password) ?></td>
+               <td><?= $this->Number->format($user->available_days) ?></td>
+               <td class="actions">
+                   <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
+                   <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
+                   <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+               </td>
+           </tr>
+         <?php endforeach;
+               endif;
+          ?>
+
+         <?php
+         if($admin == 0):
+
+         ?>
+
             <tr>
-                <td><?= $this->Number->format($user->id) ?></td>
-                <td><?= h($user->username) ?></td>
-                <td><?= h($user->password) ?></td>
-                <td><?= $this->Number->format($user->available_days) ?></td>
+                <td><?= $this->Number->format($users->id) ?></td>
+                <td><?= h($users->username) ?></td>
+                <td><?= h($users->password) ?></td>
+                <td><?= $this->Number->format($users->available_days) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $users->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $users->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $users->id], ['confirm' => __('Are you sure you want to delete # {0}?', $users->id)]) ?>
                 </td>
             </tr>
+
+          <?php endif ?>
+
         </tbody>
     </table>
   </div>
