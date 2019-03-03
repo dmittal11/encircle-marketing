@@ -20,10 +20,6 @@
       </ul>
   </nav>
 
-
-
-
-
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -90,6 +86,7 @@
             </tr>
             <?php endforeach; ?>
         </table>
+      <?php endif; ?>
     </div>
     <div class="related">
         <h4><?= __('Related User Sickdays') ?></h4>
@@ -149,10 +146,20 @@
 
 <!--  Admin Section -->
 
+<!-- Summary Of UserHolidays -->
+
+
+
+
+<!-- Summary Of UserTimesheets -->
+
+
+
 <!-- Pending Holidays -->
 
 
 <?php if($admin == 1): ?>
+
 
   <h3><?= __('Pending Holidays') ?></h3>
      <table cellpadding="0" cellspacing="0">
@@ -168,7 +175,7 @@
              </tr>
          </thead>
          <tbody>
-             <?php foreach ($userHolidays as $userHoliday): ?>
+             <?php foreach ($user->user_holidays as $userHoliday): ?>
              <tr>
                  <td><?= $this->Number->format($userHoliday->id) ?></td>
                  <td><?= $this->Number->format($userHoliday->user_id) ?></td>
@@ -227,11 +234,6 @@
 <!-- Approved Timesheets ->
 
 
-<!-- Summary Of UserHolidays -->
 
-
-
-
-<!-- Summary Of UserTimesheets -->
 
 <?php endif; ?>
