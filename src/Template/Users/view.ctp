@@ -7,19 +7,6 @@
 
 <?php if($admin == 0):  ?>
 
-  <nav class="large-3 medium-4 columns" id="actions-sidebar">
-      <ul class="side-nav">
-          <li class="heading"><?= __('Actions') ?></li>
-          <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
-          <li><?= $this->Html->link(__('List User Holidays'), ['controller' => 'UserHolidays', 'action' => 'index']) ?></li>
-          <li><?= $this->Html->link(__('New User Holiday'), ['controller' => 'UserHolidays', 'action' => 'add']) ?></li>
-          <li><?= $this->Html->link(__('List User Sickdays'), ['controller' => 'UserSickdays', 'action' => 'index']) ?></li>
-          <li><?= $this->Html->link(__('New User Sickday'), ['controller' => 'UserSickdays', 'action' => 'add']) ?></li>
-          <li><?= $this->Html->link(__('List User Timesheets'), ['controller' => 'UserTimesheets', 'action' => 'index']) ?></li>
-          <li><?= $this->Html->link(__('New User Timesheet'), ['controller' => 'UserTimesheets', 'action' => 'add']) ?></li>
-      </ul>
-  </nav>
-
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -144,6 +131,8 @@
 
 <?php endif; ?>
 
+<?php if($admin == 1): ?>
+
 <!--  Admin Section -->
 
 <!-- Summary Of UserHolidays -->
@@ -158,7 +147,7 @@
 <!-- Pending Holidays -->
 
 
-<?php if($admin == 1): ?>
+
 
 
   <h3><?= __('Pending Holidays') ?></h3>
@@ -207,7 +196,7 @@
          </ul>
          <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
      </div>
- </div>
+
 
 
  <!-- Rejected Holidays -->
