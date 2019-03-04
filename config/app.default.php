@@ -220,8 +220,8 @@ return [
            */
           'host' => 'smtp.office365.com',
           'port' => 25,
-          'username' => 'dinesh@encircle-marketing.com',
-          'password' => 'Fireboy1993',
+          'username' => getenv('USERNAME'),
+          'password' => getenv('PASSWORD'),
           'tls' => true
         ],
     ],
@@ -238,7 +238,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'dinesh@encircle-marketing.com',
+            'from' => getenv('FROM_EMAIL'),
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
