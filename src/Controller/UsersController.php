@@ -144,7 +144,7 @@ class UsersController extends AppController
             'contain' => ['UserHolidays', 'UserSickdays', 'UserTimesheets']
         ]);
 
-        
+
 
         $this->paginate($this->Users);
 

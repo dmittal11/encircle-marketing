@@ -22,10 +22,13 @@ class UserTimesheetsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Users']
-        ];
-        $userTimesheets = $this->paginate($this->UserTimesheets);
+        // $this->paginate = [
+        //     'contain' => ['Users']
+        // ];
+        // $userTimesheets = $this->paginate($this->UserTimesheets);
+
+        $userTimesheets = $this->UserTimesheets->find('all', ['conditions' => ['user_id' => $this->Auth->user('id')]]);
+        $userTimesheets = $this->paginate($userTimesheets);
 
         $this->set(compact('userTimesheets'));
     }

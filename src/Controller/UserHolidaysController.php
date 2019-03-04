@@ -26,16 +26,24 @@ class UserHolidaysController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['users']
-        ];
+
+      // $user_id = $this->Auth->user('id');
+      //
+      // $userHolidays = $this->UserHolidays->get($user_id, [
+      //   'contain' => []
+      // ]);
+      //
+      //   $this->paginate = [
+      //       'contain' => ['users']
+      //   ];
+
+      $userHolidays = $this->UserHolidays->find('all', ['conditions' => ['user_id' => $this->Auth->user('id')]]);
+      $userHolidays = $this->paginate($userHolidays);
 
         $this->loadModel('Users');
         $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
-        $userHolidays = $this->paginate($this->UserHolidays);
 
-        //$this->set(compact('userHolidays'));
-        $this->set('userHolidays', $userHolidays);
+        $this->set(compact('userHolidays'));
         $this->set('user', $user);
     }
 

@@ -32,7 +32,7 @@
             <?php foreach ($userTimesheets as $userTimesheet): ?>
             <tr>
                 <td><?= $this->Number->format($userTimesheet->id) ?></td>
-                <td><?= $userTimesheet->has('user') ? $this->Html->link($userTimesheet->user->id, ['controller' => 'Users', 'action' => 'view', $userTimesheet->user->id]) : '' ?></td>
+                <td><?= $this->Number->format($userTimesheet->user_id) ?></td>
                 <td><?= h($userTimesheet->start_date) ?></td>
                 <td><?= h($userTimesheet->start_time) ?></td>
                 <td><?= h($userTimesheet->end_time) ?></td>
