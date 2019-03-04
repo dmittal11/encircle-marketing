@@ -239,49 +239,92 @@ class UserTimesheetsController extends AppController
 
     public function changeStatusApproved($id = null){
 
+      if($this->userIsAdmin()){
+
         $userTimesheet = $this->UserTimesheets->get($id, [
             'contain' => []
         ]);
+          //env('PASSWORD');
+        $userTimesheet->status = "Approved";
 
-            $userTimesheet->status = "Approved";
-            if ($this->UserTimesheets->save($userTimesheet)) {
-                $this->Flash->success(__('The user timesheet has been saved.'));
+        if ($this->UserTimesheets->save($userTimesheet)) {
+          $this->Flash->success(__('The user timesheet status has been changed to approved.'));
+        } else {
+          $this->Flash->error(__('The user timesheet status can not be changed.'));
+        }
+
+
+
+        return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromTimesheets($id)]);
+      } else {
+        $this->Flash->error(__('You have insufficient privileges.'));
+
+        return $this->redirect(['controller' => 'Users', 'action' => 'index']);
 
       }
-
-      else {
-              $this->Flash->error(__('The user timesheet can not be saved.'));
-      }
-
-      return $this->redirect(['action' => 'index']);
-
-
 
   }
 
   public function changeStatusRejected($id = null){
 
-      $userTimesheet = $this->UserTimesheets->get($id, [
-          'contain' => []
-      ]);
+          if($this->userIsAdmin()){
 
-          $userTimesheet->status = "Rejected";
-          if ($this->UserTimesheets->save($userTimesheet)) {
-              $this->Flash->success(__('The user timesheet has been saved.'));
+          $userTimesheet = $this->UserTimesheets->get($id, [
+              'contain' => []
+          ]);
+
+              $userTimesheet->status = "Rejected";
+              if ($this->UserTimesheets->save($userTimesheet)) {
+                  $this->Flash->success(__('The user timesheet status has been changed to rejected.'));
+
+        }
+
+        else {
+                $this->Flash->error(__('The user timesheet status can not be changed.'));
+        }
+
+        return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromTimesheets($id)]);
+
+      } else{
+
+        $this->Flash->error(__('You have insufficient privileges.'));
+
+        return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+
 
     }
 
-    else {
-            $this->Flash->error(__('The user timesheet can not be saved.'));
-    }
-
-    return $this->redirect(['action' => 'index']);
 
 
 
 }
 
+public function changeStatusPending($id = null){
+
+      if($this->userIsAdmin()){
+
+          $userTimesheet = $this->UserTimesheets->get($id, [
+              'contain' => []
+          ]);
+
+          $userTimesheet->status = "Pending";
+          if ($this->UserTimesheets->save($userTimesheet)) {
+              $this->Flash->success(__('The user timesheet status has been changed to pending.'));
+          }else {
+              $this->Flash->error(__('The user timesheet status can not be changed.'));
+          }
+
+      return $this->redirect(['controller' => 'Users' ,'action' => 'view', $this->getUseridFromTimesheets($id)]);
+
+    } else{
+
+      $this->Flash->error(__('You have insufficient privileges.'));
+
+      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+  }
 
 
 
+
+}
 }

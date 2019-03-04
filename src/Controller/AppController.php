@@ -98,4 +98,34 @@ class AppController extends Controller
     public function userIsAdmin(){
       return $this->Auth->user('admin');
     }
+
+    public function getUseridFromTimesheets($id){
+      $this->loadModel('Users');
+      $this->loadModel('UserTimesheets');
+
+
+      $user = $this->UserTimesheets->get($id, [
+          'contain' => ['Users']
+      ]);
+
+
+      return $user->user->id;
+    }
+
+    public function getUseridFromUserHolidays($id){
+
+      $this->loadModel('Users');
+      $this->loadModel('UserHolidays');
+
+
+      $user = $this->UserHolidays->get($id, [
+          'contain' => ['Users']
+      ]);
+
+        return $user->user->id;
+    }
+
+
+
+
 }

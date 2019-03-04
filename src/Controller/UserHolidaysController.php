@@ -370,7 +370,9 @@ class UserHolidaysController extends AppController
 
     }
 
-    public function changeStatusCompleted($id = null){
+    public function changeStatusApproved($id = null){
+
+       if($this->userIsAdmin()){
 
         $userHoliday = $this->UserHolidays->get($id, [
             'contain' => []
@@ -378,9 +380,9 @@ class UserHolidaysController extends AppController
 
             $userHoliday->status = "Approved";
             if ($this->UserHolidays->save($userHoliday)) {
-                $this->Flash->success(__('The user timesheet has been saved.'));
+                $this->Flash->success(__('The user holidays status has been changed to Approved.'));
 
-                  $this->sendEmail($id);
+                  //$this->sendEmail($id);
 
              }
 
@@ -388,13 +390,21 @@ class UserHolidaysController extends AppController
                     $this->Flash->error(__('The user timesheet can not be saved.'));
                 }
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromUserHolidays($id)]);
           }
+          else{
+            $this->Flash->error(__('You have insufficient privileges.'));
+            return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+          }
+        }
+
 
         public function changeStatusRejected($id = null){
 
+          if($this->userIsAdmin()){
 
-            if ($this->request->is(['patch', 'post', 'put'])) {
+
+            if ($this->request->is(['patch', 'post', 'put', 'get'])) {
 
               $userHoliday = $this->UserHolidays->get($id, [
                   'contain' => []
@@ -403,26 +413,73 @@ class UserHolidaysController extends AppController
 
                   $getData =  $this->request->getData();
 
-                  $userHoliday->notes = $getData["notes"];
+                  if(isset($getData["notes"])){
+                    $userHoliday->notes = $getData["notes"];
+                  }
 
                   $userHoliday->status = "Rejected";
 
 
                 if ($this->UserHolidays->save($userHoliday)) {
-                    $this->Flash->success(__('The user timesheet has been saved.'));
+                    $this->Flash->success(__('The user holidays status has been changed to rejected'));
 
-                      $this->sendEmail($id);
+                      //$this->sendEmail($id);
 
                  }
 
                     else {
-                        $this->Flash->error(__('The user timesheet can not be saved.'));
+                        $this->Flash->error(__('The user holidays status can not be changed.'));
                     }
 
-                    return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromUserHolidays($id)]);
 
             }
           }
+          else{
+            $this->Flash->error(__("You have insufficient privileges."));
+            return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+          }
+        }
+
+
+        public function changeStatusPending($id = null){
+
+          if($this->userIsAdmin()){
+            if ($this->request->is(['patch', 'post', 'put', 'get'])) {
+
+              $userHoliday = $this->UserHolidays->get($id, [
+                  'contain' => []
+              ]);
+
+
+                  $getData =  $this->request->getData();
+
+                  if(isset($getData["notes"])){
+                    $userHoliday->notes = $getData["notes"];
+                  }
+
+                  $userHoliday->status = "Pending";
+
+                if ($this->UserHolidays->save($userHoliday)) {
+                    $this->Flash->success(__('The user holidays status has been changed to pending.'));
+
+                      //$this->sendEmail($id);
+
+                 }
+
+                    else {
+                        $this->Flash->error(__('The user holidays status can not be updated.'));
+                    }
+
+                    return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromUserHolidays($id)]);
+
+            }
+          }
+          else{
+            $this->Flash->error(__("You have insufficient privileges."));
+            return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+          }
+        }
 
 
 

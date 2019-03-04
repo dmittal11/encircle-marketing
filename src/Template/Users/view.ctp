@@ -4,8 +4,7 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-
-<?php if($admin == 0):  ?>
+<?php if(!$admin) :  ?>
 
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
@@ -24,9 +23,6 @@
 </nav>
 
 
-
-
-<div class="users view large-9 medium-8 columns content">
     <h3><?= h($user->id) ?></h3>
     <table class="vertical-table">
         <tr>
@@ -131,9 +127,34 @@
 
 <?php endif; ?>
 
-<?php if($admin == 1): ?>
+<?php if($admin): ?>
 
 <!--  Admin Section -->
+
+<!-- Credentials of User -->
+
+<h3><?= __('User Details') ?></h3>
+<table cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+            <th scope="col"><?= $this->Paginator->sort('Field') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('Details') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Email:</td>
+            <td><?= h($user->email) ?></td>
+        <tr>
+        <tr>
+            <td>Username:</td>
+            <td><?= h($user->username) ?></td>
+        </tr>
+        <tr>
+          <td>Password:</td>
+          <td><?= h($user->password) ?></td>
+    </tbody>
+</table>
 
 <!-- Summary Of UserHolidays -->
 
@@ -146,9 +167,11 @@
 
 <!-- Pending Holidays -->
 
+<h3><?= __('Days Available') ?></h3>
+<?= $this->Number->format($user->available_days) ?>
 
-
-
+<br>
+<br>
 
   <h3><?= __('Pending Holidays') ?></h3>
      <table cellpadding="0" cellspacing="0">
@@ -165,6 +188,7 @@
          </thead>
          <tbody>
              <?php foreach ($user->user_holidays as $userHoliday): ?>
+               <?php if($userHoliday->status == "Pending"): ?>
              <tr>
                  <td><?= $this->Number->format($userHoliday->id) ?></td>
                  <td><?= $this->Number->format($userHoliday->user_id) ?></td>
@@ -174,15 +198,14 @@
                  <td><?= h($userHoliday->status) ?></td>
 
                  <td class="actions">
-                     <?= $this->Html->link(__('View'), ['action' => 'view', $userHoliday->id]) ?>
-                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $userHoliday->id]) ?>
-                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $userHoliday->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHoliday->id)]) ?>
-                     <?php if($admin): ?>
-                       <?= $this->Html->link(__('Approve'), ['action' => 'changeStatusCompleted', $userHoliday->id], ['confirm' => __('Are you sure you want to Approve # {0}?', $userHoliday->id)]) ?>
-                       <?= $this->Html->link(__('Reject'), ['action' => 'RejectedUserHolidays', $userHoliday->id], ['confirm' => __('Are you want to Reject # {0}?', $userHoliday->id)]) ?>
-                     <?php endif; ?>
+                     <?= $this->Html->link(__('View'), ['controller' => 'UserHolidays','action' => 'view', $userHoliday->id]) ?>
+                     <?= $this->Html->link(__('Edit'), ['controller' => 'UserHolidays', 'action' => 'edit', $userHoliday->id]) ?>
+                     <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserHolidays', 'action' => 'delete', $userHoliday->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHoliday->id)]) ?>
+                       <?= $this->Html->link(__('Approve'), ['controller' => 'UserHolidays', 'action' => 'changeStatusApproved', $userHoliday->id], ['confirm' => __('Are you sure you want to Approve # {0}?', $userHoliday->id)]) ?>
+                       <?= $this->Html->link(__('Reject'), ['controller' => 'UserHolidays', 'action' => 'RejectedUserHolidays', $userHoliday->id], ['confirm' => __('Are you want to Reject # {0}?', $userHoliday->id)]) ?>
                  </td>
              </tr>
+           <?php endif; ?>
              <?php endforeach; ?>
          </tbody>
      </table>
@@ -201,6 +224,50 @@
 
  <!-- Rejected Holidays -->
 
+     <h3><?= __('Rejected Holidays') ?></h3>
+     <table cellpadding="0" cellspacing="0">
+         <thead>
+             <tr>
+                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                 <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
+                 <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
+                 <th scope="col"><?= $this->Paginator->sort('end_date') ?></th>
+                 <th scope="col"><?= $this->Paginator->sort('days_taken') ?></th>
+                 <th scope="col" class="actions"><?= __('Actions') ?></th>
+             </tr>
+         </thead>
+         <tbody>
+             <?php foreach ($user->user_holidays as $userHoliday): ?>
+               <?php if($userHoliday->status == "Rejected"): ?>
+             <tr>
+                 <td><?= $this->Number->format($userHoliday->id) ?></td>
+                 <td><?= $this->Number->format($userHoliday->user_id) ?></td>
+                 <td><?= h($userHoliday->start_date) ?></td>
+                 <td><?= h($userHoliday->end_date) ?></td>
+                 <td><?= $this->Number->format($userHoliday->days_taken) ?></td>
+                 <td class="actions">
+                     <?= $this->Html->link(__('View'), ['controller' => 'UserHolidays', 'action' => 'view', $userHoliday->id]) ?>
+                     <?= $this->Html->link(__('Edit'), ['controller' => 'UserHolidays', 'action' => 'edit', $userHoliday->id]) ?>
+                     <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserHolidays', 'action' => 'delete', $userHoliday->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHoliday->id)]) ?>
+                     <?= $this->Html->link(__('Pending'), ['controller' => 'UserHolidays', 'action' => 'changeStatusPending', $userHoliday->id]) ?>
+                     <?= $this->Html->link(__('Rejected'), ['controller' => 'UserHolidays', 'action' => 'changeStatusRejected', $userHoliday->id]) ?>
+                 </td>
+             </tr>
+           <?php endif; ?>
+             <?php endforeach; ?>
+         </tbody>
+     </table>
+     <div class="paginator">
+         <ul class="pagination">
+             <?= $this->Paginator->first('<< ' . __('first')) ?>
+             <?= $this->Paginator->prev('< ' . __('previous')) ?>
+             <?= $this->Paginator->numbers() ?>
+             <?= $this->Paginator->next(__('next') . ' >') ?>
+             <?= $this->Paginator->last(__('last') . ' >>') ?>
+         </ul>
+         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+     </div>
+ </div>
 
 
 
@@ -209,20 +276,174 @@
 <!-- Approved Holidays -->
 
 
+    <h3><?= __('Approved Holidays') ?></h3>
+    <table cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('end_date') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('days_taken') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($user->user_holidays as $userHoliday): ?>
+               <?php if($userHoliday->status == "Approved"): ?>
+            <tr>
+                <td><?= $this->Number->format($userHoliday->id) ?></td>
+                <td><?= $this->Number->format($userHoliday->user_id) ?></td>
+                <td><?= h($userHoliday->start_date) ?></td>
+                <td><?= h($userHoliday->end_date) ?></td>
+                <td><?= $this->Number->format($userHoliday->days_taken) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'UserHolidays', 'action' => 'view', $userHoliday->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserHolidays', 'action' => 'edit', $userHoliday->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserHolidays', 'action' => 'delete', $userHoliday->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHoliday->id)]) ?>
+                    <?= $this->Html->link(__('Pending'), ['controller' => 'UserHolidays', 'action' => 'changeStatusPending', $userHoliday->id]) ?>
+                    <?= $this->Html->link(__('Rejected'), ['controller' => 'UserHolidays', 'action' => 'changeStatusRejected', $userHoliday->id]) ?>
+                </td>
+            </tr>
+          <?php endif; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <div class="paginator">
+        <ul class="pagination">
+            <?= $this->Paginator->first('<< ' . __('first')) ?>
+            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next(__('next') . ' >') ?>
+            <?= $this->Paginator->last(__('last') . ' >>') ?>
+        </ul>
+        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+    </div>
+</div>
+
 
 
 <!-- Pending Timesheets -->
 
+    <h3><?= __('Pending User Timesheets') ?></h3>
+    <table cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('start_time') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('end_time') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('duration (Minutes)') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('Status') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($user->user_timesheets as $userTimesheet): ?>
+               <?php if($userTimesheet->status == "Pending"): ?>
+            <tr>
+                <td><?= $this->Number->format($userTimesheet->id) ?></td>
+                <td><?= $this->Number->format($userTimesheet->user_id) ?></td>
+                <td><?= h($userTimesheet->start_date) ?></td>
+                <td><?= h($userTimesheet->start_time) ?></td>
+                <td><?= h($userTimesheet->end_time) ?></td>
+                <td><?= $this->Number->format($userTimesheet->duration) ?></td>
+                <td><?= h($userTimesheet->status) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'UserTimesheets', 'action' => 'view', $userTimesheet->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserTimesheets', 'action' => 'edit', $userTimesheet->id]) ?>
+                    <?= $this->Html->link(__('Delete'), ['controller' => 'UserTimesheets', 'action' => 'delete', $userTimesheet->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userTimesheet->id)]) ?>
+                    <?= $this->Html->link(__('Approve'), ['controller' => 'UserTimesheets', 'action' => 'changeStatusApproved', $userTimesheet->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userTimesheet->id)]) ?>
+                    <?= $this->Html->link(__('Rejected'), ['controller' => 'UserHolidays', 'action' => 'changeStatusRejected', $userTimesheet->id]) ?>
+                </td>
+            </tr>
+          <?php endif; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <div class="paginator">
+        <ul class="pagination">
+            <?= $this->Paginator->first('<< ' . __('first')) ?>
+            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next(__('next') . ' >') ?>
+            <?= $this->Paginator->last(__('last') . ' >>') ?>
+        </ul>
+        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+    </div>
+</div>
 
 
 <!-- Rejected Timesheets -->
 
+    <h3><?= __('Rejected Times') ?></h3>
+    <table cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('start_time') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('end_time') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('duration (Minutes)') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('Status') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($user->user_timesheets as $userTimesheet): ?>
+               <?php if($userTimesheet->status == "Rejected"): ?>
+            <tr>
+                <td><?= $this->Number->format($userTimesheet->id) ?></td>
+                <td><?= $this->Number->format($userTimesheet->user_id) ?></td>
+                <td><?= h($userTimesheet->start_date) ?></td>
+                <td><?= h($userTimesheet->start_time) ?></td>
+                <td><?= h($userTimesheet->end_time) ?></td>
+                <td><?= $this->Number->format($userTimesheet->duration) ?></td>
+                <td><?= h($userTimesheet->status) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'UserTimesheets', 'action' => 'view', $userTimesheet->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserTimesheets', 'action' => 'edit', $userTimesheet->id]) ?>
+                    <?= $this->Html->link(__('Delete'), ['controller' => 'UserTimesheets', 'action' => 'delete', $userTimesheet->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userTimesheet->id)]) ?>
+                    <?= $this->Html->link(__('Pending'), ['controller' => 'UserTimesheets', 'action' => 'changeStatusPending', $userTimesheet->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userTimesheet->id)]) ?>
+                    <?= $this->Html->link(__('Approve'), ['controller' => 'UserTimesheets', 'action' => 'changeStatusApproved', $userTimesheet->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userTimesheet->id)]) ?>
+                </td>
+            </tr>
+          <?php endif; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <div class="paginator">
+        <ul class="pagination">
+            <?= $this->Paginator->first('<< ' . __('first')) ?>
+            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next(__('next') . ' >') ?>
+            <?= $this->Paginator->last(__('last') . ' >>') ?>
+        </ul>
+        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+    </div>
+</div>
 
 
+<!-- Approved Timesheets -->
 
-<!-- Approved Timesheets ->
-
-
+<h3><?= __('Calendar') ?></h3>
+<table cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+            <th scope="col"><?= $this->Paginator->sort('Total') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="http://localhost/bootstrap-calendar-master/bootstrap-calendar-master/convertData.php?id=<?= $this->Number->format($user->id) ?>">View Calendar</a></td>
+        </tr>
+    </tbody>
+</table>
 
 
 <?php endif; ?>
