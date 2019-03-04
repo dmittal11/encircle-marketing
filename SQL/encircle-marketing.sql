@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2019 at 08:32 PM
+-- Generation Time: Mar 04, 2019 at 05:00 PM
 -- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
+-- PHP Version: 7.2.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -44,17 +44,22 @@ CREATE TABLE `phinxlog` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
+  `email` varchar(10000) NOT NULL,
   `username` varchar(10000) NOT NULL,
   `password` varchar(10000) NOT NULL,
-  `available_days` int(11) NOT NULL DEFAULT '25'
+  `available_days` int(11) NOT NULL DEFAULT '25',
+  `admin` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `available_days`) VALUES
-(1, 'dave', '$2y$10$TPlw7iroPRfehpB3ufhQNurEb21Par9iq2TJbSer5fxsBwc4U9cCG', 21);
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `available_days`, `admin`) VALUES
+(1, 'dinesh@encircle-marketing.com', 'dave', '$2y$10$TPlw7iroPRfehpB3ufhQNurEb21Par9iq2TJbSer5fxsBwc4U9cCG', 1, 1),
+(2, 'connor@encircle-marketing.com', 'Connor', '$2y$10$je7fUkGyWIM.5Cf5sz6M0O6LHeBuIxUNE7xZ4nx3CyduMu0OrsoIq', 25, 0),
+(3, 'connors@encircle-marketing.com', 'connors', '$2y$10$.Oo4Ej4jSxhCjLM1eyxJTuD7lPvBMdB.Qr/if5s02R0deXTsXIXam', 7, 0),
+(5, 'mittald@hotmail.co.uk', 'Dinesh', '$2y$10$2p6UcKPMIwUiTHMuIv4vg.nknXvKIkZWF/GlrSLy6.5nkl91enxhi', 25, 0);
 
 -- --------------------------------------------------------
 
@@ -67,16 +72,28 @@ CREATE TABLE `user_holidays` (
   `user_id` int(11) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `days_taken` varchar(10000) NOT NULL
+  `days_taken` int(11) NOT NULL,
+  `status` varchar(10) NOT NULL DEFAULT 'Pending',
+  `notes` varchar(10000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user_holidays`
 --
 
-INSERT INTO `user_holidays` (`id`, `user_id`, `start_date`, `end_date`, `days_taken`) VALUES
-(14, 1, '2019-02-17', '2019-02-18', '1'),
-(15, 1, '2019-02-17', '2019-02-20', '3');
+INSERT INTO `user_holidays` (`id`, `user_id`, `start_date`, `end_date`, `days_taken`, `status`, `notes`) VALUES
+(1, 1, '2019-02-27', '2019-02-28', 1, 'Approved', ''),
+(2, 1, '2019-03-01', '2019-03-08', 7, 'Approved', ''),
+(3, 1, '2019-03-21', '2019-03-31', 10, 'Approved', ''),
+(4, 1, '2019-03-01', '2019-03-08', 7, 'Approved', ''),
+(5, 1, '2019-03-22', '2019-03-30', 8, 'Approved', ''),
+(6, 1, '2019-04-01', '2019-04-08', 7, 'Approved', ''),
+(7, 1, '2019-03-01', '2019-03-02', 1, 'Approved', ''),
+(8, 1, '2019-03-08', '2019-03-09', 1, 'Approved', ''),
+(9, 3, '2019-03-04', '2019-03-05', 1, 'Rejected', ''),
+(10, 3, '2019-03-15', '2019-03-23', 8, 'Rejected', ''),
+(11, 3, '2019-03-29', '2019-03-31', 2, 'Rejected', ''),
+(12, 3, '2019-04-01', '2019-04-08', 7, 'Rejected', '');
 
 -- --------------------------------------------------------
 
@@ -87,6 +104,8 @@ INSERT INTO `user_holidays` (`id`, `user_id`, `start_date`, `end_date`, `days_ta
 CREATE TABLE `user_sickdays` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `duration` varchar(10000) NOT NULL,
   `file` varchar(10000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -95,10 +114,8 @@ CREATE TABLE `user_sickdays` (
 -- Dumping data for table `user_sickdays`
 --
 
-INSERT INTO `user_sickdays` (`id`, `user_id`, `duration`, `file`) VALUES
-(7, 1, '4 days', 'upload\\b8dbd335e8c52ab137c916a9e78ab8fb7ef44fff.jpg'),
-(8, 1, '4 days', 'upload\\422926e5041c7ffdce4195530bd52dc6febc3b03.pdf'),
-(9, 1, '4 days', 'upload\\81735c470b17a747c327401308d13c29ddafa495.docx');
+INSERT INTO `user_sickdays` (`id`, `user_id`, `start_date`, `end_date`, `duration`, `file`) VALUES
+(5, 1, '2019-02-27', '2019-02-28', '1', 'upload\\c1891477146a3b8f6b67b383ce69a00ac187a605.png');
 
 -- --------------------------------------------------------
 
@@ -109,8 +126,28 @@ INSERT INTO `user_sickdays` (`id`, `user_id`, `duration`, `file`) VALUES
 CREATE TABLE `user_timesheets` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `time` varchar(10000) NOT NULL
+  `start_date` date NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `duration` int(11) NOT NULL,
+  `status` varchar(10) NOT NULL DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_timesheets`
+--
+
+INSERT INTO `user_timesheets` (`id`, `user_id`, `start_date`, `start_time`, `end_time`, `duration`, `status`) VALUES
+(2, 1, '2019-02-21', '15:13:00', '15:40:00', 27, 'Approved'),
+(3, 1, '2019-02-21', '15:29:00', '15:58:00', 29, 'Approved'),
+(4, 1, '2019-02-21', '16:15:00', '19:15:00', 180, 'Approved'),
+(6, 1, '2019-02-21', '16:25:00', '20:25:00', 240, 'Approved'),
+(7, 1, '2019-03-01', '11:43:00', '19:43:00', 480, 'Approved'),
+(8, 1, '2019-03-01', '11:48:00', '19:48:00', 480, 'Approved'),
+(9, 3, '2019-03-04', '09:00:00', '18:00:00', 540, 'Approved'),
+(10, 3, '2019-03-06', '11:00:00', '20:25:00', 29, 'Pending'),
+(11, 3, '2019-03-08', '11:00:00', '20:00:00', 29, 'Pending'),
+(12, 3, '2019-03-10', '09:00:00', '18:00:00', 29, 'Rejected');
 
 --
 -- Indexes for dumped tables
@@ -154,25 +191,25 @@ ALTER TABLE `user_timesheets`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user_holidays`
 --
 ALTER TABLE `user_holidays`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user_sickdays`
 --
 ALTER TABLE `user_sickdays`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user_timesheets`
 --
 ALTER TABLE `user_timesheets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
