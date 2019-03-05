@@ -124,7 +124,7 @@
   <br>
   <br>
   <br>
-<?php if($user->admin): ?>
+<?php if($admin == 1): ?>
 
   <h3><?= __('Calendar') ?></h3>
   <table cellpadding="0" cellspacing="0">

@@ -57,8 +57,11 @@ class UserTimesheetsController extends AppController
     public function add()
     {
 
+
+
         $userTimesheet = $this->UserTimesheets->newEntity();
         if ($this->request->is('post')) {
+
             $userTimesheet = $this->UserTimesheets->patchEntity($userTimesheet, $this->request->getData());
 
             $start_time = $this->convertTimeToMinutes($userTimesheet->start_time);
@@ -70,10 +73,14 @@ class UserTimesheetsController extends AppController
             }
              else{
 
+            dd($userTimesheet);
+
             $userTimesheet->start_date = $this->convertAttributeToDateType($userTimesheet->start_date);
             $userTimesheet->duration = $time_diff;
 
             $userTimesheet->user_id = $this->Auth->user('id');
+
+          //  dd($userTimesheet);
 
             if ($this->UserTimesheets->save($userTimesheet)) {
                 $this->Flash->success(__('The user timesheet has been saved.'));
