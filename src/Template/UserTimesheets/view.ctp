@@ -38,11 +38,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Start Time') ?></th>
-            <td><?= h($userTimesheet->start_time) ?></td>
+            <td><?php echo substr($userTimesheet->start_time, 8); ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('End Time') ?></th>
-            <td><?= h($userTimesheet->end_time) ?></td>
+            <td><?php echo substr($userTimesheet->end_time, 8); ?></td>
         </tr>
     </table>
 </div>

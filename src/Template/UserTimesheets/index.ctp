@@ -34,8 +34,8 @@
                 <td><?= $this->Number->format($userTimesheet->id) ?></td>
                 <td><?= $this->Number->format($userTimesheet->user_id) ?></td>
                 <td><?= h($userTimesheet->start_date) ?></td>
-                <td><?= h($userTimesheet->start_time) ?></td>
-                <td><?= h($userTimesheet->end_time) ?></td>
+                <td><?php echo substr($userTimesheet->start_time, 8); ?></td>
+                <td><?php echo substr($userTimesheet->end_time, 8); ?></td>
                 <td><?= $this->Number->format($userTimesheet->duration) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $userTimesheet->id]) ?>

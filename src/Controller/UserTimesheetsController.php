@@ -70,6 +70,9 @@ class UserTimesheetsController extends AppController
         $userTimesheet = $this->UserTimesheets->newEntity();
         if ($this->request->is('post')) {
 
+
+
+
             $userTimesheet = $this->UserTimesheets->patchEntity($userTimesheet, $this->request->getData());
 
             $start_time = $this->convertTimeToMinutes($userTimesheet->start_time);
@@ -81,11 +84,13 @@ class UserTimesheetsController extends AppController
             }
              else{
 
-
+          //  $userTimesheet->start_time = (string)$this->request->getData('start_time')['hour'].':'.(string)$this->request->getData('start_time')['minute'];
             $userTimesheet->start_date = $this->convertAttributeToDateType($this->request->getData('start_date'));
             $userTimesheet->duration = $time_diff;
 
             $userTimesheet->user_id = $this->Auth->user('id');
+
+
 
           //  dd($userTimesheet);
 
