@@ -30,7 +30,7 @@
             <?php foreach ($usersickdays as $usersickday): ?>
             <tr>
                 <td><?= $this->Number->format($usersickday->id) ?></td>
-                <td><?= $usersickday->has('user') ? $this->Html->link($usersickday->user->id, ['controller' => 'Users', 'action' => 'view', $usersickday->user->id]) : '' ?></td>
+                <td><?= $this->Number->format($usersickday->user_id) ?></td>
                 <td><?= h($usersickday->start_date) ?></td>
                 <td><?= h($usersickday->end_date) ?></td>
                 <td><?= h($usersickday->duration) ?></td>

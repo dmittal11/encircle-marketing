@@ -20,7 +20,7 @@
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('User') ?></th>
-            <td><?= $usersickday->has('user') ? $this->Html->link($usersickday->user->id, ['controller' => 'Users', 'action' => 'view', $usersickday->user->id]) : '' ?></td>
+            <td><?= h($usersickday->user_id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Duration') ?></th>

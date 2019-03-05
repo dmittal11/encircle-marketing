@@ -86,7 +86,7 @@
                 <td><?= h($userSickdays->id) ?></td>
                 <td><?= h($userSickdays->user_id) ?></td>
                 <td><?= h($userSickdays->duration) ?></td>
-                <td><?= h($userSickdays->evidence) ?></td>
+                <td><?= h($userSickdays->file) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'UserSickdays', 'action' => 'view', $userSickdays->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'UserSickdays', 'action' => 'edit', $userSickdays->id]) ?>
@@ -495,6 +495,37 @@
         </tr>
     </tbody>
 </table>
+
+<!-- User Sickdays -->
+
+<div class="related">
+    <h4><?= __('Related User Sickdays') ?></h4>
+    <?php if (!empty($user->user_sickdays)): ?>
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <th scope="col"><?= __('Id') ?></th>
+            <th scope="col"><?= __('User Id') ?></th>
+            <th scope="col"><?= __('Duration') ?></th>
+            <th scope="col"><?= __('Evidence') ?></th>
+            <th scope="col" class="actions"><?= __('Actions') ?></th>
+        </tr>
+        <?php foreach ($user->user_sickdays as $userSickdays): ?>
+        <tr>
+            <td><?= h($userSickdays->id) ?></td>
+            <td><?= h($userSickdays->user_id) ?></td>
+            <td><?= h($userSickdays->duration) ?></td>
+            <td><?= h($userSickdays->file) ?></td>
+            <td class="actions">
+                <?= $this->Html->link(__('View'), ['controller' => 'UserSickdays', 'action' => 'view', $userSickdays->id]) ?>
+                <?= $this->Html->link(__('Edit'), ['controller' => 'UserSickdays', 'action' => 'edit', $userSickdays->id]) ?>
+                <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserSickdays', 'action' => 'delete', $userSickdays->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userSickdays->id)]) ?>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+    <?php endif; ?>
+</div>
+
 
 
 <?php endif; ?>

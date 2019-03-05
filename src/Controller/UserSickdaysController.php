@@ -22,12 +22,11 @@ class UsersickdaysController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Users']
-        ];
-        $usersickdays = $this->paginate($this->UserSickdays);
 
-        $this->set(compact('usersickdays'));
+      $usersickdays = $this->UserSickdays->find('all', ['conditions' => ['user_id' => $this->Auth->user('id')]]);
+      $usersickdays = $this->paginate($usersickdays);
+
+      $this->set(compact('usersickdays'));
 
     }
 
