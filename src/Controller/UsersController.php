@@ -163,6 +163,8 @@ class UsersController extends AppController
     public function add()
     {
 
+      if($this->userIsAdmin()){
+
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -173,6 +175,11 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
+      }
+      else{
+        $this->Flash->error(__('You do not have admin privileges.'));
+        return $this->redirect(['action' => 'index']);
+      }
         $this->set(compact('user'));
     }
 

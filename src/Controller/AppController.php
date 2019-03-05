@@ -123,6 +123,62 @@ class AppController extends Controller
         return $user->user->id;
     }
 
+    public function hasPermissionToAmendTimesheet($id){
+
+      $this->loadModel('Users');
+      $this->loadModel('Timesheets');
+
+      $user = $this->UserTimesheets->get($id, [
+        'contain' => ['Users']
+      ]);
+
+      if(($user->user->admin) || ($user->user->id == $this->Auth->user('id')){
+        return true;
+      }
+      else{
+        return false;
+      }
+
+      public function hasPermissionToAmendUserHolidays($id){
+
+        $this->loadModel('Users');
+        $this->loadModel('UserHolidays');
+
+        $user = $this->UserHolidays->get($id, [
+          'contain' => ['Users']
+        ]);
+
+        if(($user->user->admin) || ($user->user->id == $this->Auth->user('id')){
+          return true;
+        }
+        else{
+          return false;
+        }
+
+
+
+    }
+
+    public function hasPermissionToAmendUserSickdays($id){
+
+      $this->loadModel('Users');
+      $this->loadModel('UserSickdays');
+
+      $user = $this->UserSickdays->get($id, [
+        'contain' => ['Users']
+      ]);
+
+      if(($user->user->admin) || ($user->user->id == $this->Auth->user('id')){
+        return true;
+      }
+      else{
+        return false;
+      }
+
+
+
+  }
+
 
 
 
