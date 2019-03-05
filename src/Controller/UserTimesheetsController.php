@@ -73,9 +73,8 @@ class UserTimesheetsController extends AppController
             }
              else{
 
-            dd($userTimesheet);
 
-            $userTimesheet->start_date = $this->convertAttributeToDateType($userTimesheet->start_date);
+            $userTimesheet->start_date = $this->convertAttributeToDateType($this->request->getData('start_date'));
             $userTimesheet->duration = $time_diff;
 
             $userTimesheet->user_id = $this->Auth->user('id');
@@ -109,7 +108,7 @@ class UserTimesheetsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $userTimesheet = $this->UserTimesheets->patchEntity($userTimesheet, $this->request->getData());
 
-            $start_time = $this->convertTimeToMinutes($userTimesheet->start_time);
+            $start_time = $this->convertTimeToMinutes($this->request->getData(''));
             $end_time = $this->convertTimeToMinutes($userTimesheet->end_time);
             $time_diff = $this->calculateTimeDifference($start_time, $end_time);
 
@@ -118,7 +117,7 @@ class UserTimesheetsController extends AppController
             }
              else{
 
-            $userTimesheet->start_date = $this->convertAttributeToDateType($userTimesheet->start_date);
+            $userTimesheet->start_date = $this->convertAttributeToDateType($this->request->getData('start_date'));
             $userTimesheet->duration = $time_diff;
 
             $userTimesheet->user_id = $this->Auth->user('id');
@@ -254,7 +253,7 @@ class UserTimesheetsController extends AppController
         $userTimesheet = $this->UserTimesheets->get($id, [
             'contain' => []
         ]);
-          //env('PASSWORD');
+
         $userTimesheet->status = "Approved";
 
         if ($this->UserTimesheets->save($userTimesheet)) {
