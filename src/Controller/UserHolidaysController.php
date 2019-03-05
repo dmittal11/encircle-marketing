@@ -56,6 +56,9 @@ class UserHolidaysController extends AppController
      */
     public function view($id = null)
     {
+
+        if($this->hasPermissionToAmendUserHolidays($id)){
+
         $userHoliday = $this->UserHolidays->get($id, [
             'contain' => ['users']
         ]);
@@ -66,6 +69,11 @@ class UserHolidaysController extends AppController
         $this->set('userHoliday', $userHoliday);
         $this->set('user', $user);
     }
+    else{
+      $this->Flash->error(__('You do not sufficient privileges.'));
+      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+    }
+  }
 
     /**
      * Add method
@@ -135,7 +143,8 @@ class UserHolidaysController extends AppController
      */
     public function edit($id = null)
     {
-      //dd($user);
+         if($this->hasPermissionToAmendUserHolidays($id)){
+
         $userHoliday = $this->UserHolidays->get($id, [
             'contain' => []
         ]);
@@ -183,12 +192,18 @@ class UserHolidaysController extends AppController
                                 return $this->redirect(['action' => 'index']);
                               }
                               $this->Flash->error(__('The user holiday could not be saved. Please, try again.'));
-        }
+                    }
 
-      }
-        $logins = $this->UserHolidays->users->find('list', ['limit' => 200]);
-        $this->set(compact('userHoliday', 'logins'));
-    }
+              }
+                $logins = $this->UserHolidays->users->find('list', ['limit' => 200]);
+                $this->set(compact('userHoliday', 'logins'));
+            }
+            else{
+              $this->Flash->error(__('You do not sufficient privileges.'));
+              return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+            }
+          }
+
 
     /**
      * Delete method
@@ -199,6 +214,7 @@ class UserHolidaysController extends AppController
      */
     public function delete($id = null)
     {
+       if($this->hasPermissionToAmendUserHolidays($id)){
         $this->request->allowMethod(['get','post','delete']);
         $userHoliday = $this->UserHolidays->get($id);
 
@@ -220,6 +236,11 @@ class UserHolidaysController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    else{
+      $this->Flash->error(__('You do not sufficient privileges.'));
+      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+    }
+  }
 
     public function calculateDateDifference($date1, $date2)
     {

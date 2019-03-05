@@ -132,7 +132,7 @@ class AppController extends Controller
         'contain' => ['Users']
       ]);
 
-      if(($this->Auth->user('admin')) || ($user->user->id == $this->Auth->user('id')){
+      if(($this->Auth->user('admin')) || ($user->user->id == $this->Auth->user('id'))){
         return true;
       }
       else{
@@ -149,7 +149,7 @@ class AppController extends Controller
           'contain' => ['Users']
         ]);
 
-        if(($this->Auth->user('admin')) || ($user->user->id == $this->Auth->user('id')){
+        if(($this->Auth->user('admin')) || ($user->user->id == $this->Auth->user('id'))){
           return true;
         }
         else{
@@ -166,7 +166,7 @@ class AppController extends Controller
         'contain' => ['Users']
       ]);
 
-      if(($this->Auth->user('admin')) || ($user->user->id == $this->Auth->user('id')){
+      if(($this->Auth->user('admin')) || ($user->user->id == $this->Auth->user('id'))){
         return true;
       }
       else{

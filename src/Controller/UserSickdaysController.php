@@ -39,12 +39,19 @@ class UsersickdaysController extends AppController
      */
     public function view($id = null)
     {
+        if($this->hasPermissionToAmendUserSickdays($id)){
+
         $usersickday = $this->UserSickdays->get($id, [
             'contain' => ['Users']
         ]);
 
         $this->set('usersickday', $usersickday);
     }
+    else{
+      $this->Flash->error(__('You do not sufficient privileges.'));
+      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+    }
+  }
 
     /**
      * Add method
@@ -100,6 +107,8 @@ class UsersickdaysController extends AppController
      */
     public function edit($id = null)
     {
+        if($this->hasPermissionToAmendUserSickdays($id)){
+
         $usersickday = $this->UserSickdays->get($id, [
             'contain' => []
         ]);
@@ -137,6 +146,11 @@ class UsersickdaysController extends AppController
         $users = $this->UserSickdays->Users->find('list', ['limit' => 200]);
         $this->set(compact('usersickday', 'users'));
     }
+    else{
+      $this->Flash->error(__('You do not sufficient privileges.'));
+      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+    }
+  }
 
     /**
      * Delete method
@@ -147,6 +161,8 @@ class UsersickdaysController extends AppController
      */
     public function delete($id = null)
     {
+         if($this->hasPermissionToAmendUserSickdays($id)){
+
         $this->request->allowMethod(['post','get', 'delete']);
         $usersickday = $this->UserSickdays->get($id);
         if ($this->UserSickdays->delete($usersickday)) {
@@ -157,6 +173,11 @@ class UsersickdaysController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    else{
+      $this->Flash->error(__('You do not sufficient privileges.'));
+      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+    }
+  }
 
     public function calculateDateDifference($start_date, $end_date) {
       if($end_date > $start_date && !$start_date->isPast()){

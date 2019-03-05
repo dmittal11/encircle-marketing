@@ -65,7 +65,7 @@ class UserTimesheetsController extends AppController
     public function add()
     {
 
-        if($this->hasPermissionToAmendTimesheet($id)){
+
 
         $userTimesheet = $this->UserTimesheets->newEntity();
         if ($this->request->is('post')) {
@@ -100,11 +100,8 @@ class UserTimesheetsController extends AppController
         $users = $this->UserTimesheets->Users->find('list', ['limit' => 200]);
         $this->set(compact('userTimesheet', 'users'));
     }
-    else{
-      $this->Flash->error(__('You do not sufficient privileges.'));
-      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
-    }
-  }
+
+
 
     /**
      * Edit method
@@ -166,6 +163,10 @@ class UserTimesheetsController extends AppController
      */
     public function delete($id = null)
     {
+
+      if($this->hasPermissionToAmendTimesheet($id)){
+
+
         $this->request->allowMethod(['post', 'delete']);
         $userTimesheet = $this->UserTimesheets->get($id);
         if ($this->UserTimesheets->delete($userTimesheet)) {
@@ -176,6 +177,11 @@ class UserTimesheetsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    else{
+      $this->Flash->error(__('You do not sufficient privileges.'));
+      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+    }
+  }
 
     public function convertAttributeToDateType($date){
       return new Date($date);
@@ -213,7 +219,7 @@ class UserTimesheetsController extends AppController
 
     public function pendingUserTimesheets(){
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        if ($this->request->is(['patch', 'post', 'put', 'get'])) {
 
 
 
