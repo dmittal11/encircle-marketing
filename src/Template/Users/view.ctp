@@ -52,7 +52,6 @@
                 <th scope="col"><?= __('User Id') ?></th>
                 <th scope="col"><?= __('Start Date') ?></th>
                 <th scope="col"><?= __('End Date') ?></th>
-                <th scope="col"><?= __('Days Available') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($user->user_holidays as $userHolidays): ?>
@@ -61,11 +60,10 @@
                 <td><?= h($userHolidays->user_id) ?></td>
                 <td><?= h($userHolidays->start_date) ?></td>
                 <td><?= h($userHolidays->end_date) ?></td>
-                <td><?= h($userHolidays->days_available) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'UserHolidays', 'action' => 'view', $userHolidays->User_id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserHolidays', 'action' => 'edit', $userHolidays->User_id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserHolidays', 'action' => 'delete', $userHolidays->User_id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHolidays->User_id)]) ?>
+                    <?= $this->Html->link(__('View'), ['controller' => 'UserHolidays', 'action' => 'view', $userHolidays->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserHolidays', 'action' => 'edit', $userHolidays->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserHolidays', 'action' => 'delete', $userHolidays->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHolidays->User_id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -90,9 +88,9 @@
                 <td><?= h($userSickdays->duration) ?></td>
                 <td><?= h($userSickdays->evidence) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'UserSickdays', 'action' => 'view', $userSickdays->User_id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserSickdays', 'action' => 'edit', $userSickdays->User_id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserSickdays', 'action' => 'delete', $userSickdays->User_id], ['confirm' => __('Are you sure you want to delete # {0}?', $userSickdays->User_id)]) ?>
+                    <?= $this->Html->link(__('View'), ['controller' => 'UserSickdays', 'action' => 'view', $userSickdays->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserSickdays', 'action' => 'edit', $userSickdays->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserSickdays', 'action' => 'delete', $userSickdays->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userSickdays->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -106,18 +104,18 @@
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
                 <th scope="col"><?= __('User Id') ?></th>
-                <th scope="col"><?= __('Time') ?></th>
+                <th scope="col"><?= __('Time (Minutes)') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($user->user_timesheets as $userTimesheets): ?>
             <tr>
                 <td><?= h($userTimesheets->id) ?></td>
                 <td><?= h($userTimesheets->user_id) ?></td>
-                <td><?= h($userTimesheets->time) ?></td>
+                <td><?= h($userTimesheets->duration) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'UserTimesheets', 'action' => 'view', $userTimesheets->User_id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserTimesheets', 'action' => 'edit', $userTimesheets->User_id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserTimesheets', 'action' => 'delete', $userTimesheets->User_id], ['confirm' => __('Are you sure you want to delete # {0}?', $userTimesheets->User_id)]) ?>
+                    <?= $this->Html->link(__('View'), ['controller' => 'UserTimesheets', 'action' => 'view', $userTimesheets->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserTimesheets', 'action' => 'edit', $userTimesheets->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserTimesheets', 'action' => 'delete', $userTimesheets->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userTimesheets->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

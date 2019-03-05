@@ -54,11 +54,8 @@ class AppController extends Controller
                         'passwordHasher' => 'DefaultPasswordHasher'
                     )
                 )
-            ),
-            // 'GoogleCalendar.GoogleCalendar' => array(
-            //   'id' => 'mittald107@gmail.com',
-            //   'secret' => 'fireboy'
-            // )
+            )
+
         );
 
     public function initialize()
@@ -74,9 +71,10 @@ class AppController extends Controller
          * Enable the following component for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
-        //$this->loadComponent('Security')
 
-        //$isLoggedIn = false;
+       //$this->loadComponent('Security')
+
+        $isLoggedIn = false;
 
         if($this->Auth->user('id')){
            $isLoggedIn = true;

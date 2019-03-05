@@ -108,7 +108,7 @@ class UserTimesheetsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $userTimesheet = $this->UserTimesheets->patchEntity($userTimesheet, $this->request->getData());
 
-            $start_time = $this->convertTimeToMinutes($this->request->getData(''));
+            $start_time = $this->convertTimeToMinutes($userTimesheet->start_time);
             $end_time = $this->convertTimeToMinutes($userTimesheet->end_time);
             $time_diff = $this->calculateTimeDifference($start_time, $end_time);
 

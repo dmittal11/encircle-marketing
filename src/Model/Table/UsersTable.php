@@ -79,15 +79,15 @@ class UsersTable extends Table
             ->requirePresence('password', 'create')
             ->allowEmptyString('password', false);
 
-        $validator
-            ->integer('available_days')
-            ->requirePresence('available_days', 'create')
-            ->allowEmptyString('available_days', false);
-
-        $validator
-            ->boolean('admin')
-            ->requirePresence('admin', 'create')
-            ->allowEmptyString('admin', false);
+        // $validator
+        //     ->integer('available_days')
+        //     ->requirePresence('available_days', 'create')
+        //     ->allowEmptyString('available_days', false);
+        //
+        // $validator
+        //     ->boolean('admin')
+        //     ->requirePresence('admin', 'create')
+        //     ->allowEmptyString('admin', false);
 
         return $validator;
     }

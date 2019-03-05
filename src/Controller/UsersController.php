@@ -47,10 +47,13 @@ class UsersController extends AppController
 
   public function register() {
 
-    $user = $this->Users->newEntity($this->request->getData());
+    $user  = null;
 
 
     if($this->request->is('post')){
+
+    //dd($this->request->getData());
+    $user = $this->Users->newEntity($this->request->getData());
       if($this->Users->save($user)){
         $this->Flash->success('You are registered and can login');
         return $this->redirect(['action' => 'login']);
