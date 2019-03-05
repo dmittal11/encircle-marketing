@@ -132,12 +132,13 @@ class AppController extends Controller
         'contain' => ['Users']
       ]);
 
-      if(($user->user->admin) || ($user->user->id == $this->Auth->user('id')){
+      if(($this->Auth->user('admin')) || ($user->user->id == $this->Auth->user('id')){
         return true;
       }
       else{
         return false;
       }
+    }
 
       public function hasPermissionToAmendUserHolidays($id){
 
@@ -148,15 +149,12 @@ class AppController extends Controller
           'contain' => ['Users']
         ]);
 
-        if(($user->user->admin) || ($user->user->id == $this->Auth->user('id')){
+        if(($this->Auth->user('admin')) || ($user->user->id == $this->Auth->user('id')){
           return true;
         }
         else{
           return false;
         }
-
-
-
     }
 
     public function hasPermissionToAmendUserSickdays($id){
@@ -168,7 +166,7 @@ class AppController extends Controller
         'contain' => ['Users']
       ]);
 
-      if(($user->user->admin) || ($user->user->id == $this->Auth->user('id')){
+      if(($this->Auth->user('admin')) || ($user->user->id == $this->Auth->user('id')){
         return true;
       }
       else{
@@ -178,8 +176,5 @@ class AppController extends Controller
 
 
   }
-
-
-
 
 }

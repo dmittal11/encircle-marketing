@@ -42,12 +42,20 @@ class UserTimesheetsController extends AppController
      */
     public function view($id = null)
     {
+        if($this->hasPermissionToAmendTimesheet($id)){
+
+
         $userTimesheet = $this->UserTimesheets->get($id, [
             'contain' => ['Users']
         ]);
 
         $this->set('userTimesheet', $userTimesheet);
     }
+    else {
+      $this->Flash->error(__('You do not sufficient privileges.'));
+      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+    }
+  }
 
     /**
      * Add method for user time sheets
@@ -57,7 +65,7 @@ class UserTimesheetsController extends AppController
     public function add()
     {
 
-
+        if($this->hasPermissionToAmendTimesheet($id)){
 
         $userTimesheet = $this->UserTimesheets->newEntity();
         if ($this->request->is('post')) {
@@ -92,6 +100,11 @@ class UserTimesheetsController extends AppController
         $users = $this->UserTimesheets->Users->find('list', ['limit' => 200]);
         $this->set(compact('userTimesheet', 'users'));
     }
+    else{
+      $this->Flash->error(__('You do not sufficient privileges.'));
+      return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+    }
+  }
 
     /**
      * Edit method
@@ -102,6 +115,9 @@ class UserTimesheetsController extends AppController
      */
     public function edit($id = null)
     {
+      if($this->hasPermissionToAmendTimesheet($id)){
+
+
         $userTimesheet = $this->UserTimesheets->get($id, [
             'contain' => []
         ]);
@@ -133,6 +149,11 @@ class UserTimesheetsController extends AppController
 
         $users = $this->UserTimesheets->Users->find('list', ['limit' => 200]);
         $this->set(compact('userTimesheet', 'users'));
+      }
+      else{
+        $this->Flash->error(__('You do not sufficient privileges.'));
+        return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+      }
 
   }
 

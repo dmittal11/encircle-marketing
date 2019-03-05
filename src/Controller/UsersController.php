@@ -78,6 +78,8 @@ class UsersController extends AppController
     public function index()
     {
 
+      if(5 === 6){
+
       $id = $this->Auth->user('id');
       $this->loadModel('UserTimesheets');
 
@@ -126,11 +128,21 @@ class UsersController extends AppController
             $userTimesheet = $this->convertToCollectionsAndFindTotalTime($userTimesheet);
             $total = $this->convertTimeToString($userTimesheet['total']);
         }
+      }
+        else{
+           $this->Flash->error(__('You do not sufficient privileges.'));
+          //return $this->redirect(['action' => 'view', 1]);
+        }
+
 
 
         $this->set('users', $user);
         $this->set('userTimesheets', $userTimesheet['data']);
         $this->set('total', $total);
+
+
+
+
 
     }
 
