@@ -39,5 +39,8 @@
             <th scope="row"><?= __('End Date') ?></th>
             <td><?= h($userHoliday->end_date) ?></td>
         </tr>
+        <tr>
+          <th scope="row"><?= __('Notes') ?></th>
+          <td><?= h($userHoliday->notes) ?></td>
     </table>
 </div>

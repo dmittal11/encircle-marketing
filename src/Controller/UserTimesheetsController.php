@@ -167,7 +167,7 @@ class UserTimesheetsController extends AppController
       if($this->hasPermissionToAmendTimesheet($id)){
 
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->request->allowMethod(['post', 'delete', 'get']);
         $userTimesheet = $this->UserTimesheets->get($id);
         if ($this->UserTimesheets->delete($userTimesheet)) {
             $this->Flash->success(__('The user timesheet has been deleted.'));

@@ -24,7 +24,7 @@
                 <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('start_time') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('end_time') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('duration') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('duration (Minutes)') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
