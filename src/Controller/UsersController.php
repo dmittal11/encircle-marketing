@@ -78,7 +78,9 @@ class UsersController extends AppController
     public function index()
     {
 
-      if(5 === 6){
+      $x = 5
+
+      if($x = 6){
 
       $id = $this->Auth->user('id');
       $this->loadModel('UserTimesheets');
@@ -129,9 +131,9 @@ class UsersController extends AppController
             $total = $this->convertTimeToString($userTimesheet['total']);
         }
       }
-        else{
+        else {
            $this->Flash->error(__('You do not sufficient privileges.'));
-          //return $this->redirect(['action' => 'view', 1]);
+          return $this->redirect(['action' => 'view', 1]);
         }
 
 
