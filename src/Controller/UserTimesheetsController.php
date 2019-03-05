@@ -50,7 +50,7 @@ class UserTimesheetsController extends AppController
     }
 
     /**
-     * Add method
+     * Add method for user time sheets
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
