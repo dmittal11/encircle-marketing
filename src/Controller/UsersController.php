@@ -78,6 +78,8 @@ class UsersController extends AppController
     public function index()
     {
 
+        dd(env('USERNAME'));
+
       $id = $this->Auth->user('id');
       $this->loadModel('UserTimesheets');
 
@@ -151,15 +153,40 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => ['UserHolidays', 'UserSickdays', 'UserTimesheets']
-        ]);
+
+        $this->loadModel('UserHolidays');
+        $this->loadModel('UserTimesheets');
+        $this->loadModel('UserSickdays');
+
+
+        // $this->paginate = [
+        //   'contain' => ['UserHolidays', 'UserSickdays', 'UserTimesheets']
+        // ];
+
+        $this->set('users', $this->paginate($this->Users->find('all')->where(['id' => $id])));
+
+       //dd($this->paginate($this->Users->find('all')->where(['id' => $id])));
+
+        $this->set('usertimesheets', $this->paginate($this->UserTimesheets->find('all')->where(['user_id' => $id])));
+
+        $this->set('userholidays', $this->paginate($this->UserHolidays->find('all')->where(['user_id' => $id])));
+
+        $this->set('usersickdays', $this->paginate($this->UserSickdays->find('all')->where(['user_id' => $id])));
 
 
 
-        $this->paginate($this->Users);
 
-        $this->set(compact('user'));
+        //   $user = $this->Users->get($id, [
+        //     'contain' => ['UserHolidays', 'UserSickdays', 'UserTimesheets']
+        // ]);
+
+        //dd($user);
+
+
+
+        //$this->paginate($user);
+
+        //$this->set('user', $user);
 
     }
 

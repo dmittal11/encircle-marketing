@@ -9,8 +9,8 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit User'), ['action' => 'edit', $users->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $users->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?> </li>
+        <li><?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id]) ?> </li>
+        <li><?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('List User Holidays'), ['controller' => 'UserHolidays', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New User Holiday'), ['controller' => 'UserHolidays', 'action' => 'add']) ?> </li>
@@ -23,9 +23,8 @@
 
 <div class="users view large-9 medium-8 columns content">
 
-    <h3><?= h($users->id) ?></h3>
+    <h3><?= h($user->id) ?></h3>
     <table class="vertical-table">
-    <?php foreach ($users as $user): ?>
         <tr>
             <th scope="row"><?= __('Username') ?></th>
             <td><?= h($user->username) ?></td>
@@ -42,11 +41,10 @@
             <th scope="row"><?= __('Available Days') ?></th>
             <td><?= $this->Number->format($user->available_days) ?></td>
         </tr>
-        <?php endforeach; ?>
     </table>
     <div class="related">
         <h4><?= __('Related User Holidays') ?></h4>
-        <?php if (!empty($userholidays)): ?>
+        <?php if (!empty($user->user_holidays)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
@@ -55,16 +53,16 @@
                 <th scope="col"><?= __('End Date') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
-            <?php foreach ($userholidays as $userHoliday): ?>
+            <?php foreach ($user->user_holidays as $userHolidays): ?>
             <tr>
-                <td><?= h($userHoliday->id) ?></td>
-                <td><?= h($userHoliday->user_id) ?></td>
-                <td><?= h($userHoliday->start_date) ?></td>
-                <td><?= h($userHoliday->end_date) ?></td>
+                <td><?= h($userHolidays->id) ?></td>
+                <td><?= h($userHolidays->user_id) ?></td>
+                <td><?= h($userHolidays->start_date) ?></td>
+                <td><?= h($userHolidays->end_date) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'UserHolidays', 'action' => 'view', $userHoliday->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserHolidays', 'action' => 'edit', $userHoliday->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserHolidays', 'action' => 'delete', $userHoliday->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHoliday->User_id)]) ?>
+                    <?= $this->Html->link(__('View'), ['controller' => 'UserHolidays', 'action' => 'view', $userHolidays->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserHolidays', 'action' => 'edit', $userHolidays->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserHolidays', 'action' => 'delete', $userHolidays->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userHolidays->User_id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -73,7 +71,7 @@
     </div>
     <div class="related">
         <h4><?= __('Related User Sickdays') ?></h4>
-        <?php if (!empty($usersickdays)): ?>
+        <?php if (!empty($user->user_sickdays)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
@@ -82,16 +80,16 @@
                 <th scope="col"><?= __('Evidence') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
-            <?php foreach ($usersickdays as $userSickday): ?>
+            <?php foreach ($user->user_sickdays as $userSickdays): ?>
             <tr>
-                <td><?= h($userSickday->id) ?></td>
-                <td><?= h($userSickday->user_id) ?></td>
-                <td><?= h($userSickday->duration) ?></td>
-                <td><?= h($userSickday->file) ?></td>
+                <td><?= h($userSickdays->id) ?></td>
+                <td><?= h($userSickdays->user_id) ?></td>
+                <td><?= h($userSickdays->duration) ?></td>
+                <td><?= h($userSickdays->file) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'UserSickdays', 'action' => 'view', $userSickday->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserSickdays', 'action' => 'edit', $userSickday->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserSickdays', 'action' => 'delete', $userSickday->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userSickday->id)]) ?>
+                    <?= $this->Html->link(__('View'), ['controller' => 'UserSickdays', 'action' => 'view', $userSickdays->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserSickdays', 'action' => 'edit', $userSickdays->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserSickdays', 'action' => 'delete', $userSickdays->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userSickdays->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -100,7 +98,7 @@
     </div>
     <div class="related">
         <h4><?= __('Related User Timesheets') ?></h4>
-        <?php if (!empty($usertimesheets)): ?>
+        <?php if (!empty($user->user_timesheets)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
@@ -108,15 +106,15 @@
                 <th scope="col"><?= __('Time (Minutes)') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
-            <?php foreach ($usertimesheets as $userTimesheet): ?>
+            <?php foreach ($user->user_timesheets as $userTimesheets): ?>
             <tr>
-                <td><?= h($userTimesheet->id) ?></td>
-                <td><?= h($userTimesheet->user_id) ?></td>
-                <td><?= h($userTimesheet->duration) ?></td>
+                <td><?= h($userTimesheets->id) ?></td>
+                <td><?= h($userTimesheets->user_id) ?></td>
+                <td><?= h($userTimesheets->duration) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'UserTimesheets', 'action' => 'view', $userTimesheet->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserTimesheets', 'action' => 'edit', $userTimesheet->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserTimesheets', 'action' => 'delete', $userTimesheet->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userTimesheet->id)]) ?>
+                    <?= $this->Html->link(__('View'), ['controller' => 'UserTimesheets', 'action' => 'view', $userTimesheets->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'UserTimesheets', 'action' => 'edit', $userTimesheets->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'UserTimesheets', 'action' => 'delete', $userTimesheets->id], ['confirm' => __('Are you sure you want to delete # {0}?', $userTimesheets->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -142,7 +140,6 @@
         </tr>
     </thead>
     <tbody>
-    <?php foreach ($users as $user): ?>
         <tr>
             <td>Email:</td>
             <td><?= h($user->email) ?></td>
@@ -154,8 +151,6 @@
         <tr>
           <td>Password:</td>
           <td><?= h($user->password) ?></td>
-         </tr>
-         <?php endforeach; ?>
     </tbody>
 </table>
 
@@ -190,7 +185,7 @@
              </tr>
          </thead>
          <tbody>
-             <?php foreach ($userholidays as $userHoliday): ?>
+             <?php foreach ($user->user_holidays as $userHoliday): ?>
                <?php if($userHoliday->status == "Pending"): ?>
              <tr>
                  <td><?= $this->Number->format($userHoliday->id) ?></td>
@@ -240,7 +235,7 @@
              </tr>
          </thead>
          <tbody>
-             <?php foreach ($userholidays as $userHoliday): ?>
+             <?php foreach ($user->user_holidays as $userHoliday): ?>
                <?php if($userHoliday->status == "Rejected"): ?>
              <tr>
                  <td><?= $this->Number->format($userHoliday->id) ?></td>
@@ -292,7 +287,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($userholidays as $userHoliday): ?>
+            <?php foreach ($user->user_holidays as $userHoliday): ?>
                <?php if($userHoliday->status == "Approved"): ?>
             <tr>
                 <td><?= $this->Number->format($userHoliday->id) ?></td>
@@ -343,7 +338,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($usertimesheets as $userTimesheet): ?>
+            <?php foreach ($user->user_timesheets as $userTimesheet): ?>
                <?php if($userTimesheet->status == "Pending"): ?>
             <tr>
                 <td><?= $this->Number->format($userTimesheet->id) ?></td>
@@ -396,7 +391,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($usertimesheets as $userTimesheet): ?>
+            <?php foreach ($user->user_timesheets as $userTimesheet): ?>
                <?php if($userTimesheet->status == "Rejected"): ?>
             <tr>
                 <td><?= $this->Number->format($userTimesheet->id) ?></td>
@@ -449,7 +444,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($usertimesheets as $userTimesheet): ?>
+        <?php foreach ($user->user_timesheets as $userTimesheet): ?>
            <?php if($userTimesheet->status == "Approved"): ?>
         <tr>
             <td><?= $this->Number->format($userTimesheet->id) ?></td>
@@ -513,7 +508,7 @@
             <th scope="col"><?= __('Evidence') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
-        <?php foreach ($usersickdays as $userSickdays): ?>
+        <?php foreach ($user->user_sickdays as $userSickdays): ?>
         <tr>
             <td><?= h($userSickdays->id) ?></td>
             <td><?= h($userSickdays->user_id) ?></td>
