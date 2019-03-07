@@ -78,8 +78,9 @@ class UsersController extends AppController
     public function index()
     {
 
-        putenv('USERNAME!=dmittal11');
-        dd(getenv('USERNAME!'));
+       // dd(getenv('MY_USERNAME'));
+
+
 
       $id = $this->Auth->user('id');
       $this->loadModel('UserTimesheets');

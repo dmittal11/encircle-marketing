@@ -411,7 +411,7 @@ class UserHolidaysController extends AppController
             if ($this->UserHolidays->save($userHoliday)) {
                 $this->Flash->success(__('The user holidays status has been changed to Approved.'));
 
-                  //$this->sendEmail($id);
+                  $this->sendEmail($id);
 
              }
 
@@ -452,7 +452,7 @@ class UserHolidaysController extends AppController
                 if ($this->UserHolidays->save($userHoliday)) {
                     $this->Flash->success(__('The user holidays status has been changed to rejected'));
 
-                      //$this->sendEmail($id);
+                      $this->sendEmail($id);
 
                  }
 
@@ -492,7 +492,7 @@ class UserHolidaysController extends AppController
                 if ($this->UserHolidays->save($userHoliday)) {
                     $this->Flash->success(__('The user holidays status has been changed to pending.'));
 
-                      //$this->sendEmail($id);
+
 
                  }
 
@@ -545,7 +545,7 @@ class UserHolidaysController extends AppController
           if($user_id->status == 'Approved'){
 
             $subject = 'Your Holidays has been Approved';
-            $message = 'Dear '.$user_id->name.' your holidays has been approved.<br>Start Date: '.$user_id->startDate.'<br>End Date: '.$user_id->endDate.'<br>Enjoy your time of and looking forward to seeing you again.<br>Regards Admin.';
+            $message = 'Dear '.$user_id->name.' your holidays has been approved.<br>Start Date: '.$user_id->startDate.'<br>End Date: '.$user_id->endDate.'<br>Enjoy your time off and looking forward to seeing you again.<br>Regards Admin.';
 
           }
           else {

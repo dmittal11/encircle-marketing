@@ -30,6 +30,11 @@ if (PHP_SAPI === 'cli-server') {
 }
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+$dotenv = Dotenv\Dotenv::create(__DIR__);
+$dotenv->load();
+
+
+
 use App\Application;
 use Cake\Http\Server;
 
