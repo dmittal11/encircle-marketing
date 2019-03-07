@@ -78,7 +78,7 @@ class UsersController extends AppController
     public function index()
     {
 
-       // dd(getenv('MY_USERNAME'));
+
 
 
 
