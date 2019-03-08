@@ -135,6 +135,9 @@ class UsersController extends AppController
         $this->loadModel('UserHolidays');
         $this->loadModel('UserTimesheets');
         $this->loadModel('UserSickdays');
+
+      //  dd($this->UserSickdays->find('all')->where(['user_id' => $id]));
+
         $this->set('users', $this->paginate($this->Users->find('all')->where(['id' => $id])));
         $this->set('usertimesheets', $this->paginate($this->UserTimesheets->find('all')->where(['user_id' => $id])));
         $this->set('userholidays', $this->paginate($this->UserHolidays->find('all')->where(['user_id' => $id])));

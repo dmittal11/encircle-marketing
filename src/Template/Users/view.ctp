@@ -503,8 +503,8 @@
 <!-- User Sickdays -->
 
 <div class="related">
-    <h4><?= __('Related User Sickdays') ?></h4>
-    <?php if (!empty($user->user_sickdays)): ?>
+    <h4><?= __('User Sickdays') ?></h4>
+    <?php if (!empty($usersickdays)): ?>
     <table cellpadding="0" cellspacing="0">
         <tr>
             <th scope="col"><?= __('Id') ?></th>

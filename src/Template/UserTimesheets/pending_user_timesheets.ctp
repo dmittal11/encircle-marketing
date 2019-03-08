@@ -7,14 +7,14 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New User Timesheet'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('New User Times'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-        <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/approved-user-timesheets"; ?>">Approved User Timesheets</a></li>
+        <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/approved-user-timesheets"; ?>">Approved User Times</a></li>
     </ul>
 </nav>
 <div class="userTimesheets index large-9 medium-8 columns content">
-    <h3><?= __('Pending User Timesheets') ?></h3>
+    <h3><?= __('Pending User Times') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>

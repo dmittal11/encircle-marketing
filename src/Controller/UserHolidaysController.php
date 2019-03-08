@@ -411,7 +411,7 @@ class UserHolidaysController extends AppController
                  }
 
                 else {
-                        this->Flash->error(__('The user holidays status can not be changed.'));
+                        $this->Flash->error(__('The user holidays status can not be changed.'));
                      }
 
                     return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromUserHolidays($id)]);
@@ -437,8 +437,8 @@ class UserHolidaysController extends AppController
 
                   $getData =  $this->request->getData();
 
-                  if(isset($this->request->getData("notes"))){
-                    $userHoliday->notes = $this->request->getData("notes");
+                  if(isset($getData["notes"])){
+                    $userHoliday->notes = $getData["notes"];
                   }
 
                   $userHoliday->status = "Pending";
