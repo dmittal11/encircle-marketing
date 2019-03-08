@@ -27,18 +27,8 @@ class UserHolidaysController extends AppController
     public function index()
     {
 
-      // $user_id = $this->Auth->user('id');
-      //
-      // $userHolidays = $this->UserHolidays->get($user_id, [
-      //   'contain' => []
-      // ]);
-      //
-      //   $this->paginate = [
-      //       'contain' => ['users']
-      //   ];
-
-      $userHolidays = $this->UserHolidays->find('all', ['conditions' => ['user_id' => $this->Auth->user('id')]]);
-      $userHolidays = $this->paginate($userHolidays);
+        $userHolidays = $this->UserHolidays->find('all', ['conditions' => ['user_id' => $this->Auth->user('id')]]);
+        $userHolidays = $this->paginate($userHolidays);
 
         $this->loadModel('Users');
         $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
@@ -143,37 +133,25 @@ class UserHolidaysController extends AppController
      */
     public function edit($id = null)
     {
-         if($this->hasPermissionToAmendUserHolidays($id)){
+        if($this->hasPermissionToAmendUserHolidays($id)){
 
         $userHoliday = $this->UserHolidays->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
                 $userHoliday = $this->UserHolidays->patchEntity($userHoliday, $this->request->getData());
-
                 $this->loadModel('Users');
-
                 $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
-
-            //dd([$userHoliday->days_taken, $user->available_days]);
-
                 $user->available_days = $this->addDaysToAvailableDays($userHoliday->days_taken,$user->available_days);
-
-          //  dd($user->available_days);
-
-              //  $this->Users->save($user);
-
-
                 $userHoliday->start_date = $this->convertAttributeToDateType($userHoliday->start_date);
                 $userHoliday->end_date = $this->convertAttributeToDateType($userHoliday->end_date);
                 $days_taken = $this->calculateDateDifference($userHoliday->start_date, $userHoliday->end_date);
 
-                    if(!$days_taken){
+                if(!$days_taken){
                         $this->Flash->error(__('The end date is lower than the start date or the start date is invalid please correct this!'));
                    } else {
 
                         $userHoliday->days_taken = $days_taken;
-
                         $days_available = $this->Subtractdaysfromdaystaken($user->available_days, $days_taken);
 
                           if($days_available < 0){
@@ -182,28 +160,23 @@ class UserHolidaysController extends AppController
                               } else {
 
                                 $this->UserHolidays->save($userHoliday);
-
                                 $user->available_days = $days_available;
-
                                 $this->Users->save($user);
-
                                 $this->Flash->success(__('The user holiday has been saved.'));
-
                                 return $this->redirect(['action' => 'index']);
                               }
                               $this->Flash->error(__('The user holiday could not be saved. Please, try again.'));
                     }
 
               }
-                $logins = $this->UserHolidays->users->find('list', ['limit' => 200]);
-                $this->set(compact('userHoliday', 'logins'));
+                $userHolidays = $this->UserHolidays->users->find('list', ['limit' => 200]);
+                $this->set(compact('userHoliday', 'userHolidays'));
             }
             else{
               $this->Flash->error(__('You do not sufficient privileges.'));
               return $this->redirect(['controller' => 'Users', 'action' => 'index']);
             }
           }
-
 
     /**
      * Delete method
@@ -217,16 +190,9 @@ class UserHolidaysController extends AppController
        if($this->hasPermissionToAmendUserHolidays($id)){
         $this->request->allowMethod(['get','post','delete']);
         $userHoliday = $this->UserHolidays->get($id);
-
         $this->loadModel('Users');
-
         $user = $this->Users->find()->select(['available_days', 'id'])->where(['id' => $this->Auth->user('id')])->first();
-
-
         $user->available_days = $this->addDaysToAvailableDays($userHoliday->days_taken,$user->available_days);
-
-
-
 
         if ($this->UserHolidays->delete($userHoliday) && $this->Users->save($user)) {
             $this->Flash->success(__('The user holiday has been deleted.'));
@@ -293,13 +259,8 @@ class UserHolidaysController extends AppController
        ]
      ];
 
-     $userHolidays = $this->UserHolidays->find('all', $conditions);
-
-     //dd($userHolidays);
-
+      $userHolidays = $this->UserHolidays->find('all', $conditions);
       $userHolidays = $this->paginate($userHolidays);
-
-      //$this->set(compact('userHolidays'));
       $this->set('userHolidays', $userHolidays);
       $this->set('user', $user);
 
@@ -394,7 +355,6 @@ class UserHolidaysController extends AppController
          )
          ->first();
 
-      //$user_details = $this->paginate($user_details);
       $this->set('user_details', $user_details);
 
     }
@@ -432,14 +392,10 @@ class UserHolidaysController extends AppController
 
           if($this->userIsAdmin()){
 
-
             if ($this->request->is(['patch', 'post', 'put', 'get'])) {
-
               $userHoliday = $this->UserHolidays->get($id, [
                   'contain' => []
               ]);
-
-
                   $getData =  $this->request->getData();
 
                   if(isset($getData["notes"])){
@@ -448,17 +404,15 @@ class UserHolidaysController extends AppController
 
                   $userHoliday->status = "Rejected";
 
-
                 if ($this->UserHolidays->save($userHoliday)) {
                     $this->Flash->success(__('The user holidays status has been changed to rejected'));
-
-                      $this->sendEmail($id);
+                    $this->sendEmail($id);
 
                  }
 
-                    else {
-                        $this->Flash->error(__('The user holidays status can not be changed.'));
-                    }
+                else {
+                        this->Flash->error(__('The user holidays status can not be changed.'));
+                     }
 
                     return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromUserHolidays($id)]);
 
@@ -483,22 +437,20 @@ class UserHolidaysController extends AppController
 
                   $getData =  $this->request->getData();
 
-                  if(isset($getData["notes"])){
-                    $userHoliday->notes = $getData["notes"];
+                  if(isset($this->request->getData("notes"))){
+                    $userHoliday->notes = $this->request->getData("notes");
                   }
 
                   $userHoliday->status = "Pending";
 
-                if ($this->UserHolidays->save($userHoliday)) {
+                  if ($this->UserHolidays->save($userHoliday)) {
                     $this->Flash->success(__('The user holidays status has been changed to pending.'));
 
+                  }
 
-
-                 }
-
-                    else {
+                  else {
                         $this->Flash->error(__('The user holidays status can not be updated.'));
-                    }
+                       }
 
                     return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromUserHolidays($id)]);
 
@@ -510,15 +462,8 @@ class UserHolidaysController extends AppController
           }
         }
 
-
-
-
-
         public function sendEmail($id)
         {
-
-          //SELECT user_id, email from user_holidays inner join users on user_holidays.user_id = users.id where user_holidays.id = 8
-
            $user_id = $this->UserHolidays->find()
               ->select([
                 'userEmail' => 'u.email',
@@ -549,8 +494,6 @@ class UserHolidaysController extends AppController
 
           }
           else {
-
-
             $subject = 'We regret to inform you, your holidays can not take place';
             $message = 'Dear '.$user_id->name.' your holidays can not take place.<br>Start Date: '.$user_id->startDate.'<br>End Date: '.$user_id->endDate.'<br>Reason:'.$user_id->notes.'<br>If you have any concerns or queries please do not hesitate to ask.<br>Regards Admin.';
 
@@ -564,9 +507,6 @@ class UserHolidaysController extends AppController
                 ->emailFormat('html')
                 ->subject($subject)
                 ->send($message);
-
-              //$mail = $this->Email->send_mail($to, $subject, $message);
-              //print_r($mail);
             } catch(Exception $e){
               echo 'Message could not be sent. Email Error: ', $e->getMessage();
             }

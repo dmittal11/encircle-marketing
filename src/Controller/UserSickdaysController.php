@@ -25,7 +25,6 @@ class UsersickdaysController extends AppController
 
       $usersickdays = $this->UserSickdays->find('all', ['conditions' => ['user_id' => $this->Auth->user('id')]]);
       $usersickdays = $this->paginate($usersickdays);
-
       $this->set(compact('usersickdays'));
 
     }
@@ -61,23 +60,16 @@ class UsersickdaysController extends AppController
     public function add()
     {
         $usersickday = $this->UserSickdays->newEntity();
-          //$this->loadModel('Users');
         if ($this->request->is('post')) {
-
           $usersickday = $this->UserSickdays->patchEntity($usersickday, $this->request->getData());
           $usersickday->user_id = $this->Auth->user('id');
-
           $usersickday->start_date = $this->convertAttributeToDateType($usersickday->start_date);
           $usersickday->end_date = $this->convertAttributeToDateType($usersickday->end_date);
-
           $usersickday->duration = $this->calculateDateDifference($usersickday->start_date, $usersickday->end_date);
           if($usersickday->duration){
-
           $usersickday->file = $this->upload();
 
           if($usersickday->file){
-
-
 
             if ($this->UserSickdays->save($usersickday)) {
                 $this->Flash->success(__('The usersickday has been saved.'));
@@ -115,23 +107,17 @@ class UsersickdaysController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $usersickday = $this->UserSickdays->patchEntity($usersickday, $this->request->getData());
             $usersickday->user_id = $this->Auth->user('id');
-
             $usersickday->start_date = $this->convertAttributeToDateType($usersickday->start_date);
             $usersickday->end_date = $this->convertAttributeToDateType($usersickday->end_date);
-
             $usersickday->duration = $this->calculateDateDifference($usersickday->start_date, $usersickday->end_date);
 
             if($usersickday->duration){
-
-            $usersickday->file = $this->upload();
+                $usersickday->file = $this->upload();
 
             if($usersickday->file){
 
-
-
               if ($this->UserSickdays->save($usersickday)) {
                   $this->Flash->success(__('The usersickday has been saved.'));
-
                   return $this->redirect(['action' => 'index']);
               }
 
@@ -163,17 +149,19 @@ class UsersickdaysController extends AppController
     {
          if($this->hasPermissionToAmendUserSickdays($id)){
 
-        $this->request->allowMethod(['post','get', 'delete']);
-        $usersickday = $this->UserSickdays->get($id);
-        if ($this->UserSickdays->delete($usersickday)) {
-            $this->Flash->success(__('The usersickday has been deleted.'));
-        } else {
+            $this->request->allowMethod(['post','get', 'delete']);
+            $usersickday = $this->UserSickdays->get($id);
+
+             if ($this->UserSickdays->delete($usersickday)) {
+                 $this->Flash->success(__('The usersickday has been deleted.'));
+        }    else
+            {
             $this->Flash->error(__('The usersickday could not be deleted. Please, try again.'));
-        }
+            }
 
         return $this->redirect(['action' => 'index']);
     }
-    else{
+    else {
       $this->Flash->error(__('You do not sufficient privileges.'));
       return $this->redirect(['controller' => 'Users', 'action' => 'index']);
     }

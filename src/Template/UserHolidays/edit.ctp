@@ -24,11 +24,8 @@
     <fieldset>
         <legend><?= __('Edit User Holiday') ?></legend>
         <?php
-            //echo $this->Form->control('id');
-            //echo $this->Form->control('user_id');
             echo $this->Form->control('start_date', ['label' => 'Start Date', 'class' => 'datepicker', 'type' => 'text']);
             echo $this->Form->control('end_date',   ['label' => 'End Date', 'class' => 'datepicker', 'type' => 'text']);
-            //echo $this->Form->control('days_available');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

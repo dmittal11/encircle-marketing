@@ -20,8 +20,6 @@
         <?php
             echo $this->Form->control('start_date', ['label' => 'Start Date','class' => 'datepicker', 'type' => 'text']);
             echo $this->Form->control('end_date', ['label' => 'End Date','class' => 'datepicker', 'type' => 'text']);
-            //echo $this->Form->control('start_date');
-            //echo $this->Form->control('end_date');
             echo $this->Form->file('file');
         ?>
 

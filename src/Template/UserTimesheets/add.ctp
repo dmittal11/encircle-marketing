@@ -19,12 +19,9 @@
     <fieldset>
         <legend><?= __('Add User Timesheet') ?></legend>
         <?php
-            //echo $this->Form->control('id');
-            //echo $this->Form->control('user_id', ['options' => $users]);
             echo $this->Form->control('start_date', ['label' => 'Start Date','class' => 'datepicker', 'type' => 'text']);
             echo $this->Form->control('start_time');
             echo $this->Form->control('end_time');
-            //echo $this->Form->control('duration');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

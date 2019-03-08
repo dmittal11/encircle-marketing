@@ -28,9 +28,7 @@ class UsersController extends AppController
     if ($this->request->is('post')) {
        $user = $this->Auth->identify();
        if ($user) {
-
            $this->Auth->setUser($user);
-
            return $this->redirect(['controller' => 'Users', 'action' => 'index']);
        } else {
            $this->Flash->error(__('Username or password is incorrect'));
@@ -51,9 +49,7 @@ class UsersController extends AppController
 
 
     if($this->request->is('post')){
-
-    //dd($this->request->getData());
-    $user = $this->Users->newEntity($this->request->getData());
+      $user = $this->Users->newEntity($this->request->getData());
       if($this->Users->save($user)){
         $this->Flash->success('You are registered and can login');
         return $this->redirect(['action' => 'login']);
@@ -77,25 +73,15 @@ class UsersController extends AppController
      */
     public function index()
     {
-
-
-
-
-
       $id = $this->Auth->user('id');
       $this->loadModel('UserTimesheets');
-
       $user = $this->Users->get($id, [
           'contain' => []
       ]);
 
       if($user->admin == 1){
-
         $user = $this->Users->find('all');
       }
-
-
-
       if ($this->request->is('post')) {
           $input = $this->request->getData();
            $start_date = new Date($input["start_date"]);
@@ -135,18 +121,8 @@ class UsersController extends AppController
         $this->set('userTimesheets', $userTimesheet['data']);
         $this->set('total', $total);
 
-
       }
-
-
-
-
-
-
-
-
-
-    /**
+      /**
      * View method
      *
      * @param string|null $id User id.
@@ -159,37 +135,10 @@ class UsersController extends AppController
         $this->loadModel('UserHolidays');
         $this->loadModel('UserTimesheets');
         $this->loadModel('UserSickdays');
-
-
-        // $this->paginate = [
-        //   'contain' => ['UserHolidays', 'UserSickdays', 'UserTimesheets']
-        // ];
-
         $this->set('users', $this->paginate($this->Users->find('all')->where(['id' => $id])));
-
-       //dd($this->paginate($this->Users->find('all')->where(['id' => $id])));
-
         $this->set('usertimesheets', $this->paginate($this->UserTimesheets->find('all')->where(['user_id' => $id])));
-
         $this->set('userholidays', $this->paginate($this->UserHolidays->find('all')->where(['user_id' => $id])));
-
         $this->set('usersickdays', $this->paginate($this->UserSickdays->find('all')->where(['user_id' => $id])));
-
-
-
-
-        //   $user = $this->Users->get($id, [
-        //     'contain' => ['UserHolidays', 'UserSickdays', 'UserTimesheets']
-        // ]);
-
-        //dd($user);
-
-
-
-        //$this->paginate($user);
-
-        //$this->set('user', $user);
-
     }
 
     /**
@@ -207,7 +156,6 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -260,19 +208,16 @@ class UsersController extends AppController
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
 
     public function convertToCollectionsAndFindTotalTime($data){
 
       $collection = new Collection($data);
-
       $data = $collection->each(function($row){
           $row->new_duration = $this->convertTimeToString($row->duration);
           return $row;
       });
-
       return [
         'data'  => $data,
         'total' => $collection->sumOf('duration')];

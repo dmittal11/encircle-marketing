@@ -23,10 +23,8 @@
     <fieldset>
         <legend><?= __('Edit Usersickday') ?></legend>
         <?php
-            //echo $this->Form->control('user_id', ['options' => $users]);
             echo $this->Form->control('start_date', ['label' => 'Start Date','class' => 'datepicker', 'type' => 'text']);
             echo $this->Form->control('end_date', ['label' => 'End Date','class' => 'datepicker', 'type' => 'text']);
-            //echo $this->Form->control('duration');
             echo $this->Form->file('file');
         ?>
     </fieldset>

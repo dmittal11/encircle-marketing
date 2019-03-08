@@ -22,14 +22,8 @@ class UserTimesheetsController extends AppController
      */
     public function index()
     {
-        // $this->paginate = [
-        //     'contain' => ['Users']
-        // ];
-        // $userTimesheets = $this->paginate($this->UserTimesheets);
-
         $userTimesheets = $this->UserTimesheets->find('all', ['conditions' => ['user_id' => $this->Auth->user('id')]]);
         $userTimesheets = $this->paginate($userTimesheets);
-
         $this->set(compact('userTimesheets'));
     }
 
@@ -64,17 +58,9 @@ class UserTimesheetsController extends AppController
      */
     public function add()
     {
-
-
-
         $userTimesheet = $this->UserTimesheets->newEntity();
         if ($this->request->is('post')) {
-
-
-
-
             $userTimesheet = $this->UserTimesheets->patchEntity($userTimesheet, $this->request->getData());
-
             $start_time = $this->convertTimeToMinutes($userTimesheet->start_time);
             $end_time = $this->convertTimeToMinutes($userTimesheet->end_time);
             $time_diff = $this->calculateTimeDifference($start_time, $end_time);
@@ -84,15 +70,9 @@ class UserTimesheetsController extends AppController
             }
              else{
 
-          //  $userTimesheet->start_time = (string)$this->request->getData('start_time')['hour'].':'.(string)$this->request->getData('start_time')['minute'];
             $userTimesheet->start_date = $this->convertAttributeToDateType($this->request->getData('start_date'));
             $userTimesheet->duration = $time_diff;
-
             $userTimesheet->user_id = $this->Auth->user('id');
-
-
-
-          //  dd($userTimesheet);
 
             if ($this->UserTimesheets->save($userTimesheet)) {
                 $this->Flash->success(__('The user timesheet has been saved.'));
@@ -206,27 +186,20 @@ class UserTimesheetsController extends AppController
     public function convertTimeToMinutes($time){
 
         $noon_time = new DateTime("12:00:00.0000000");
-
         $hours = (int)$time->format('h');
         $mins = (int)$time->format('i');
-
 
         if($time >= $noon_time){
 
           $hours = $hours + 12;
-
         }
 
         return (($hours * 60) + $mins);
-
-
     }
 
     public function pendingUserTimesheets(){
 
         if ($this->request->is(['patch', 'post', 'put', 'get'])) {
-
-
 
             $this->paginate = [
                 'contain' => ['users']
@@ -287,58 +260,44 @@ class UserTimesheetsController extends AppController
         ]);
 
         $userTimesheet->status = "Approved";
-
         if ($this->UserTimesheets->save($userTimesheet)) {
           $this->Flash->success(__('The user timesheet status has been changed to approved.'));
         } else {
           $this->Flash->error(__('The user timesheet status can not be changed.'));
         }
 
-
-
         return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromTimesheets($id)]);
       } else {
         $this->Flash->error(__('You have insufficient privileges.'));
-
         return $this->redirect(['controller' => 'Users', 'action' => 'index']);
-
       }
-
   }
 
   public function changeStatusRejected($id = null){
-
           if($this->userIsAdmin()){
-
           $userTimesheet = $this->UserTimesheets->get($id, [
               'contain' => []
           ]);
-
               $userTimesheet->status = "Rejected";
               if ($this->UserTimesheets->save($userTimesheet)) {
                   $this->Flash->success(__('The user timesheet status has been changed to rejected.'));
 
-        }
+              }
 
-        else {
-                $this->Flash->error(__('The user timesheet status can not be changed.'));
-        }
-
-        return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromTimesheets($id)]);
-
-      } else{
-
-        $this->Flash->error(__('You have insufficient privileges.'));
-
-        return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+              else
+                  {
+                    $this->Flash->error(__('The user timesheet status can not be changed.'));
+                  }
+              return $this->redirect(['controller' => 'Users', 'action' => 'view', $this->getUseridFromTimesheets($id)]);
+      } else
+          {
+              $this->Flash->error(__('You have insufficient privileges.'));
+              return $this->redirect(['controller' => 'Users', 'action' => 'index']);
 
 
     }
 
-
-
-
-}
+    }
 
 public function changeStatusPending($id = null){
 
@@ -363,9 +322,6 @@ public function changeStatusPending($id = null){
 
       return $this->redirect(['controller' => 'Users', 'action' => 'index']);
   }
-
-
-
 
 }
 }
