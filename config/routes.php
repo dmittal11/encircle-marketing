@@ -67,6 +67,8 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('rejected-user-timesheets', ['controller' => 'UserTimesheets', 'action' => 'rejectedUserTimesheets']);
 
+    $routes->connect('user-sickdays/view/view-pdf/:id', ['controller' => 'UserSickdays', 'action' => 'view_pdf'], ['id' => '\d+', 'pass' => ['id']]);
+
     /**
      * Apply a middleware to the current route scope.
      * Requires middleware to be registered via `Application::routes()` with `registerMiddleware()`

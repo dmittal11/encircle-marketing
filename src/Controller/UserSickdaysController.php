@@ -204,4 +204,15 @@ class UsersickdaysController extends AppController
     public function convertAttributeToDateType($date){
       return new Date($date);
     }
+
+    public function viewPdf($id = null)
+    {
+        $usersickday = $this->UserSickdays->get($id, [
+            'contain' => []
+        ]);
+
+        $this->response->file('C:\xampp\htdocs\encircle-marketing\webroot\\'.$usersickday->file);
+        $this->response->header('Content-Disposition', 'inline');
+        return $this->response;
+    }
 }

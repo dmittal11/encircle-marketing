@@ -43,4 +43,7 @@
             <td><?= h($usersickday->end_date) ?></td>
         </tr>
     </table>
+
+    <p> Document Viewer </p>
+    <iframe width='800' height='456' src='view-pdf/<?php echo $usersickday->id ?>'></iframe>
 </div>
