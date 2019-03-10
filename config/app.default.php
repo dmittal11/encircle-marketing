@@ -218,10 +218,10 @@ return [
           /*
            * The following keys are used in SMTP transports:
            */
-          'host' => 'smtp.office365.com',
-          'port' => 25,
-          'username' => getenv('USERNAME'),
-          'password' => getenv('PASSWORD'),
+          'host' => 'smtp.gmail.com',
+          'port' => 587,
+          'username' => getenv('EMAIL_USERNAME'),
+          'password' => getenv('EMAIL_PASSWORD'),
           'tls' => true
         ],
     ],
@@ -238,7 +238,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => getenv('FROM_EMAIL'),
+            'from' => getenv('EMAIL_USERNAME'),
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],

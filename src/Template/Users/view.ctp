@@ -6,26 +6,28 @@
 ?>
 <?php if(!$admin) :  ?>
 
+  <?php if (!empty($users)): ?>
+      <?php foreach ($users as $user): ?>
+
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit User'), ['action' => 'edit', $users->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $users->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?> </li>
+        <li><?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id]) ?> </li>
+        <li><?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('List User Holidays'), ['controller' => 'UserHolidays', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New User Holiday'), ['controller' => 'UserHolidays', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List User Sickdays'), ['controller' => 'UserSickdays', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New User Sickday'), ['controller' => 'UserSickdays', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List User Timesheets'), ['controller' => 'UserTimesheets', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New User Timesheet'), ['controller' => 'UserTimesheets', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Holidays'), ['controller' => 'UserHolidays', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Holiday'), ['controller' => 'UserHolidays', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Sick Days'), ['controller' => 'UserSickdays', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Sick Day'), ['controller' => 'UserSickdays', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Times'), ['controller' => 'UserTimesheets', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Time'), ['controller' => 'UserTimesheets', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
 
 <div class="users view large-9 medium-8 columns content">
 
-    <h3><?= h($users->id) ?></h3>
+    <h3><?= h($user->id) ?></h3>
     <table class="vertical-table">
-    <?php foreach ($users as $user): ?>
         <tr>
             <th scope="row"><?= __('Username') ?></th>
             <td><?= h($user->username) ?></td>
@@ -42,7 +44,9 @@
             <th scope="row"><?= __('Available Days') ?></th>
             <td><?= $this->Number->format($user->available_days) ?></td>
         </tr>
+
         <?php endforeach; ?>
+        <?php endif; ?>
     </table>
     <div class="related">
         <h4><?= __('Related User Holidays') ?></h4>
@@ -328,7 +332,7 @@
 
 <!-- Pending Timesheets -->
 
-    <h3><?= __('Pending User Timesheets') ?></h3>
+    <h3><?= __('Pending Times') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
@@ -503,7 +507,7 @@
 <!-- User Sickdays -->
 
 <div class="related">
-    <h4><?= __('User Sickdays') ?></h4>
+    <h4><?= __('Sick Days') ?></h4>
     <?php if (!empty($usersickdays)): ?>
     <table cellpadding="0" cellspacing="0">
         <tr>

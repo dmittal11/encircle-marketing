@@ -7,20 +7,18 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New User Timesheet'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('New Times'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-        <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/approved-user-timesheets"; ?>">Approved User Times</a></li>
-        <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/pending-user-timesheets"; ?>">Pending User Times</a></li>
+        <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/approved-user-timesheets"; ?>">Approved Times</a></li>
+        <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/pending-user-timesheets"; ?>">Pending Times</a></li>
     </ul>
 </nav>
 <div class="userTimesheets index large-9 medium-8 columns content">
-    <h3><?= __('User Timesheets') ?></h3>
+    <h3><?= __('Times') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('start_time') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('end_time') ?></th>
@@ -31,8 +29,6 @@
         <tbody>
             <?php foreach ($userTimesheets as $userTimesheet): ?>
             <tr>
-                <td><?= $this->Number->format($userTimesheet->id) ?></td>
-                <td><?= $this->Number->format($userTimesheet->user_id) ?></td>
                 <td><?= h($userTimesheet->start_date) ?></td>
                 <td><?php echo substr($userTimesheet->start_time, 8); ?></td>
                 <td><?php echo substr($userTimesheet->end_time, 8); ?></td>

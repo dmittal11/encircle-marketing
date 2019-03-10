@@ -15,7 +15,7 @@
 <div class="userHolidays form large-9 medium-8 columns content">
     <?= $this->Form->create($userHoliday) ?>
     <fieldset>
-        <legend><?= __('Add User Holiday') ?></legend>
+        <legend><?= __('Add Holiday') ?></legend>
         <?php
             echo $this->Form->control('start_date', ['label' => 'Start Date', 'class' => 'datepicker', 'type' => 'text']);
             echo $this->Form->control('end_date', ['label' => 'End Date', 'class' => 'datepicker', 'type' => 'text']);

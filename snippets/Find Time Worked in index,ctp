@@ -1,0 +1,13 @@
+<?= $this->Form->create($users, ['url' => ['controller' => 'Users','action' => 'index']]); ?>
+
+  <fieldset>
+
+      <legend><?= __('Find Hours Worked') ?></legend>
+      <?php
+          echo $this->Form->control('start_date', ['label' => 'Start Date', 'class' => 'datepicker', 'type' => 'text']);
+          echo $this->Form->control('end_date', ['label' => 'End Date', 'class' => 'datepicker', 'type' => 'text']);
+      ?>
+  </fieldset>
+
+  <?= $this->Form->button(__('Submit')) ?>
+  <?= $this->Form->end() ?>

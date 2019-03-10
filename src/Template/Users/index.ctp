@@ -8,12 +8,12 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List User Holidays'), ['controller' => 'UserHolidays', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User Holiday'), ['controller' => 'UserHolidays', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List User Sickdays'), ['controller' => 'UserSickdays', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User Sickday'), ['controller' => 'UserSickdays', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List User Timesheets'), ['controller' => 'UserTimesheets', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User Timesheet'), ['controller' => 'UserTimesheets', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Holidays'), ['controller' => 'UserHolidays', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Holiday'), ['controller' => 'UserHolidays', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Sick Days'), ['controller' => 'UserSickdays', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Sick Day'), ['controller' => 'UserSickdays', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Times'), ['controller' => 'UserTimesheets', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Times'), ['controller' => 'UserTimesheets', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="users index large-9 medium-8 columns content">
@@ -90,8 +90,8 @@
           <?php foreach ($userTimesheets as $userTimesheet): ?>
           <tr>
               <td><?= h($userTimesheet->start_date) ?></td>
-              <td><?= h($userTimesheet->start_time) ?></td>
-              <td><?= h($userTimesheet->end_time) ?></td>
+              <td><?php echo substr($userTimesheet->start_time, 8); ?></td>
+              <td><?php echo substr($userTimesheet->end_time, 8); ?></td>
               <td><?= h($userTimesheet->new_duration)?></td>
           </tr>
           <?php endforeach; ?>
@@ -137,21 +137,28 @@
 <?php endif ?>
 
 <br>
-<br>
-<br>
-<?= $this->Form->create('User', ['action' => 'index']); ?>
 
-  <fieldset>
+  <!-- Find Times Worked In Index.ctp -->
+  <?= $this->Form->create(null, [
+    'url' => 'http://localhost/encircle-marketing/users/index/',
+    'type' => 'post'
+  ]
+);
+?>
 
-      <legend><?= __('Find Hours Worked') ?></legend>
-      <?php
-          echo $this->Form->control('start_date', ['label' => 'Start Date', 'class' => 'datepicker', 'type' => 'text']);
-          echo $this->Form->control('end_date', ['label' => 'End Date', 'class' => 'datepicker', 'type' => 'text']);
-      ?>
-  </fieldset>
+    <fieldset>
 
-  <?= $this->Form->button(__('Submit')) ?>
-  <?= $this->Form->end() ?>
+        <legend><?= __('Find Hours Worked') ?></legend>
+        <?php
+            echo $this->Form->control('start_date', ['label' => 'Start Date', 'class' => 'datepicker', 'type' => 'text']);
+            echo $this->Form->control('end_date', ['label' => 'End Date', 'class' => 'datepicker', 'type' => 'text']);
+        ?>
+    </fieldset>
+
+    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->end() ?>
+
+    <!-- -->
 
 </div>
 <script>

@@ -7,8 +7,8 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List User Holidays'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User Holiday'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Holidays'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Holiday'), ['action' => 'add']) ?></li>
         <li><a href = "<?php echo "http://" . $_SERVER['SERVER_NAME'] ."/encircle-marketing/pending-user-holidays"; ?>">Pending</a></li>
     </ul>
 </nav>

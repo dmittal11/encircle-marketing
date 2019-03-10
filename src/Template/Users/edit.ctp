@@ -14,12 +14,12 @@
             )
         ?></li>
         <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List User Holidays'), ['controller' => 'UserHolidays', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User Holiday'), ['controller' => 'UserHolidays', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List User Sickdays'), ['controller' => 'UserSickdays', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User Sickday'), ['controller' => 'UserSickdays', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List User Timesheets'), ['controller' => 'UserTimesheets', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User Timesheet'), ['controller' => 'UserTimesheets', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Holidays'), ['controller' => 'UserHolidays', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Holiday'), ['controller' => 'UserHolidays', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Sick Days'), ['controller' => 'UserSickdays', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Sick Day'), ['controller' => 'UserSickdays', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Times'), ['controller' => 'UserTimesheets', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Times'), ['controller' => 'UserTimesheets', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="users form large-9 medium-8 columns content">

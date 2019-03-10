@@ -23,7 +23,7 @@
 <div class="userTimesheets form large-9 medium-8 columns content">
     <?= $this->Form->create($userTimesheet) ?>
     <fieldset>
-        <legend><?= __('Edit User Times') ?></legend>
+        <legend><?= __('Edit Times') ?></legend>
         <?php
             echo $this->Form->control('start_date', ['label' => 'Start Date','class' => 'datepicker', 'type' => 'text']);
             echo $this->Form->control('start_time');

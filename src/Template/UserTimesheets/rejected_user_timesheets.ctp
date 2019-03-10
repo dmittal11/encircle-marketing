@@ -18,8 +18,6 @@
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('start_date') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('start_time') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('end_time') ?></th>
@@ -31,8 +29,6 @@
         <tbody>
             <?php foreach ($userTimesheets as $userTimesheet): ?>
             <tr>
-                <td><?= $this->Number->format($userTimesheet->id) ?></td>
-                <td><?= $this->Number->format($userTimesheet->user_id) ?></td>
                 <td><?= h($userTimesheet->start_date) ?></td>
                 <td><?php echo substr($userTimesheet->start_time, 8); ?></td>
                 <td><?php echo substr($userTimesheet->end_time, 8); ?></td>
